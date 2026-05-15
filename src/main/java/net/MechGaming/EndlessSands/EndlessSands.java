@@ -1,7 +1,11 @@
 package net.MechGaming.EndlessSands;
 
 import com.mojang.logging.LogUtils;
+import net.MechGaming.EndlessSands.item.ModCreativeModeTabs;
+import net.MechGaming.EndlessSands.item.ModItems;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.CreativeModeTabRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -28,6 +32,10 @@ public class EndlessSands
     {
         IEventBus modEventBus = context.getModEventBus();
 
+        ModCreativeModeTabs.register(modEventBus);
+
+        ModItems.register(modEventBus);
+
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
@@ -43,11 +51,14 @@ public class EndlessSands
     {
 
     }
-
+    // https://www.youtube.com/watch?v=o6Xbp2dTEGA Left off at 13:30
     // Add the example block item to the building blocks tab
-    private void addCreative(BuildCreativeModeTabContentsEvent event)
-    {
-
+    private void addCreative(BuildCreativeModeTabContentsEvent event) {
+        if(event.getTabKey() == CreativeModeTabs.INGREDIENTS){
+            event.accept(ModItems.CURSED_POCKET_SAND);
+            event.accept(ModItems.BITTY_BONE);
+            event.accept(ModItems.ITTY_BITTY_BONE);
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
