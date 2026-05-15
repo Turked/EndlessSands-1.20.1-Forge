@@ -1,6 +1,7 @@
 package net.MechGaming.EndlessSands.item;
 
 import net.MechGaming.EndlessSands.EndlessSands;
+import net.MechGaming.EndlessSands.block.ModBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -18,9 +19,14 @@ public class ModCreativeModeTabs {
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.CURSED_POCKET_SAND.get()))
                     .title(Component.translatable("creativetab.endless_sands_tab"))
                     .displayItems((pParameters, pOutput) -> {
+                        // Item Items
                         pOutput.accept(ModItems.CURSED_POCKET_SAND.get());
                         pOutput.accept(ModItems.BITTY_BONE.get());
                         pOutput.accept(ModItems.ITTY_BITTY_BONE.get());
+
+                        // Block Items
+                        pOutput.accept(ModBlocks.CURSED_SAND.get());
+                        pOutput.accept(ModBlocks.CURSED_SANDSTONE.get());
                     })
                     .build());
 

@@ -1,6 +1,7 @@
 package net.MechGaming.EndlessSands;
 
 import com.mojang.logging.LogUtils;
+import net.MechGaming.EndlessSands.block.ModBlocks;
 import net.MechGaming.EndlessSands.item.ModCreativeModeTabs;
 import net.MechGaming.EndlessSands.item.ModItems;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -35,6 +36,7 @@ public class EndlessSands
         ModCreativeModeTabs.register(modEventBus);
 
         ModItems.register(modEventBus);
+        ModBlocks.register(modEventBus);
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
