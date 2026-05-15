@@ -21,6 +21,7 @@ public class EndlessSands
     // Define mod id in a common place for everything to reference
     public static final String MOD_ID = "endlesssands";
     // Directly reference a slf4j logger
+    //Change
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public EndlessSands(FMLJavaModLoadingContext context)
