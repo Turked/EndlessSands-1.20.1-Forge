@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "endlesssands:cursed_pocket_sand"
+    }
+  },
+  "result": {
+    "item": "endlesssands:cursed_sand"
+  }
+}
