@@ -26,6 +26,9 @@ public class ModBlocks {
     public static final RegistryObject<Block> CURSED_SANDSTONE = registerBlock("cursed_sandstone",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.SANDSTONE)));
 
+    public static final RegistryObject<Block> SUSPICIOUS_CURSED_SAND = registerBlock("suspicious_cursed_sand",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.SUSPICIOUS_SAND)));
+
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block){
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);

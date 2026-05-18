@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "sf",
+    "fs"
+  ],
+  "key": {
+    "s": {
+      "item": "endlesssands:cursed_sand"
+    },
+    "f": {
+      "item": "endlesssands:bitty_bone"
+    }
+  },
+  "result": {
+    "item": "endlesssands:cursed_sandstone"
+  }
+}

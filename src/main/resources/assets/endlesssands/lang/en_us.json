@@ -1,10 +1,11 @@
 {
   "item.endlesssands.cursed_pocket_sand": "Cursed Pocket Sand",
-  "item.endlesssands.bitty_bone": "Bitty Bone",
-  "item.endlesssands.itty_bitty_bone": "Itty Bitty Bone",
+  "item.endlesssands.bitty_bone": "Fractured Bone",
+  "item.endlesssands.itty_bitty_bone": "Brittle Bone",
 
   "block.endlesssands.cursed_sand": "Cursed Sand",
   "block.endlesssands.cursed_sandstone": "Cursed Sandstone",
+  "block.endlesssands.suspicious_cursed_sand": "Suspicious Cursed Sand",
 
   "creativetab.endless_sands_tab": "Endless Sands Tab"
 }
