@@ -57,6 +57,7 @@ public class EndlessSands
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if(event.getTabKey() == CreativeModeTabs.INGREDIENTS){
+            //Redundant
             event.accept(ModItems.CURSED_POCKET_SAND);
             event.accept(ModItems.BITTY_BONE);
             event.accept(ModItems.ITTY_BITTY_BONE);

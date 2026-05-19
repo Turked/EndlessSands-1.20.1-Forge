@@ -1,0 +1,69 @@
+package net.MechGaming.EndlessSands.item.custom;
+
+import net.MechGaming.EndlessSands.item.ModItems;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+
+
+import java.util.function.Supplier;
+import java.util.List;
+
+public class OldworldScrollItem extends Item {
+    public OldworldScrollItem(Properties pProperties) {
+        super(pProperties);
+    }
+
+    // loot list
+    private static final List<Supplier<? extends Item>> LOOT_ITEMS = List.of(
+            ModItems.SCROLL_OF_WISDOM,
+            ModItems.SCROLL_OF_LORE,
+            ModItems.SCROLL_OF_MEDIOCRITY,
+            ModItems.SCROLL_OF_YEARNING
+    );
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
+        ItemStack itemstack = pPlayer.getItemInHand(pUsedHand);
+
+        if(!pLevel.isClientSide){
+            // pick a random item from loot list
+            Item chosenItem = LOOT_ITEMS.get(pLevel.random.nextInt(LOOT_ITEMS.size())).get();
+
+            // play break sound
+            pLevel.playSound(
+                    null,
+                    pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(),
+                    SoundEvents.BOOK_PAGE_TURN,
+                    SoundSource.PLAYERS,
+                    1.0F,
+                    1.0F
+            );
+
+            // remove one unread scroll
+            itemstack.shrink(1);
+
+            // create itemstack reward
+            ItemStack rewardStack = new ItemStack(chosenItem);
+
+            // try to add it to inventory
+            boolean itemAdded = pPlayer.addItem(rewardStack);
+            // if it fails, drop it near the player
+            if (itemAdded){
+                pPlayer.drop(rewardStack, false);
+            }
+        }
+
+
+        return InteractionResultHolder.sidedSuccess(itemstack, pLevel.isClientSide());
+    }
+}

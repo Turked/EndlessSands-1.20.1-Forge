@@ -23,11 +23,24 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.CURSED_POCKET_SAND.get());
                         pOutput.accept(ModItems.BITTY_BONE.get());
                         pOutput.accept(ModItems.ITTY_BITTY_BONE.get());
+                        pOutput.accept(ModItems.OLDWORLD_ROSE.get());
+                        pOutput.accept(ModItems.SCROLL_OF_LORE.get());
+                        pOutput.accept(ModItems.SCROLL_OF_WISDOM.get());
+                        pOutput.accept(ModItems.SCROLL_OF_MEDIOCRITY.get());
+                        pOutput.accept(ModItems.SCROLL_OF_YEARNING.get());
+
+                        // Advanced Items
+                        pOutput.accept(ModItems.TINY_OLDWORLD_JAR.get());
+                        pOutput.accept(ModItems.BRITTLE_BONE_MEAL.get());
+                        pOutput.accept(ModItems.OLDWORLD_SCROLL.get());
 
                         // Block Items
                         pOutput.accept(ModBlocks.CURSED_SAND.get());
                         pOutput.accept(ModBlocks.CURSED_SANDSTONE.get());
                         pOutput.accept(ModBlocks.SUSPICIOUS_CURSED_SAND.get());
+
+                        // Advanced Blocks
+                        pOutput.accept(ModBlocks.VILLAGE_POT.get());
                     })
                     .build());
 

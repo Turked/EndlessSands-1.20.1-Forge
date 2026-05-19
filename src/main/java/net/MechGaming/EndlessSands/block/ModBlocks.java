@@ -1,6 +1,7 @@
 package net.MechGaming.EndlessSands.block;
 
 import net.MechGaming.EndlessSands.EndlessSands;
+import net.MechGaming.EndlessSands.block.custom.BrittlePotBlock;
 import net.MechGaming.EndlessSands.item.ModItems;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -28,6 +29,9 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> SUSPICIOUS_CURSED_SAND = registerBlock("suspicious_cursed_sand",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.SUSPICIOUS_SAND)));
+
+    public static final RegistryObject<Block> VILLAGE_POT = registerBlock("village_pot",
+            () -> new BrittlePotBlock(BlockBehaviour.Properties.copy(Blocks.DECORATED_POT)));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block){
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
