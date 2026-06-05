@@ -1,7 +1,21 @@
 {
   "variants": {
-    "": {
-      "model": "endlesssands:block/cursed_sand"
-    }
+    "": [
+      {
+        "model": "endlesssands:block/cursed_sand"
+      },
+      {
+        "model": "endlesssands:block/cursed_sand",
+        "y": 90
+      },
+      {
+        "model": "endlesssands:block/cursed_sand",
+        "y": 180
+      },
+      {
+        "model": "endlesssands:block/cursed_sand",
+        "y": 270
+      }
+    ]
   }
 }
