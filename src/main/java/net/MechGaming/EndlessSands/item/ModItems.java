@@ -2,10 +2,7 @@ package net.MechGaming.EndlessSands.item;
 
 import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.block.custom.BrittlePotBlock;
-import net.MechGaming.EndlessSands.item.custom.BrittleBoneMealItem;
-import net.MechGaming.EndlessSands.item.custom.CursedPocketSandItem;
-import net.MechGaming.EndlessSands.item.custom.OldworldScrollItem;
-import net.MechGaming.EndlessSands.item.custom.TinyOldworldJarItem;
+import net.MechGaming.EndlessSands.item.custom.*;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -48,6 +45,15 @@ public class ModItems {
 
     public static final RegistryObject<Item> SCROLL_OF_YEARNING = ITEMS.register("scroll_of_yearning",
             () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> VULTURE_EGG = ITEMS.register("vulture_egg",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> HANDFUL_OF_SCRAMBLED_EGGS = ITEMS.register("handful_of_scrambled_eggs",
+            () -> new Item(new Item.Properties().food(ModFoods.HANDFUL_OF_SCRAMBLED_EGGS)));
+
+    public static final RegistryObject<Item> BOILED_VULTURE_EGG = ITEMS.register("boiled_vulture_egg",
+            () -> new Item(new Item.Properties().food(ModFoods.Boiled_VULTURE_EGG)));
 
 
     public static void register(IEventBus eventBus){

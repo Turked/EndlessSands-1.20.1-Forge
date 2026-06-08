@@ -33,6 +33,11 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.TINY_OLDWORLD_JAR.get());
                         pOutput.accept(ModItems.BRITTLE_BONE_MEAL.get());
                         pOutput.accept(ModItems.OLDWORLD_SCROLL.get());
+                        pOutput.accept(ModItems.VULTURE_EGG.get());
+
+                        //Food Items
+                        pOutput.accept(ModItems.HANDFUL_OF_SCRAMBLED_EGGS.get());
+                        pOutput.accept(ModItems.BOILED_VULTURE_EGG.get());
 
                         // Block Items
                         pOutput.accept(ModBlocks.CURSED_SAND.get());
