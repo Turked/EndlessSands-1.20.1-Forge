@@ -39,6 +39,9 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.HANDFUL_OF_SCRAMBLED_EGGS.get());
                         pOutput.accept(ModItems.BOILED_VULTURE_EGG.get());
 
+                        //Fuel Items
+                        pOutput.accept(ModItems.ROTTED_WOOD.get());
+
                         // Block Items
                         pOutput.accept(ModBlocks.CURSED_SAND.get());
                         pOutput.accept(ModBlocks.CURSED_SANDSTONE.get());

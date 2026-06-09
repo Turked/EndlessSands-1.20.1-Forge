@@ -9,6 +9,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.rmi.registry.Registry;
+
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, EndlessSands.MOD_ID);
@@ -54,6 +56,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> BOILED_VULTURE_EGG = ITEMS.register("boiled_vulture_egg",
             () -> new Item(new Item.Properties().food(ModFoods.Boiled_VULTURE_EGG)));
+
+    public static final RegistryObject<Item> ROTTED_WOOD = ITEMS.register("rotted_wood",
+            () -> new FuelItem(new Item.Properties(), 100));
 
 
     public static void register(IEventBus eventBus){

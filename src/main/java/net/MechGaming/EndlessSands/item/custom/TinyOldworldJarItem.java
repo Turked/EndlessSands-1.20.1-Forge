@@ -1,6 +1,8 @@
 package net.MechGaming.EndlessSands.item.custom;
 
 import net.MechGaming.EndlessSands.item.ModItems;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -9,10 +11,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import org.jetbrains.annotations.Nullable;
 
 
 import java.util.function.Supplier;
@@ -75,8 +79,14 @@ public class TinyOldworldJarItem extends Item {
                 pPlayer.drop(rewardStack, false);
             }
         }
-
-
         return InteractionResultHolder.sidedSuccess(itemstack, pLevel.isClientSide());
+    }
+
+    @Override
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+        pTooltipComponents.add(
+                Component.translatable("tooltip.endlesssands.tiny_oldworld_jar.tooltip")
+                        .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }
 }

@@ -16,11 +16,21 @@
   "item.endlesssands.handful_of_scrambled_eggs":  "Handful of Scrambled Eggs",
   "item.endlesssands.boiled_vulture_egg": "Boiled Vulture Egg",
 
+  "item.endlesssands.rotted_wood": "Rotted Wood",
+
   "block.endlesssands.cursed_sand": "Cursed Sand",
   "block.endlesssands.cursed_sandstone": "Cursed Sandstone",
   "block.endlesssands.suspicious_cursed_sand": "Suspicious Cursed Sand",
 
   "block.endlesssands.village_pot": "Village Pot",
 
-  "creativetab.endless_sands_tab": "Endless Sands Tab"
+  "creativetab.endless_sands_tab": "Endless Sands Tab",
+
+  "tooltip.endlesssands.tiny_oldworld_jar.tooltip": "Potted plants were used as hasty storage containers when the sand began to consume their homes. Against the curse these crates grew brittle.",
+  "tooltip.endlesssands.scroll_of_yearning.tooltip": "Dear diary, Susie looked at me today… I blushed.",
+  "tooltip.endlesssands.scroll_of_wisdom_one.tooltip": "The golems always loved their ",
+  "tooltip.endlesssands.scroll_of_wisdom_two.tooltip": "roses",
+  "tooltip.endlesssands.scroll_of_wisdom_three.tooltip": ", flowers that wilted away as their iron rusted in the sand.",
+  "tooltip.endlesssands.scroll_of_lore.tooltip": "The Pharaoh…",
+  "tooltip.endlesssands.scroll_of_mediocrity.tooltip": "It was cloudy today."
 }
