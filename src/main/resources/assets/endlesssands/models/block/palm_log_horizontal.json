@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "endlesssands:block/palm_log_top",
+    "side": "endlesssands:block/palm_log_side"
+  }
+}

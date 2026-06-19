@@ -7,6 +7,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -29,6 +30,12 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> SUSPICIOUS_CURSED_SAND = registerBlock("suspicious_cursed_sand",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.SUSPICIOUS_SAND)));
+
+    public static final RegistryObject<Block> FERTILE_SOIL = registerBlock("fertile_soil",
+            () -> new Block(BlockBehaviour.Properties.copy(ModBlocks.CURSED_SAND.get())));
+
+    public static final RegistryObject<Block> PALM_LOG = registerBlock("palm_log",
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.ACACIA_LOG)));
 
     public static final RegistryObject<Block> VILLAGE_POT = registerBlock("village_pot",
             () -> new BrittlePotBlock(BlockBehaviour.Properties.copy(Blocks.DECORATED_POT)));

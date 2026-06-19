@@ -46,6 +46,8 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModBlocks.CURSED_SAND.get());
                         pOutput.accept(ModBlocks.CURSED_SANDSTONE.get());
                         pOutput.accept(ModBlocks.SUSPICIOUS_CURSED_SAND.get());
+                        pOutput.accept(ModBlocks.FERTILE_SOIL.get());
+                        pOutput.accept(ModBlocks.PALM_LOG.get());
 
                         // Advanced Blocks
                         pOutput.accept(ModBlocks.VILLAGE_POT.get());
