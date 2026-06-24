@@ -8,7 +8,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -29,7 +28,7 @@ public class ModBlocks {
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.SANDSTONE)));
 
     public static final RegistryObject<Block> SUSPICIOUS_CURSED_SAND = registerBlock("suspicious_cursed_sand",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.SUSPICIOUS_SAND)));
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.SUSPICIOUS_SAND).noLootTable()));
 
     public static final RegistryObject<Block> FERTILE_SOIL = registerBlock("fertile_soil",
             () -> new Block(BlockBehaviour.Properties.copy(ModBlocks.CURSED_SAND.get())));
@@ -39,6 +38,9 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> VILLAGE_POT = registerBlock("village_pot",
             () -> new BrittlePotBlock(BlockBehaviour.Properties.copy(Blocks.DECORATED_POT)));
+
+    public static final RegistryObject<Block> PALM_PLANKS = registerBlock("palm_planks",
+            () -> new BrittlePotBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block){
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

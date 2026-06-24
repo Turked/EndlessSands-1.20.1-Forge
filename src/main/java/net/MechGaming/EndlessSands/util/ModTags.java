@@ -12,6 +12,11 @@ public class ModTags {
         public static final TagKey<Block> BLOODIED = tag("bloodied");
         //All blocks containing no remnants of the curse, like palm trees, will be tagged as spared
         public static final TagKey<Block> SPARED = tag("spared");
+        //Blocks that can be infested with termites and rotted.
+        // XYLOPHAGE Xylophagy is a term used in ecology to
+        // describe the habits of an herbivorous animal whose
+        // diet consists primarily (often solely) of wood
+        public static final TagKey<Block> XYLOPHAGE = tag("xylophage");
 
         private static TagKey<Block> tag(String name){
             return BlockTags.create(ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, name));
