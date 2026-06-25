@@ -31,6 +31,19 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.dropSelf(ModBlocks.PALM_LOG.get());
         this.dropSelf(ModBlocks.PALM_PLANKS.get());
 
+        this.dropSelf(ModBlocks.PALM_STAIRS.get());
+        this.dropSelf(ModBlocks.PALM_BUTTON.get());
+        this.dropSelf(ModBlocks.PALM_PRESSURE_PLATE.get());
+        this.dropSelf(ModBlocks.PALM_TRAPDOOR.get());
+        this.dropSelf(ModBlocks.PALM_FENCE.get());
+        this.dropSelf(ModBlocks.PALM_FENCE_GATE.get());
+        this.dropSelf(ModBlocks.PALM_WALL.get());
+
+        this.add(ModBlocks.PALM_SLAB.get(),
+                block -> createSlabItemTable(ModBlocks.PALM_SLAB.get()));
+        this.add(ModBlocks.PALM_DOOR.get(),
+                block -> createDoorTable(ModBlocks.PALM_DOOR.get()));
+
         //Randomized Drops
         this.add(ModBlocks.CURSED_SAND.get(), createSingleItemTable(
                 ModItems.CURSED_POCKET_SAND.get(), UniformGenerator.between(1.0F, 4.0F)));

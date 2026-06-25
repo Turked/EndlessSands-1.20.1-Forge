@@ -52,6 +52,17 @@ public class ModCreativeModeTabs {
 
                         // Advanced Blocks
                         pOutput.accept(ModBlocks.VILLAGE_POT.get());
+
+                        //Building Blocks
+                        pOutput.accept(ModBlocks.PALM_DOOR.get());
+                        pOutput.accept(ModBlocks.PALM_SLAB.get());
+                        pOutput.accept(ModBlocks.PALM_TRAPDOOR.get());
+                        pOutput.accept(ModBlocks.PALM_WALL.get());
+                        pOutput.accept(ModBlocks.PALM_FENCE.get());
+                        pOutput.accept(ModBlocks.PALM_FENCE_GATE.get());
+                        pOutput.accept(ModBlocks.PALM_BUTTON.get());
+                        pOutput.accept(ModBlocks.PALM_PRESSURE_PLATE.get());
+                        pOutput.accept(ModBlocks.PALM_STAIRS.get());
                     })
                     .build());
 

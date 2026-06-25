@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "endlesssands:block/fertile_soil"
+      },
+      {
+        "model": "endlesssands:block/fertile_soil",
+        "y": 90
+      },
+      {
+        "model": "endlesssands:block/fertile_soil",
+        "y": 180
+      },
+      {
+        "model": "endlesssands:block/fertile_soil",
+        "y": 270
+      }
+    ]
+  }
+}

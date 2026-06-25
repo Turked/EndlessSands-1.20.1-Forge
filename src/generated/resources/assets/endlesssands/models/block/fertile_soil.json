@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "endlesssands:block/fertile_soil_top",
+    "side": "endlesssands:block/fertile_soil_side",
+    "top": "endlesssands:block/fertile_soil_top"
+  }
+}

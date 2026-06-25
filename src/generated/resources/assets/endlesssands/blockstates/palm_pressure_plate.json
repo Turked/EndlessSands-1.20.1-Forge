@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "endlesssands:block/palm_pressure_plate"
+    },
+    "powered=true": {
+      "model": "endlesssands:block/palm_pressure_plate_down"
+    }
+  }
+}

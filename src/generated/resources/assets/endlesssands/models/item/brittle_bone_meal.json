@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "endlesssands:item/brittle_bone_meal"
+  }
+}

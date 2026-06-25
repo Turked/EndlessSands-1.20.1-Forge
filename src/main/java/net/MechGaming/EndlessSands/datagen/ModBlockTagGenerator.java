@@ -25,7 +25,14 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
 
         this.tag(ModTags.Blocks.XYLOPHAGE)
                 .add(   ModBlocks.PALM_LOG.get(),
-                        ModBlocks.PALM_PLANKS.get()
+                        ModBlocks.PALM_PLANKS.get(),
+                        ModBlocks.PALM_DOOR.get(),
+                        ModBlocks.PALM_TRAPDOOR.get(),
+                        ModBlocks.PALM_FENCE.get(),
+                        ModBlocks.PALM_WALL.get(),
+                        ModBlocks.PALM_SLAB.get(),
+                        ModBlocks.PALM_BUTTON.get(),
+                        ModBlocks.PALM_FENCE_GATE.get()
                 );
 
         this.tag(BlockTags.NEEDS_IRON_TOOL);
@@ -47,5 +54,11 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.CURSED_SAND.get()
                 );
 
+        this.tag(BlockTags.FENCES)
+                .add(ModBlocks.PALM_FENCE.get());
+        this.tag(BlockTags.FENCE_GATES)
+                .add(ModBlocks.PALM_FENCE_GATE.get());
+        this.tag(BlockTags.WALLS)
+                .add(ModBlocks.PALM_WALL.get());
     }
 }

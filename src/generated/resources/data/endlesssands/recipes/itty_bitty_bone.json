@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "endlesssands:bitty_bone"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "item": "endlesssands:itty_bitty_bone"
+  }
+}

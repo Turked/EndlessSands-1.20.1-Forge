@@ -25,6 +25,16 @@
   "block.endlesssands.palm_log": "Palm Log",
   "block.endlesssands.palm_planks": "Palm Planks",
 
+  "block.endlesssands.palm_stairs": "Palm Stairs",
+  "block.endlesssands.palm_slab": "Palm Slab",
+  "block.endlesssands.palm_button": "Palm Button",
+  "block.endlesssands.palm_pressure_plate": "Palm Pressure Plate",
+  "block.endlesssands.palm_fence": "Palm Fence",
+  "block.endlesssands.palm_fence_gate": "Palm Fence Gate",
+  "block.endlesssands.palm_wall": "Palm Wall",
+  "block.endlesssands.palm_door": "Palm Door",
+  "block.endlesssands.palm_trapdoor": "Palm Trapdoor",
+
   "block.endlesssands.village_pot": "Village Pot",
 
   "creativetab.endless_sands_tab": "Endless Sands Tab",

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "endlesssands:block/palm_log_top",
+    "side": "endlesssands:block/palm_log_side",
+    "top": "endlesssands:block/palm_log_top"
+  }
+}
