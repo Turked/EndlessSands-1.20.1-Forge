@@ -1,5 +1,6 @@
-// 1.20.1	2026-06-25T10:12:04.2281603	Tags for minecraft:block mod id endlesssands
+// 1.20.1	2026-06-30T10:01:12.9261573	Tags for minecraft:block mod id endlesssands
 3d667fe2c017040430e5c7bc701f04d11975c1ba data/endlesssands/tags/blocks/bloodied.json
+35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/endlesssands/tags/blocks/needs_dragonite_tool.json
 a10125afd49ba9359ea22cf79da8b6ccdc79ac8b data/endlesssands/tags/blocks/xylophage.json
 35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/forge/tags/blocks/needs_netherite_tool.json
 378b1dfd4a0952af047960f19aae1aa69a439bb5 data/minecraft/tags/blocks/fences.json

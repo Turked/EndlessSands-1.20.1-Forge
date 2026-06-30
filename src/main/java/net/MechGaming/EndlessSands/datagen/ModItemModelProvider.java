@@ -4,11 +4,13 @@ import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.block.ModBlocks;
 import net.MechGaming.EndlessSands.item.ModItems;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ModItemModelProvider extends ItemModelProvider {
@@ -21,6 +23,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.BITTY_BONE);
         simpleItem(ModItems.CURSED_POCKET_SAND);
         simpleItem(ModItems.BRITTLE_BONE_MEAL);
+        simpleItem(ModItems.DRAGONITE);
 
         simpleItem(ModItems.BOILED_VULTURE_EGG);
         simpleItem(ModItems.HANDFUL_OF_SCRAMBLED_EGGS);
@@ -36,6 +39,12 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         simpleItem(ModItems.OLDWORLD_SCROLL);
         simpleItem(ModItems.TINY_OLDWORLD_JAR);
+
+        handheldItem(ModItems.DRAGONITE_PICKAXE);
+        handheldItem(ModItems.DRAGONITE_AXE);
+        handheldItem(ModItems.DRAGONITE_SHOVEL);
+        handheldItem(ModItems.DRAGONITE_HOE);
+        handheldItem(ModItems.DRAGONITE_SWORD);
 
         simpleBlockItem(ModBlocks.PALM_DOOR);
         trapdoorItem(ModBlocks.PALM_TRAPDOOR);
@@ -83,6 +92,11 @@ public class ModItemModelProvider extends ItemModelProvider {
     private ItemModelBuilder simpleBlockItem(RegistryObject<Block> block) {
         return withExistingParent(block.getId().getPath(), mcLoc("item/generated"))
                 .texture("layer0", modLoc("item/" + block.getId().getPath()));
+    }
+
+    private ItemModelBuilder handheldItem(RegistryObject<Item> item) {
+        return withExistingParent(item.getId().getPath(), mcLoc("item/handheld"))
+                .texture("layer0", modLoc("item/" + item.getId().getPath()));
     }
 
 }

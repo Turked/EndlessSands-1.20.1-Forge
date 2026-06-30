@@ -42,6 +42,13 @@ public class ModCreativeModeTabs {
                         //Fuel Items
                         pOutput.accept(ModItems.ROTTED_WOOD.get());
 
+                        //Tool Items
+                        pOutput.accept(ModItems.DRAGONITE_SWORD.get());
+                        pOutput.accept(ModItems.DRAGONITE_PICKAXE.get());
+                        pOutput.accept(ModItems.DRAGONITE_AXE.get());
+                        pOutput.accept(ModItems.DRAGONITE_SHOVEL.get());
+                        pOutput.accept(ModItems.DRAGONITE_HOE.get());
+
                         // Block Items
                         pOutput.accept(ModBlocks.CURSED_SAND.get());
                         pOutput.accept(ModBlocks.CURSED_SANDSTONE.get());

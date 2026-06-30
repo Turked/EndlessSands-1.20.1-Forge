@@ -3,7 +3,7 @@ package net.MechGaming.EndlessSands.item;
 import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.block.custom.BrittlePotBlock;
 import net.MechGaming.EndlessSands.item.custom.*;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -59,6 +59,25 @@ public class ModItems {
 
     public static final RegistryObject<Item> ROTTED_WOOD = ITEMS.register("rotted_wood",
             () -> new FuelItem(new Item.Properties(), 100));
+
+    public static final RegistryObject<Item> DRAGONITE = ITEMS.register("dragonite",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> DRAGONITE_SWORD = ITEMS.register("dragonite_sword",
+            () -> new SwordItem(ModToolTiers.DRAGONITE, 3, -2.4f, new Item.Properties()));
+
+    public static final RegistryObject<Item> DRAGONITE_PICKAXE = ITEMS.register("dragonite_pickaxe",
+            () -> new PickaxeItem(ModToolTiers.DRAGONITE, 1, -2.8f, new Item.Properties()));
+
+    public static final RegistryObject<Item> DRAGONITE_AXE = ITEMS.register("dragonite_axe",
+            () -> new AxeItem(ModToolTiers.DRAGONITE, 6.0f, -3.2f, new Item.Properties()));
+
+    public static final RegistryObject<Item> DRAGONITE_SHOVEL = ITEMS.register("dragonite_shovel",
+            () -> new ShovelItem(ModToolTiers.DRAGONITE, 1.5f, -3.0f, new Item.Properties()));
+
+    public static final RegistryObject<Item> DRAGONITE_HOE = ITEMS.register("dragonite_hoe",
+            () -> new HoeItem(ModToolTiers.DRAGONITE, -5, -0.0f, new Item.Properties()));
+
 
 
     public static void register(IEventBus eventBus){

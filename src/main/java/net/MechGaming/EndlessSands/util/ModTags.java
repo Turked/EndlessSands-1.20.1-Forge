@@ -14,9 +14,11 @@ public class ModTags {
         public static final TagKey<Block> SPARED = tag("spared");
         //Blocks that can be infested with termites and rotted.
         // XYLOPHAGE Xylophagy is a term used in ecology to
-        // describe the habits of an herbivorous animal whose
+        // describe the habits of a herbivorous animal whose
         // diet consists primarily (often solely) of wood
         public static final TagKey<Block> XYLOPHAGE = tag("xylophage");
+        //Blocks that are at a higher hardness than netherite
+        public static final TagKey<Block> NEEDS_DRAGONITE_TOOL = tag("needs_dragonite_tool");
 
         private static TagKey<Block> tag(String name){
             return BlockTags.create(ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, name));
