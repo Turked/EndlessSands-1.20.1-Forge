@@ -79,13 +79,13 @@ public class ModItems {
             () -> new HoeItem(ModToolTiers.DRAGONITE, -5, -0.0f, new Item.Properties()));
 
     public static final RegistryObject<Item> DRAGONITE_HELMET = ITEMS.register("dragonite_helmet",
-            () -> new ArmorItem(ModArmorMaterials.DRAGONITE, ArmorItem.Type.HELMET, new Item.Properties()));
+            () -> new DragoniteArmorItem(ModArmorMaterials.DRAGONITE, ArmorItem.Type.HELMET, new Item.Properties()));
     public static final RegistryObject<Item> DRAGONITE_CHESTPLATE = ITEMS.register("dragonite_chestplate",
-            () -> new ArmorItem(ModArmorMaterials.DRAGONITE, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+            () -> new DragoniteArmorItem(ModArmorMaterials.DRAGONITE, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
     public static final RegistryObject<Item> DRAGONITE_LEGGINGS = ITEMS.register("dragonite_leggings",
-            () -> new ArmorItem(ModArmorMaterials.DRAGONITE, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+            () -> new DragoniteArmorItem(ModArmorMaterials.DRAGONITE, ArmorItem.Type.LEGGINGS, new Item.Properties()));
     public static final RegistryObject<Item> DRAGONITE_BOOTS = ITEMS.register("dragonite_boots",
-            () -> new ArmorItem(ModArmorMaterials.DRAGONITE, ArmorItem.Type.BOOTS, new Item.Properties()));
+            () -> new DragoniteArmorItem(ModArmorMaterials.DRAGONITE, ArmorItem.Type.BOOTS, new Item.Properties()));
 
 
 
