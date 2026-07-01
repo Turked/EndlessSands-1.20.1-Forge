@@ -49,6 +49,12 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.DRAGONITE_SHOVEL.get());
                         pOutput.accept(ModItems.DRAGONITE_HOE.get());
 
+                        //Armor Items
+                        pOutput.accept(ModItems.DRAGONITE_HELMET.get());
+                        pOutput.accept(ModItems.DRAGONITE_CHESTPLATE.get());
+                        pOutput.accept(ModItems.DRAGONITE_LEGGINGS.get());
+                        pOutput.accept(ModItems.DRAGONITE_BOOTS.get());
+
                         // Block Items
                         pOutput.accept(ModBlocks.CURSED_SAND.get());
                         pOutput.accept(ModBlocks.CURSED_SANDSTONE.get());
