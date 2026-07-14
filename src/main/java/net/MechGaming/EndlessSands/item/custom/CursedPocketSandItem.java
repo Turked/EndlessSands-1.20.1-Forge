@@ -1,5 +1,6 @@
 package net.MechGaming.EndlessSands.item.custom;
 
+import net.MechGaming.EndlessSands.entity.custom.PocketSandProjectileEntity;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -25,7 +26,7 @@ public class CursedPocketSandItem extends Item {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
         pLevel.playSound((Player)null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), SoundEvents.SAND_FALL, SoundSource.NEUTRAL, 0.5F, 0.4F / (pLevel.getRandom().nextFloat() * 0.4F + 0.8F));
         if (!pLevel.isClientSide) {
-            Snowball cursed_pocket_sand = new Snowball(pLevel, pPlayer);
+            PocketSandProjectileEntity cursed_pocket_sand = new PocketSandProjectileEntity(pLevel, pPlayer);
             cursed_pocket_sand.setItem(itemstack);
             cursed_pocket_sand.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, 1.5F, 1.0F);
             pLevel.addFreshEntity(cursed_pocket_sand);

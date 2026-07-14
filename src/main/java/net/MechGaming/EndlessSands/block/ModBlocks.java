@@ -2,6 +2,8 @@ package net.MechGaming.EndlessSands.block;
 
 import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.block.custom.BrittlePotBlock;
+import net.MechGaming.EndlessSands.block.custom.CursedSandBlock;
+import net.MechGaming.EndlessSands.block.custom.CursedSandLayerBlock;
 import net.MechGaming.EndlessSands.item.ModItems;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
@@ -21,10 +23,10 @@ public class ModBlocks {
             DeferredRegister.create(ForgeRegistries.BLOCKS, EndlessSands.MOD_ID);
 
     public static final RegistryObject<Block> CURSED_SAND = registerBlock("cursed_sand",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.SAND)));
+            () -> new CursedSandBlock(BlockBehaviour.Properties.copy(Blocks.SAND)));
     // You can override default block behaviors with . like ...copy(Blocks.SAND).sound(SoundType.SOUL_SAND)
 
-    public static final RegistryObject<Block> CURSED_SANDSTONE = registerBlock("cursed_sandstone",
+    public static final RegistryObject<Block> CURSED_SAPROLITE = registerBlock("cursed_saprolite",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.SANDSTONE)));
 
     public static final RegistryObject<Block> SUSPICIOUS_CURSED_SAND = registerBlock("suspicious_cursed_sand",
@@ -74,7 +76,8 @@ public class ModBlocks {
     public static final RegistryObject<Block> PALM_TRAPDOOR = registerBlock("palm_trapdoor",
             () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS).noOcclusion(), BlockSetType.ACACIA));
 
-
+    public static final RegistryObject<Block> CURSED_SAND_LAYER = registerBlockWithoutItem("cursed_sand_layer",
+            () -> new CursedSandLayerBlock(BlockBehaviour.Properties.copy(ModBlocks.CURSED_SAND.get()).noOcclusion()));
 
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block){
@@ -85,6 +88,10 @@ public class ModBlocks {
 
     private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block) {
         return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+    }
+
+    private static <T extends Block> RegistryObject<T> registerBlockWithoutItem(String name, Supplier<T> block){
+        return BLOCKS.register(name, block);
     }
 
     public static void register(IEventBus eventBus){

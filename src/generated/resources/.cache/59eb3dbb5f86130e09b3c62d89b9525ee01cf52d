@@ -1,6 +1,7 @@
-// 1.20.1	2026-06-25T10:12:04.2296618	Loot Tables
+// 1.20.1	2026-07-14T15:52:49.1232319	Loot Tables
 4cfa5e5f465cf94c4b563e20d92639d572c472e0 data/endlesssands/loot_tables/blocks/cursed_sand.json
-2f0a764bd617da7f45871fdabf4c566a36c005a8 data/endlesssands/loot_tables/blocks/cursed_sandstone.json
+7877ce72108f1a77564522d66edfca08df57477d data/endlesssands/loot_tables/blocks/cursed_sand_layer.json
+dfaa20fd1b0b1954855ec05b50c1b768d4824c8d data/endlesssands/loot_tables/blocks/cursed_saprolite.json
 20bb8996999d4a3e3e9703b329007300e5317971 data/endlesssands/loot_tables/blocks/fertile_soil.json
 0def64bb8bb2aebb84f3f91c68e4dbca8405992a data/endlesssands/loot_tables/blocks/palm_button.json
 2e13bcba836d25ead92c464f5572a4582fa00fd7 data/endlesssands/loot_tables/blocks/palm_door.json

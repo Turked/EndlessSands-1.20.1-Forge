@@ -46,7 +46,7 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
         this.tag(ModTags.Blocks.NEEDS_DRAGONITE_TOOL);
 
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .add(ModBlocks.CURSED_SANDSTONE.get());
+                .add(ModBlocks.CURSED_SAPROLITE.get());
 
         this.tag(BlockTags.MINEABLE_WITH_AXE)
                 .add(ModBlocks.PALM_LOG.get()

@@ -2,6 +2,7 @@ package net.MechGaming.EndlessSands.datagen;
 
 import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.block.ModBlocks;
+import net.MechGaming.EndlessSands.block.custom.CursedSandLayerBlock;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.*;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
@@ -9,6 +10,9 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraft.core.Direction;
+import net.minecraftforge.client.model.generators.BlockModelBuilder;
+
 
 public class ModBlockStateProvider extends BlockStateProvider {
     public ModBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
@@ -18,8 +22,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         blockWithRandomYRotation(ModBlocks.CURSED_SAND);
+        cursedSandLayer();
 
-        blockWithItem(ModBlocks.CURSED_SANDSTONE);
+        blockWithItem(ModBlocks.CURSED_SAPROLITE);
         blockWithItem(ModBlocks.SUSPICIOUS_CURSED_SAND);
         blockWithItem(ModBlocks.VILLAGE_POT);
         blockWithItem(ModBlocks.PALM_PLANKS);
@@ -93,5 +98,30 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 );
 
         simpleBlockItem(block, model);
+    }
+
+    private void cursedSandLayer() {
+        Block block = ModBlocks.CURSED_SAND_LAYER.get();
+
+        getVariantBuilder(block).forAllStates(state -> {
+            ModelFile model = cursedSandLayerModel(state.getValue(CursedSandLayerBlock.LAYERS));
+            return ConfiguredModel.allYRotations(model, 0, false);
+        });
+    }
+
+    private ModelFile cursedSandLayerModel(int layers) {
+        int height = layers * 4;
+        String name = "cursed_sand_layer_" + layers;
+
+        BlockModelBuilder model = models().getBuilder(name)
+                .texture("particle", modLoc("block/cursed_sand"))
+                .texture("texture", modLoc("block/cursed_sand"));
+
+        model.element()
+                .from(0, 0, 0)
+                .to(16, height, 16)
+                .allFaces((direction, face) -> face.texture("#texture").cullface(direction));
+
+        return model;
     }
 }
