@@ -6,6 +6,7 @@ import net.MechGaming.EndlessSands.util.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -22,6 +23,13 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
     protected void addTags(HolderLookup.Provider pProvider) {
         this.tag(ModTags.Blocks.BLOODIED)
                 .add(ModBlocks.CURSED_SAND.get());
+
+        this.tag(ModTags.Blocks.GRANULAR)
+                .add(
+                        ModBlocks.CURSED_SAND.get(),
+                        Blocks.SAND,
+                        Blocks.GRAVEL
+                );
 
         this.tag(ModTags.Blocks.XYLOPHAGE)
                 .add(   ModBlocks.PALM_LOG.get(),

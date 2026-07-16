@@ -23,7 +23,7 @@ public class ModBlocks {
             DeferredRegister.create(ForgeRegistries.BLOCKS, EndlessSands.MOD_ID);
 
     public static final RegistryObject<Block> CURSED_SAND = registerBlock("cursed_sand",
-            () -> new CursedSandBlock(BlockBehaviour.Properties.copy(Blocks.SAND)));
+            () -> new CursedSandBlock(BlockBehaviour.Properties.copy(Blocks.SAND).randomTicks()));
     // You can override default block behaviors with . like ...copy(Blocks.SAND).sound(SoundType.SOUL_SAND)
 
     public static final RegistryObject<Block> CURSED_SAPROLITE = registerBlock("cursed_saprolite",
@@ -77,7 +77,7 @@ public class ModBlocks {
             () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS).noOcclusion(), BlockSetType.ACACIA));
 
     public static final RegistryObject<Block> CURSED_SAND_LAYER = registerBlockWithoutItem("cursed_sand_layer",
-            () -> new CursedSandLayerBlock(BlockBehaviour.Properties.copy(ModBlocks.CURSED_SAND.get()).noOcclusion()));
+            () -> new CursedSandLayerBlock(BlockBehaviour.Properties.copy(ModBlocks.CURSED_SAND.get()).noOcclusion().randomTicks()));
 
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block){

@@ -2,9 +2,11 @@ package net.MechGaming.EndlessSands;
 
 import com.mojang.logging.LogUtils;
 import net.MechGaming.EndlessSands.block.ModBlocks;
+import net.MechGaming.EndlessSands.config.EndlessSandsConfig;
 import net.MechGaming.EndlessSands.entity.ModEntities;
 import net.MechGaming.EndlessSands.item.ModCreativeModeTabs;
 import net.MechGaming.EndlessSands.item.ModItems;
+import net.MechGaming.EndlessSands.worldgen.dimension.ModChunkGenerators;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.CreativeModeTabRegistry;
@@ -40,6 +42,7 @@ public class EndlessSands
         ModBlocks.register(modEventBus);
 
         ModEntities.register(modEventBus);
+        ModChunkGenerators.register(modEventBus);
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
@@ -49,6 +52,9 @@ public class EndlessSands
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
+
+        // Register config
+        context.registerConfig(ModConfig.Type.COMMON, EndlessSandsConfig.SPEC);
 
     }
 

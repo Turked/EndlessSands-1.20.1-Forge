@@ -2,6 +2,7 @@ package net.MechGaming.EndlessSands.datagen;
 
 import net.MechGaming.EndlessSands.block.ModBlocks;
 import net.MechGaming.EndlessSands.worldgen.biome.ModBiomes;
+import net.MechGaming.EndlessSands.worldgen.dimension.EndlessSandsChunkGenerator;
 import net.MechGaming.EndlessSands.worldgen.dimension.ModDimensions;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
@@ -11,23 +12,16 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
-import net.minecraft.data.worldgen.DimensionTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.biome.*;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
-import net.minecraft.world.level.levelgen.FlatLevelSource;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
-import net.minecraft.world.level.levelgen.flat.FlatLayerInfo;
-import net.minecraft.world.level.levelgen.flat.FlatLevelGeneratorSettings;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 
-import javax.swing.text.html.Option;
-import java.util.List;
 import java.util.Optional;
 import java.util.OptionalLong;
 
@@ -66,21 +60,10 @@ public class ModBiomeProvider {
         HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
 
         Holder<Biome> endlessDesert = biomes.getOrThrow(ModBiomes.ENDLESS_DESERT);
-        Optional<HolderSet<StructureSet>> noStructures = Optional.of(HolderSet.<StructureSet>direct());
-
-        FlatLevelGeneratorSettings settings = new FlatLevelGeneratorSettings(
-                noStructures,
-                endlessDesert,
-                List.<Holder<PlacedFeature>>of()
-        ).withBiomeAndLayers(List.of(
-                new FlatLayerInfo(1, Blocks.BEDROCK),
-                new FlatLayerInfo(62, ModBlocks.CURSED_SAPROLITE.get()),
-                new FlatLayerInfo(1, ModBlocks.CURSED_SAND.get())
-        ), noStructures, endlessDesert);
 
         context.register(ModDimensions.ENDLESS_SANDS_LEVEL_STEM, new LevelStem(
                 dimensionTypes.getOrThrow(ModDimensions.ENDLESS_SANDS_TYPE),
-                new FlatLevelSource(settings)
+                new EndlessSandsChunkGenerator(endlessDesert)
         ));
     }
 

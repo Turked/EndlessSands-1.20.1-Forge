@@ -21,6 +21,8 @@ public class ModTags {
         public static final TagKey<Block> XYLOPHAGE = tag("xylophage");
         //Blocks that are at a higher hardness than netherite
         public static final TagKey<Block> NEEDS_DRAGONITE_TOOL = tag("needs_dragonite_tool");
+        //Blocks that sand could flow through
+        public static final TagKey<Block> GRANULAR = tag("granular");
 
         private static TagKey<Block> tag(String name) {
             return BlockTags.create(ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, name));

@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "net.MechGaming.EndlessSands.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "endlesssands.refmap.json",
+  "mixins": [
+    "MultiNoiseBiomeSourceMixin"
+  ],
+  "client": [],
+  "server": [],
+  "minVersion": "0.8"
+}
