@@ -2,6 +2,9 @@ package net.MechGaming.EndlessSands.event;
 
 import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.config.EndlessSandsConfig;
+import net.MechGaming.EndlessSands.effect.BuriedInSandState;
+import net.MechGaming.EndlessSands.network.ModMessages;
+import net.MechGaming.EndlessSands.network.packet.BeginBuriedInSandS2CPacket;
 import net.MechGaming.EndlessSands.worldgen.dimension.ModDimensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -37,11 +40,12 @@ public class ModEvents {
             return;
         }
 
-        serverPlayer.getServer().execute(() -> {
-            if (teleportToRandomEndlessSpawn(serverPlayer)){
-                serverPlayer.getPersistentData().putBoolean(HAS_BORN_OF_THE_SAND_SPAWN, true);
-            }
-        });
+        if (teleportToRandomEndlessSpawn(serverPlayer)) {
+            serverPlayer.getPersistentData().putBoolean(
+                    HAS_BORN_OF_THE_SAND_SPAWN,
+                    true
+            );
+        }
     }
 
     @SubscribeEvent
@@ -71,11 +75,11 @@ public class ModEvents {
             return;
         }
 
-        serverPlayer.getServer().execute(() -> {
-            if (teleportToRandomEndlessSpawn(serverPlayer)){
-                serverPlayer.getPersistentData().remove(RESPAWN_IN_ENDLESS_SANDS);
-            }
-        });
+        if (teleportToRandomEndlessSpawn(serverPlayer)) {
+            serverPlayer.getPersistentData().remove(
+                    RESPAWN_IN_ENDLESS_SANDS
+            );
+        }
     }
 
     @SubscribeEvent
@@ -109,7 +113,19 @@ public class ModEvents {
                 player.getXRot()
         );
 
-        player.setRespawnPosition(ModDimensions.ENDLESS_SANDS_LEVEL, spawnPos, player.getYRot(), true, false);
+        player.setRespawnPosition(
+                ModDimensions.ENDLESS_SANDS_LEVEL,
+                spawnPos,
+                player.getYRot(),
+                true,
+                false
+        );
+
+        BuriedInSandState.activate(player);
+        ModMessages.sendToPlayer(
+                new BeginBuriedInSandS2CPacket(player.getId()),
+                player
+        );
 
         return true;
     }

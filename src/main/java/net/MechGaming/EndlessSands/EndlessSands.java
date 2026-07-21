@@ -6,6 +6,7 @@ import net.MechGaming.EndlessSands.config.EndlessSandsConfig;
 import net.MechGaming.EndlessSands.entity.ModEntities;
 import net.MechGaming.EndlessSands.item.ModCreativeModeTabs;
 import net.MechGaming.EndlessSands.item.ModItems;
+import net.MechGaming.EndlessSands.network.ModMessages;
 import net.MechGaming.EndlessSands.worldgen.dimension.ModChunkGenerators;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
@@ -60,7 +61,7 @@ public class EndlessSands
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-
+        event.enqueueWork(ModMessages::register);
     }
     // https://www.youtube.com/watch?v=o6Xbp2dTEGA Left off at 13:30
     // Add the example block item to the building blocks tab

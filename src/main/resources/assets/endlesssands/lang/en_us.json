@@ -60,5 +60,13 @@
   "tooltip.endlesssands.scroll_of_wisdom_two.tooltip": "roses",
   "tooltip.endlesssands.scroll_of_wisdom_three.tooltip": ", flowers that wilted away as their iron rusted in the sand.",
   "tooltip.endlesssands.scroll_of_lore.tooltip": "The Pharaoh…",
-  "tooltip.endlesssands.scroll_of_mediocrity.tooltip": "It was cloudy today."
+  "tooltip.endlesssands.scroll_of_mediocrity.tooltip": "It was cloudy today.",
+
+  "screen.endlesssands.buried.title": "Buried in the Sand",
+  "screen.endlesssands.buried.line1": "...",
+  "screen.endlesssands.buried.line2": "huh? Where am I?",
+  "screen.endlesssands.buried.line3": "Seems I'm buried under... sand?",
+  "screen.endlesssands.buried.escape": "Escape",
+  "screen.endlesssands.buried.leave": "Leave Game",
+  "screen.endlesssands.buried.dont_ask": "Don't ask again"
 }

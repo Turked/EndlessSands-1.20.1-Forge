@@ -1,10 +1,13 @@
 package net.MechGaming.EndlessSands.event;
 
 import net.MechGaming.EndlessSands.EndlessSands;
+import net.MechGaming.EndlessSands.client.BuriedInSandClientState;
 import net.MechGaming.EndlessSands.item.ModItems;
+import net.MechGaming.EndlessSands.worldgen.dimension.ModDimensions;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -51,5 +54,42 @@ public class ClientEvents {
             );
         }
 
+    }
+
+    @SubscribeEvent
+    public static void onClientPlayerRespawn(
+            ClientPlayerNetworkEvent.Clone event
+    ) {
+        boolean diedInEndlessSands =
+                event.getOldPlayer()
+                        .level()
+                        .dimension()
+                        .equals(ModDimensions.ENDLESS_SANDS_LEVEL);
+
+        boolean respawnedInEndlessSands =
+                event.getNewPlayer()
+                        .level()
+                        .dimension()
+                        .equals(ModDimensions.ENDLESS_SANDS_LEVEL);
+
+        if (diedInEndlessSands || respawnedInEndlessSands) {
+            BuriedInSandClientState.preview(
+                    event.getNewPlayer().getId()
+            );
+        }
+    }
+
+    @SubscribeEvent
+    public static void onClientPlayerLogin(
+            ClientPlayerNetworkEvent.LoggingIn event
+    ) {
+        if (event.getPlayer()
+                .level()
+                .dimension()
+                .equals(ModDimensions.ENDLESS_SANDS_LEVEL)) {
+            BuriedInSandClientState.preview(
+                    event.getPlayer().getId()
+            );
+        }
     }
 }
