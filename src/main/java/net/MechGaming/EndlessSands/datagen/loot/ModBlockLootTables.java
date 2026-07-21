@@ -31,7 +31,6 @@ public class ModBlockLootTables extends BlockLootSubProvider {
     @Override
     protected void generate() {
         //Drop Self
-        this.dropSelf(ModBlocks.CURSED_SAPROLITE.get());
         this.dropSelf(ModBlocks.PALM_LOG.get());
         this.dropSelf(ModBlocks.PALM_PLANKS.get());
 
@@ -42,6 +41,13 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.dropSelf(ModBlocks.PALM_FENCE.get());
         this.dropSelf(ModBlocks.PALM_FENCE_GATE.get());
         this.dropSelf(ModBlocks.PALM_WALL.get());
+
+        //Change later to drop cobbled versions
+        this.dropSelf(ModBlocks.CURSED_SAPROLITE.get());
+        this.dropSelf(ModBlocks.DEEP_CRYSTAL_ROCK.get());
+        this.dropSelf(ModBlocks.LOWER_CRUST_ROCK.get());
+        this.dropSelf(ModBlocks.CRYSTAL_ROCK.get());
+        this.dropSelf(ModBlocks.CURSED_BEDROCK.get());
 
         this.add(ModBlocks.PALM_SLAB.get(),
                 block -> createSlabItemTable(ModBlocks.PALM_SLAB.get()));
@@ -71,14 +77,14 @@ public class ModBlockLootTables extends BlockLootSubProvider {
                                                 .hasProperty(CursedSandLayerBlock.LAYERS, 3)))
                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 3.0F))))));
 
-        //Grass like behavior
+        //Silk Touch Behavior (like grass)
         this.add(ModBlocks.FERTILE_SOIL.get(), createSingleItemTableWithSilkTouch(
                 ModBlocks.FERTILE_SOIL.get(), ModBlocks.CURSED_SAND.get()));
         this.add(ModBlocks.VILLAGE_POT.get(), createSingleItemTableWithSilkTouch(
                 ModBlocks.VILLAGE_POT.get(), ModItems.ROTTED_WOOD.get()));
 
         //Drop Nothing
-        //- suspicious sand
+        this.add(ModBlocks.CORE_ROCK.get(), noDrop());
     }
 
     @Override

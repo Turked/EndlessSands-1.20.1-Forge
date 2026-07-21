@@ -31,13 +31,15 @@ import java.util.concurrent.Executor;
 import java.util.stream.Stream;
 
 public class EndlessSandsChunkGenerator extends ChunkGenerator {
-    public static final Codec<EndlessSandsChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Biome.CODEC.fieldOf("biome").forGetter(generator -> generator.biome)
-    ).apply(instance, EndlessSandsChunkGenerator::new));
+    public static final Codec<EndlessSandsChunkGenerator> CODEC =
+            RecordCodecBuilder.create(instance -> instance.group(
+                    Biome.CODEC.fieldOf("biome").forGetter(generator -> generator.biome)
+            ).apply(instance, EndlessSandsChunkGenerator::new));
 
-    private static final int MIN_Y = 0;
-    private static final int WORLD_HEIGHT = 384;
-    private static final int BASE_SURFACE_Y = 64;
+    private static final int MIN_Y = -160;
+    private static final int WORLD_HEIGHT = 672;
+
+    private static final int BASE_SURFACE_Y = 69;
     private static final int CURSED_SAND_DEPTH = 5;
 
     private final Holder<Biome> biome;
@@ -53,22 +55,34 @@ public class EndlessSandsChunkGenerator extends ChunkGenerator {
     }
 
     @Override
-    public ChunkGeneratorStructureState createState(HolderLookup<StructureSet> structureSetLookup,
-                                                    RandomState randomState,
-                                                    long seed) {
-        return ChunkGeneratorStructureState.createForFlat(randomState, seed, this.biomeSource, Stream.empty());
+    public ChunkGeneratorStructureState createState(
+            HolderLookup<StructureSet> structureSetLookup,
+            RandomState randomState,
+            long seed
+    ) {
+        return ChunkGeneratorStructureState.createForFlat(
+                randomState,
+                seed,
+                this.biomeSource,
+                Stream.empty()
+        );
     }
 
     @Override
-    public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor,
-                                                        Blender blender,
-                                                        RandomState random,
-                                                        StructureManager structureManager,
-                                                        ChunkAccess chunk) {
+    public CompletableFuture<ChunkAccess> fillFromNoise(
+            Executor executor,
+            Blender blender,
+            RandomState random,
+            StructureManager structureManager,
+            ChunkAccess chunk
+    ) {
         ChunkPos chunkPos = chunk.getPos();
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        Heightmap oceanFloor = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
-        Heightmap worldSurface = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
+
+        Heightmap oceanFloor =
+                chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
+        Heightmap worldSurface =
+                chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
 
         int minY = chunk.getMinBuildHeight();
         int maxY = chunk.getMaxBuildHeight();
@@ -78,13 +92,22 @@ public class EndlessSandsChunkGenerator extends ChunkGenerator {
 
             for (int localZ = 0; localZ < 16; localZ++) {
                 int worldZ = chunkPos.getMinBlockZ() + localZ;
-                int surfaceY = clampSurfaceHeight(surfaceHeight(worldX, worldZ), minY, maxY);
+                int surfaceY =
+                        clampSurfaceHeight(surfaceHeight(worldX, worldZ), minY, maxY);
 
                 for (int y = minY; y <= surfaceY; y++) {
-                    BlockState state = blockForY(y, surfaceY);
-                    chunk.setBlockState(mutablePos.set(localX, y, localZ), state, false);
-                    oceanFloor.update(localX, y, localZ, state);
-                    worldSurface.update(localX, y, localZ, state);
+                    BlockState state = blockForPosition(worldX, y, worldZ, surfaceY);
+
+                    if (!state.isAir()) {
+                        chunk.setBlockState(
+                                mutablePos.set(localX, y, localZ),
+                                state,
+                                false
+                        );
+
+                        oceanFloor.update(localX, y, localZ, state);
+                        worldSurface.update(localX, y, localZ, state);
+                    }
                 }
             }
         }
@@ -93,19 +116,37 @@ public class EndlessSandsChunkGenerator extends ChunkGenerator {
     }
 
     @Override
-    public int getBaseHeight(int x, int z, Heightmap.Types type, LevelHeightAccessor level, RandomState random) {
-        return clampSurfaceHeight(surfaceHeight(x, z), level.getMinBuildHeight(), level.getMaxBuildHeight()) + 1;
+    public int getBaseHeight(
+            int x,
+            int z,
+            Heightmap.Types type,
+            LevelHeightAccessor level,
+            RandomState random
+    ) {
+        return clampSurfaceHeight(
+                surfaceHeight(x, z),
+                level.getMinBuildHeight(),
+                level.getMaxBuildHeight()
+        ) + 1;
     }
 
     @Override
-    public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor height, RandomState random) {
+    public NoiseColumn getBaseColumn(
+            int x,
+            int z,
+            LevelHeightAccessor height,
+            RandomState random
+    ) {
         int minY = height.getMinBuildHeight();
         int maxY = height.getMaxBuildHeight();
         int surfaceY = clampSurfaceHeight(surfaceHeight(x, z), minY, maxY);
+
         BlockState[] states = new BlockState[height.getHeight()];
 
         for (int y = minY; y < maxY; y++) {
-            states[y - minY] = y <= surfaceY ? blockForY(y, surfaceY) : Blocks.AIR.defaultBlockState();
+            states[y - minY] = y <= surfaceY
+                    ? blockForPosition(x, y, z, surfaceY)
+                    : Blocks.AIR.defaultBlockState();
         }
 
         return new NoiseColumn(minY, states);
@@ -132,20 +173,24 @@ public class EndlessSandsChunkGenerator extends ChunkGenerator {
     }
 
     @Override
-    public void applyCarvers(WorldGenRegion level,
-                             long seed,
-                             RandomState random,
-                             BiomeManager biomeManager,
-                             StructureManager structureManager,
-                             ChunkAccess chunk,
-                             GenerationStep.Carving step) {
+    public void applyCarvers(
+            WorldGenRegion level,
+            long seed,
+            RandomState random,
+            BiomeManager biomeManager,
+            StructureManager structureManager,
+            ChunkAccess chunk,
+            GenerationStep.Carving step
+    ) {
     }
 
     @Override
-    public void buildSurface(WorldGenRegion level,
-                             StructureManager structureManager,
-                             RandomState random,
-                             ChunkAccess chunk) {
+    public void buildSurface(
+            WorldGenRegion level,
+            StructureManager structureManager,
+            RandomState random,
+            ChunkAccess chunk
+    ) {
     }
 
     @Override
@@ -153,16 +198,23 @@ public class EndlessSandsChunkGenerator extends ChunkGenerator {
     }
 
     @Override
-    public void addDebugScreenInfo(List<String> info, RandomState random, BlockPos pos) {
-        info.add("Endless Sands surface height: " + surfaceHeight(pos.getX(), pos.getZ()));
+    public void addDebugScreenInfo(
+            List<String> info,
+            RandomState random,
+            BlockPos pos
+    ) {
+        info.add(
+                "Endless Sands surface height: "
+                        + surfaceHeight(pos.getX(), pos.getZ())
+        );
     }
 
     private static int surfaceHeight(int x, int z) {
         double height = BASE_SURFACE_Y
-                + 10.0D * Math.sin(x * 0.018D)
-                + 8.0D * Math.sin(z * 0.016D + 1.7D)
-                + 6.0D * Math.sin((x + z) * 0.010D)
-                + 5.0D * Math.sin((x - z) * 0.012D + 2.4D);
+                + 4.0D * Math.sin(x * 0.018D)
+                + 3.0D * Math.sin(z * 0.016D + 1.7D)
+                + 2.0D * Math.sin((x + z) * 0.010D)
+                + 1.5D * Math.sin((x - z) * 0.012D + 2.4D);
 
         return (int) Math.floor(height);
     }
@@ -171,15 +223,66 @@ public class EndlessSandsChunkGenerator extends ChunkGenerator {
         return Math.max(minY, Math.min(surfaceY, maxY - 1));
     }
 
-    private static BlockState blockForY(int y, int surfaceY) {
-        if (y <= MIN_Y) {
-            return Blocks.BEDROCK.defaultBlockState();
+    private static BlockState blockForPosition(
+            int x,
+            int y,
+            int z,
+            int surfaceY
+    ) {
+        // The only perfectly flat layer.
+        if (y == MIN_Y) {
+            return ModBlocks.CORE_ROCK.get().defaultBlockState();
         }
 
-        if (surfaceY - y < CURSED_SAND_DEPTH){
+        int deepCrystalStart = blendedBoundary(-140, x, z, 11);
+        int lowerCrustStart = blendedBoundary(-120, x, z, 23);
+        int crystalRockStart = blendedBoundary(-90, x, z, 37);
+        int cursedBedrockStart = blendedBoundary(-60, x, z, 53);
+        int saproliteStart = blendedBoundary(0, x, z, 71);
+
+        // Lower Mantle: approximately -159 through -141.
+        if (y < deepCrystalStart) {
+            return Blocks.AIR.defaultBlockState();
+        }
+
+        // High-Pressure Crystalline Zone: approximately -140 to -120.
+        if (y < lowerCrustStart) {
+            return ModBlocks.DEEP_CRYSTAL_ROCK.get().defaultBlockState();
+        }
+
+        // Lower Crust: approximately -120 to -90.
+        if (y < crystalRockStart) {
+            return ModBlocks.LOWER_CRUST_ROCK.get().defaultBlockState();
+        }
+
+        // Crystalline Basement: approximately -90 to -60.
+        if (y < cursedBedrockStart) {
+            return ModBlocks.CRYSTAL_ROCK.get().defaultBlockState();
+        }
+
+        // Cursed Bedrock: approximately -60 to 0.
+        if (y < saproliteStart) {
+            return ModBlocks.CURSED_BEDROCK.get().defaultBlockState();
+        }
+
+        // The upper five terrain blocks are Cursed Sand.
+        if (surfaceY - y < CURSED_SAND_DEPTH) {
             return ModBlocks.CURSED_SAND.get().defaultBlockState();
         }
 
         return ModBlocks.CURSED_SAPROLITE.get().defaultBlockState();
+    }
+
+    private static int blendedBoundary(int baseY, int x, int z, int salt) {
+        double broadNoise =
+                Math.sin((x + salt * 17.0D) * 0.020D)
+                        + Math.sin((z - salt * 13.0D) * 0.017D)
+                        + Math.sin((x + z + salt * 7.0D) * 0.011D);
+
+        double detailNoise =
+                Math.sin((x - z + salt * 19.0D) * 0.043D)
+                        * 0.65D;
+
+        return baseY + (int) Math.round(broadNoise + detailNoise);
     }
 }

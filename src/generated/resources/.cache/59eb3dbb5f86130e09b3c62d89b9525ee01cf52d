@@ -1,8 +1,13 @@
-// 1.20.1	2026-07-14T15:52:49.1232319	Loot Tables
+// 1.20.1	2026-07-21T17:29:58.4218381	Loot Tables
+51254fe95aa5abe2e727c99b7103c21790c4f175 data/endlesssands/loot_tables/blocks/core_rock.json
+42feda78cb96ffc724a36a700ecc8aedab2e09d3 data/endlesssands/loot_tables/blocks/crystal_rock.json
+9b8dfbed57c32173f381f40d2080e24e5ec344dc data/endlesssands/loot_tables/blocks/cursed_bedrock.json
 4cfa5e5f465cf94c4b563e20d92639d572c472e0 data/endlesssands/loot_tables/blocks/cursed_sand.json
 7877ce72108f1a77564522d66edfca08df57477d data/endlesssands/loot_tables/blocks/cursed_sand_layer.json
 dfaa20fd1b0b1954855ec05b50c1b768d4824c8d data/endlesssands/loot_tables/blocks/cursed_saprolite.json
+4f0a7a02b86449fb701a4fd47ec952f400ed174c data/endlesssands/loot_tables/blocks/deep_crystal_rock.json
 20bb8996999d4a3e3e9703b329007300e5317971 data/endlesssands/loot_tables/blocks/fertile_soil.json
+7df1000d2b100c4219a072896e9802f068480f48 data/endlesssands/loot_tables/blocks/lower_crust_rock.json
 0def64bb8bb2aebb84f3f91c68e4dbca8405992a data/endlesssands/loot_tables/blocks/palm_button.json
 2e13bcba836d25ead92c464f5572a4582fa00fd7 data/endlesssands/loot_tables/blocks/palm_door.json
 d2365a9af36d69a025a210c8bb86d576da6998c2 data/endlesssands/loot_tables/blocks/palm_fence.json

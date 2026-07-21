@@ -27,7 +27,24 @@ public class ModBlocks {
     // You can override default block behaviors with . like ...copy(Blocks.SAND).sound(SoundType.SOUL_SAND)
 
     public static final RegistryObject<Block> CURSED_SAPROLITE = registerBlock("cursed_saprolite",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.SANDSTONE)));
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.SANDSTONE)
+                    .strength(55.0f)
+                    .requiresCorrectToolForDrops()));
+
+    public static final RegistryObject<Block> CORE_ROCK = registerBlock("core_rock",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.BEDROCK)));
+
+    public static final RegistryObject<Block> DEEP_CRYSTAL_ROCK = registerBlock("deep_crystal_rock",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> LOWER_CRUST_ROCK = registerBlock("lower_crust_rock",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> CRYSTAL_ROCK = registerBlock("crystal_rock",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> CURSED_BEDROCK = registerBlock("cursed_bedrock",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
 
     public static final RegistryObject<Block> SUSPICIOUS_CURSED_SAND = registerBlock("suspicious_cursed_sand",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.SUSPICIOUS_SAND).noLootTable()));

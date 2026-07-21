@@ -22,9 +22,14 @@ public class ModBlockStateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         blockWithRandomYRotation(ModBlocks.CURSED_SAND);
+        blockWithRandomYRotation(ModBlocks.CURSED_SAPROLITE);
+        blockWithRandomYRotation(ModBlocks.CORE_ROCK);
+        blockWithRandomYRotation(ModBlocks.DEEP_CRYSTAL_ROCK);
+        blockWithRandomYRotation(ModBlocks.LOWER_CRUST_ROCK);
+        blockWithRandomYRotation(ModBlocks.CRYSTAL_ROCK);
+        blockWithRandomYRotation(ModBlocks.CURSED_BEDROCK);
         cursedSandLayer();
 
-        blockWithItem(ModBlocks.CURSED_SAPROLITE);
         blockWithItem(ModBlocks.SUSPICIOUS_CURSED_SAND);
         blockWithItem(ModBlocks.VILLAGE_POT);
         blockWithItem(ModBlocks.PALM_PLANKS);

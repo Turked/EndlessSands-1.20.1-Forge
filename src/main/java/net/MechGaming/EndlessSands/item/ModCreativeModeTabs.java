@@ -57,11 +57,17 @@ public class ModCreativeModeTabs {
 
                         // Block Items
                         pOutput.accept(ModBlocks.CURSED_SAND.get());
-                        pOutput.accept(ModBlocks.CURSED_SAPROLITE.get());
                         pOutput.accept(ModBlocks.SUSPICIOUS_CURSED_SAND.get());
+                        pOutput.accept(ModBlocks.CURSED_SAPROLITE.get());
+                        pOutput.accept(ModBlocks.CORE_ROCK.get());
+                        pOutput.accept(ModBlocks.DEEP_CRYSTAL_ROCK.get());
+                        pOutput.accept(ModBlocks.LOWER_CRUST_ROCK.get());
+                        pOutput.accept(ModBlocks.CRYSTAL_ROCK.get());
+                        pOutput.accept(ModBlocks.CURSED_BEDROCK.get());
                         pOutput.accept(ModBlocks.FERTILE_SOIL.get());
                         pOutput.accept(ModBlocks.PALM_LOG.get());
                         pOutput.accept(ModBlocks.PALM_PLANKS.get());
+
 
                         // Advanced Blocks
                         pOutput.accept(ModBlocks.VILLAGE_POT.get());
