@@ -68,5 +68,8 @@
   "screen.endlesssands.buried.line3": "Seems I'm buried under... sand?",
   "screen.endlesssands.buried.escape": "Escape",
   "screen.endlesssands.buried.leave": "Leave Game",
-  "screen.endlesssands.buried.dont_ask": "Don't ask again"
+  "screen.endlesssands.buried.dont_ask": "Don't ask again",
+
+  "effect.endlesssands.heatstroke": "Heatstroke",
+  "effect.endlesssands.spf": "SPF"
 }

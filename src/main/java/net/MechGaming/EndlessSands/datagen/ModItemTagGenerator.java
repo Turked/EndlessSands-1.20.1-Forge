@@ -2,6 +2,7 @@ package net.MechGaming.EndlessSands.datagen;
 
 import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.item.ModItems;
+import net.MechGaming.EndlessSands.util.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -23,7 +24,11 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 ModItems.DRAGONITE_HELMET.get(),
                 ModItems.DRAGONITE_CHESTPLATE.get(),
                 ModItems.DRAGONITE_LEGGINGS.get(),
-                ModItems.DRAGONITE_BOOTS.get());
+                ModItems.DRAGONITE_BOOTS.get()
+        );
 
+        //this.tag(ModTags.Items.IS_SUN_GEAR).add();
+
+        //this.tag(ModTags.Items.DOES_GIVE_SHADE).add();
     }
 }

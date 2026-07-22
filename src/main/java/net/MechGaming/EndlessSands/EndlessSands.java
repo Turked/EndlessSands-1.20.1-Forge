@@ -3,6 +3,7 @@ package net.MechGaming.EndlessSands;
 import com.mojang.logging.LogUtils;
 import net.MechGaming.EndlessSands.block.ModBlocks;
 import net.MechGaming.EndlessSands.config.EndlessSandsConfig;
+import net.MechGaming.EndlessSands.effect.ModEffects;
 import net.MechGaming.EndlessSands.entity.ModEntities;
 import net.MechGaming.EndlessSands.item.ModCreativeModeTabs;
 import net.MechGaming.EndlessSands.item.ModItems;
@@ -56,6 +57,9 @@ public class EndlessSands
 
         // Register config
         context.registerConfig(ModConfig.Type.COMMON, EndlessSandsConfig.SPEC);
+
+        // Register the Effects
+        ModEffects.register(modEventBus);
 
     }
 
