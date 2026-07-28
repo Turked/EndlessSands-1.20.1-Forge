@@ -41,6 +41,7 @@ public class ModCreativeModeTabs {
 
                         //Fuel Items
                         pOutput.accept(ModItems.ROTTED_WOOD.get());
+                        pOutput.accept(ModBlocks.CRUD_LOG.get());
 
                         //Tool Items
                         pOutput.accept(ModItems.DRAGONITE_SWORD.get());
@@ -71,6 +72,7 @@ public class ModCreativeModeTabs {
 
                         // Advanced Blocks
                         pOutput.accept(ModBlocks.VILLAGE_POT.get());
+                        pOutput.accept(ModBlocks.VULTURE_NEST.get());
 
                         //Building Blocks
                         pOutput.accept(ModBlocks.PALM_DOOR.get());

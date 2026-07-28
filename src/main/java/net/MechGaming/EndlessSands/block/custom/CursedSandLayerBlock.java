@@ -27,22 +27,22 @@ public class CursedSandLayerBlock extends FallingBlock {
             Block.box(0, 0, 0, 16, 12, 16),
     };
 
-    public CursedSandLayerBlock(BlockBehaviour.Properties properties){
+    public CursedSandLayerBlock(BlockBehaviour.Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(LAYERS, 1));
     }
 
     @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving){
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         super.onRemove(state, level, pos, newState, isMoving);
 
-        if (state.getBlock() != newState.getBlock() && CursedSandPhysics.shouldReactToSupportRemoval()){
+        if (state.getBlock() != newState.getBlock() && CursedSandPhysics.shouldReactToSupportRemoval()) {
             CursedSandPhysics.collapseNearbyAfterSupportChanged(level, pos);
         }
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context){
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE_BY_LAYER[state.getValue(LAYERS)];
     }
 
@@ -67,14 +67,14 @@ public class CursedSandLayerBlock extends FallingBlock {
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder){
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(LAYERS);
     }
 
     @Override
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (CursedSandPhysics.shouldCollapse(level, pos)){
-            CursedSandPhysics.splitIntoFallingLayers(level, pos, state.getValue(LAYERS));
+        if (CursedSandPhysics.shouldCollapse(level, pos)) {
+            CursedSandPhysics.splitIntoFallingLayers(level, pos, getLayerCount(state));
             return;
         }
 
@@ -82,21 +82,21 @@ public class CursedSandLayerBlock extends FallingBlock {
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random){
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         this.tick(state, level, pos, random);
     }
 
     @Override
-    public boolean canBeReplaced(BlockState state, BlockPlaceContext context){
-        return state.getValue(LAYERS) < 3 || context.getItemInHand().isEmpty();
+    public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
+        return getLayerCount(state) < 3 || context.getItemInHand().isEmpty();
     }
 
-    static int getLayerCount(BlockState state){
-        return state.hasProperty(LAYERS) ? state.getValue(LAYERS):1;
+    static int getLayerCount(BlockState state) {
+        return state.hasProperty(LAYERS) ? state.getValue(LAYERS) : 1;
     }
 
-    static void setLayerCount(Level level, BlockPos pos, int totalLayers){
-        if (totalLayers >= 4){
+    static void setLayerCount(Level level, BlockPos pos, int totalLayers) {
+        if (totalLayers >= 4) {
             level.setBlock(pos, ModBlocks.CURSED_SAND.get().defaultBlockState(), 3);
         } else {
             level.setBlock(pos, ModBlocks.CURSED_SAND_LAYER.get().defaultBlockState()
@@ -104,14 +104,14 @@ public class CursedSandLayerBlock extends FallingBlock {
         }
     }
 
-    static boolean tryGrowLayer(Level level, BlockPos pos, int fallingLayers){
+    static boolean tryGrowLayer(Level level, BlockPos pos, int fallingLayers) {
         BlockState existingState = level.getBlockState(pos);
 
-        if (!existingState.is(ModBlocks.CURSED_SAND_LAYER.get())){
+        if (!existingState.is(ModBlocks.CURSED_SAND_LAYER.get())) {
             return false;
         }
 
-        int totalLayers = existingState.getValue(LAYERS) + fallingLayers;
+        int totalLayers = getLayerCount(existingState) + fallingLayers;
 
         setLayerCount(level, pos, totalLayers);
 
@@ -119,30 +119,30 @@ public class CursedSandLayerBlock extends FallingBlock {
     }
 
     @Override
-    public void onLand(Level level, BlockPos pos, BlockState fallingState, BlockState replacedState, FallingBlockEntity fallingEntity){
-        if (level.isClientSide()){
+    public void onLand(Level level, BlockPos pos, BlockState fallingState, BlockState replacedState, FallingBlockEntity fallingEntity) {
+        if (level.isClientSide()) {
             return;
         }
 
         int fallingLayers = getLayerCount(fallingState);
 
-        if (replacedState.is(this)){
+        if (replacedState.is(this)) {
             int totalLayers = getLayerCount(replacedState) + fallingLayers;
             setLayerCount(level, pos, totalLayers);
             return;
         }
 
-        if(tryGrowLayer(level,pos.below(), fallingLayers)){
+        if (tryGrowLayer(level, pos.below(), fallingLayers)) {
             level.removeBlock(pos, false);
         }
     }
 
     @Override
     public void onBrokenAfterFall(Level level, BlockPos pos, FallingBlockEntity fallingEntity) {
-        if (!level.isClientSide()){
+        if (!level.isClientSide()) {
             int fallingLayers = getLayerCount(fallingEntity.getBlockState());
 
-            if (tryGrowLayer(level, pos, fallingLayers) || tryGrowLayer(level, pos.below(), fallingLayers)){
+            if (tryGrowLayer(level, pos, fallingLayers) || tryGrowLayer(level, pos.below(), fallingLayers)) {
                 return;
             }
         }

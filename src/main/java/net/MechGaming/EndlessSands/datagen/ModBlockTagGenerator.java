@@ -57,18 +57,28 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.CURSED_SAPROLITE.get());
 
         this.tag(BlockTags.MINEABLE_WITH_AXE)
-                .add(ModBlocks.PALM_LOG.get()
+                .add(
+                        ModBlocks.PALM_LOG.get(),
+                        ModBlocks.CRUD_LOG.get(),
+                        ModBlocks.VULTURE_NEST.get()
                 );
 
         this.tag(BlockTags.MINEABLE_WITH_SHOVEL)
-                .add(ModBlocks.CURSED_SAND.get()
+                .add(
+                        ModBlocks.CURSED_SAND.get()
                 );
 
         this.tag(BlockTags.FENCES)
-                .add(ModBlocks.PALM_FENCE.get());
+                .add(
+                        ModBlocks.PALM_FENCE.get()
+                );
         this.tag(BlockTags.FENCE_GATES)
-                .add(ModBlocks.PALM_FENCE_GATE.get());
+                .add(
+                        ModBlocks.PALM_FENCE_GATE.get()
+                );
         this.tag(BlockTags.WALLS)
-                .add(ModBlocks.PALM_WALL.get());
+                .add(
+                        ModBlocks.PALM_WALL.get()
+                );
     }
 }

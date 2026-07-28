@@ -51,6 +51,9 @@ public class ModTags {
         // Helmets that give shade like a hat
         public static final TagKey<Item> DOES_GIVE_SHADE = tag("does_give_shade");
 
+        // Makes it so Crud Log can replace charcoal
+        public static final TagKey<Item> CRUD_LOG_RECIPE_EQUIVALENTS = tag("crud_log_recipe_equivalents");
+
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(
                     ResourceLocation.fromNamespaceAndPath(

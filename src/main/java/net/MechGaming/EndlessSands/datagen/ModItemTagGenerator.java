@@ -1,12 +1,14 @@
 package net.MechGaming.EndlessSands.datagen;
 
 import net.MechGaming.EndlessSands.EndlessSands;
+import net.MechGaming.EndlessSands.block.ModBlocks;
 import net.MechGaming.EndlessSands.item.ModItems;
 import net.MechGaming.EndlessSands.util.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
@@ -25,6 +27,13 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 ModItems.DRAGONITE_CHESTPLATE.get(),
                 ModItems.DRAGONITE_LEGGINGS.get(),
                 ModItems.DRAGONITE_BOOTS.get()
+        );
+
+        this.tag(ItemTags.COALS).add(ModBlocks.CRUD_LOG.get().asItem());
+
+        this.tag(ModTags.Items.CRUD_LOG_RECIPE_EQUIVALENTS).add(
+                ModBlocks.CRUD_LOG.get().asItem(),
+                Items.CHARCOAL
         );
 
         //this.tag(ModTags.Items.IS_SUN_GEAR).add();

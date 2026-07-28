@@ -64,7 +64,7 @@ public class EndlessSandsChunkGenerator extends ChunkGenerator {
                 randomState,
                 seed,
                 this.biomeSource,
-                Stream.empty()
+                structureSetLookup.listElements().map(holder -> (Holder<StructureSet>) holder)
         );
     }
 

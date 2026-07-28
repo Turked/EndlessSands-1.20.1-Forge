@@ -3,10 +3,13 @@
   "package": "net.MechGaming.EndlessSands.mixin",
   "compatibilityLevel": "JAVA_17",
   "refmap": "endlesssands.refmap.json",
+  "plugin": "net.MechGaming.EndlessSands.mixin.EndlessSandsMixinPlugin",
   "mixins": [
     "MultiNoiseBiomeSourceMixin"
   ],
-  "client": [],
+  "client": [
+    "NoCubesCursedSandLayerMixin"
+  ],
   "server": [],
   "minVersion": "0.8"
 }

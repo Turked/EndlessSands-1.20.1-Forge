@@ -2,6 +2,7 @@ package net.MechGaming.EndlessSands.datagen;
 
 import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.block.ModBlocks;
+import net.MechGaming.EndlessSands.block.custom.CrudLogBlock;
 import net.MechGaming.EndlessSands.block.custom.CursedSandLayerBlock;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.*;
@@ -12,6 +13,7 @@ import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraft.core.Direction;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
+import net.minecraftforge.client.model.generators.ModelBuilder.FaceRotation;
 
 
 public class ModBlockStateProvider extends BlockStateProvider {
@@ -37,6 +39,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithTopBottomAndSidesRandomYRotation(ModBlocks.FERTILE_SOIL, "fertile_soil_side", "fertile_soil_top");
 
         blockWithTopBottomAndSides(ModBlocks.PALM_LOG, "palm_log_side", "palm_log_top");
+        crudLog();
 
         stairsBlock(((StairBlock) ModBlocks.PALM_STAIRS.get()), blockTexture(ModBlocks.PALM_PLANKS.get()));
         slabBlock(((SlabBlock) ModBlocks.PALM_SLAB.get()), blockTexture(ModBlocks.PALM_PLANKS.get()), blockTexture(ModBlocks.PALM_PLANKS.get()));
@@ -126,6 +129,66 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 .from(0, 0, 0)
                 .to(16, height, 16)
                 .allFaces((direction, face) -> face.texture("#texture").cullface(direction));
+
+        return model;
+    }
+
+    private void crudLog() {
+        Block block = ModBlocks.CRUD_LOG.get();
+
+        ModelFile vertical = models().cubeBottomTop(
+                "crud_log",
+                modLoc("block/crud_log_side"),
+                modLoc("block/crud_log_top"),
+                modLoc("block/crud_log_top")
+        );
+
+        ModelFile xNormal = crudLogHorizontalModel("crud_log_x", Direction.Axis.X, "crud_log_side");
+        ModelFile xDroppings = crudLogHorizontalModel("crud_log_x_bird_droppings", Direction.Axis.X, "crud_log_side_with_bird_droppings");
+        ModelFile zNormal = crudLogHorizontalModel("crud_log_z", Direction.Axis.Z, "crud_log_side");
+        ModelFile zDroppings = crudLogHorizontalModel("crud_log_z_bird_droppings", Direction.Axis.Z, "crud_log_side_with_bird_droppings");
+
+        getVariantBuilder(block).forAllStates(state -> {
+            Direction.Axis axis = state.getValue(CrudLogBlock.AXIS);
+            boolean birdDroppings = state.getValue(CrudLogBlock.BIRD_DROPPINGS);
+
+            ModelFile model = vertical;
+            if (axis == Direction.Axis.X) {
+                model = birdDroppings ? xDroppings : xNormal;
+            } else if (axis == Direction.Axis.Z) {
+                model = birdDroppings ? zDroppings : zNormal;
+            }
+
+            return ConfiguredModel.builder().modelFile(model).build();
+        });
+
+        simpleBlockItem(block, vertical);
+    }
+
+    private ModelFile crudLogHorizontalModel(String name, Direction.Axis axis, String skyTexture) {
+        BlockModelBuilder model = models().getBuilder(name)
+                .texture("particle", modLoc("block/crud_log_side"))
+                .texture("side", modLoc("block/crud_log_side"))
+                .texture("end", modLoc("block/crud_log_top"))
+                .texture("sky", modLoc("block/" + skyTexture));
+
+        var element = model.element().from(0, 0, 0).to(16, 16, 16);
+
+        if (axis == Direction.Axis.X) {
+            element.face(Direction.UP).texture("#sky").rotation(FaceRotation.CLOCKWISE_90).cullface(Direction.UP);
+            element.face(Direction.DOWN).texture("#side").rotation(FaceRotation.CLOCKWISE_90).cullface(Direction.DOWN);
+            element.face(Direction.EAST).texture("#end").cullface(Direction.EAST);
+            element.face(Direction.WEST).texture("#end").cullface(Direction.WEST);
+            element.face(Direction.NORTH).texture("#side").rotation(FaceRotation.CLOCKWISE_90).cullface(Direction.NORTH);
+            element.face(Direction.SOUTH).texture("#side").rotation(FaceRotation.CLOCKWISE_90).cullface(Direction.SOUTH);
+        } else {
+            element.face(Direction.UP).texture("#sky").cullface(Direction.UP);
+            element.face(Direction.DOWN).texture("#side").cullface(Direction.DOWN);
+            element.face(Direction.NORTH).texture("#end").cullface(Direction.NORTH);
+            element.face(Direction.SOUTH).texture("#end").cullface(Direction.SOUTH);
+            element.face(Direction.EAST).texture("#side").rotation(FaceRotation.CLOCKWISE_90).cullface(Direction.EAST);
+            element.face(Direction.WEST).texture("#side").rotation(FaceRotation.CLOCKWISE_90).cullface(Direction.WEST);
+        }
 
         return model;
     }

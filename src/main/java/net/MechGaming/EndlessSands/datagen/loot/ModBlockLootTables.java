@@ -33,6 +33,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         //Drop Self
         this.dropSelf(ModBlocks.PALM_LOG.get());
         this.dropSelf(ModBlocks.PALM_PLANKS.get());
+        this.dropSelf(ModBlocks.CRUD_LOG.get());
 
         this.dropSelf(ModBlocks.PALM_STAIRS.get());
         this.dropSelf(ModBlocks.PALM_BUTTON.get());
@@ -57,7 +58,6 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         //Randomized Drops
         this.add(ModBlocks.CURSED_SAND.get(), createSingleItemTable(
                 ModItems.CURSED_POCKET_SAND.get(), UniformGenerator.between(1.0F, 4.0F)));
-
         this.add(ModBlocks.CURSED_SAND_LAYER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1.0F))
@@ -76,6 +76,9 @@ public class ModBlockLootTables extends BlockLootSubProvider {
                                         .setProperties(StatePropertiesPredicate.Builder.properties()
                                                 .hasProperty(CursedSandLayerBlock.LAYERS, 3)))
                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 3.0F))))));
+        this.add(ModBlocks.VULTURE_NEST.get(), createSingleItemTable(
+                ModItems.VULTURE_EGG.get(), UniformGenerator.between(1.0F, 3.0F)));
+
 
         //Silk Touch Behavior (like grass)
         this.add(ModBlocks.FERTILE_SOIL.get(), createSingleItemTableWithSilkTouch(

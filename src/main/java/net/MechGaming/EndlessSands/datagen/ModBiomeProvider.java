@@ -1,9 +1,12 @@
 package net.MechGaming.EndlessSands.datagen;
 
 import net.MechGaming.EndlessSands.block.ModBlocks;
+import net.MechGaming.EndlessSands.util.ModTags;
 import net.MechGaming.EndlessSands.worldgen.biome.ModBiomes;
 import net.MechGaming.EndlessSands.worldgen.dimension.EndlessSandsChunkGenerator;
 import net.MechGaming.EndlessSands.worldgen.dimension.ModDimensions;
+import net.MechGaming.EndlessSands.worldgen.structure.CrudTreeStructure;
+import net.MechGaming.EndlessSands.worldgen.structure.ModStructures;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
@@ -18,10 +21,16 @@ import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
+import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
+import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
+import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
+import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalLong;
 
@@ -29,6 +38,8 @@ public class ModBiomeProvider {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(Registries.BIOME, ModBiomeProvider::bootstrapBiomes)
             .add(Registries.DIMENSION_TYPE, ModBiomeProvider::bootstrapDimensionTypes)
+            .add(Registries.STRUCTURE, ModBiomeProvider::bootstrapStructures)
+            .add(Registries.STRUCTURE_SET, ModBiomeProvider::bootstrapStructureSets)
             .add(Registries.LEVEL_STEM, ModBiomeProvider::bootstrapLevelStems);
 
     private static void bootstrapBiomes(BootstapContext<Biome> context){
@@ -67,6 +78,26 @@ public class ModBiomeProvider {
         ));
     }
 
+    private static void bootstrapStructures(BootstapContext<Structure> context) {
+        HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
+
+        context.register(ModStructures.CRUD_TREE, new CrudTreeStructure(new Structure.StructureSettings(
+                biomes.getOrThrow(ModTags.Biomes.IS_CURSED_DESERT),
+                Map.of(),
+                GenerationStep.Decoration.SURFACE_STRUCTURES,
+                TerrainAdjustment.NONE
+        )));
+    }
+
+    private static void bootstrapStructureSets(BootstapContext<StructureSet> context) {
+        HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
+
+        context.register(ModStructures.CRUD_TREE_SET, new StructureSet(
+                structures.getOrThrow(ModStructures.CRUD_TREE),
+                new RandomSpreadStructurePlacement(256, 192, RandomSpreadType.LINEAR, 1438275917)
+        ));
+    }
+
     //Add Biomes Here
     private static Biome endlessDesert(BootstapContext<Biome> context){
         HolderGetter<PlacedFeature> placedFeatures = context.lookup(Registries.PLACED_FEATURE);
@@ -81,10 +112,12 @@ public class ModBiomeProvider {
                         .fogColor(14059067)
                         .waterColor(4159204)
                         .waterFogColor(329011)
+                        /*
                         .ambientParticle(new AmbientParticleSettings(
                                 new BlockParticleOption(ParticleTypes.FALLING_DUST,
                                         ModBlocks.CURSED_SAND.get().defaultBlockState()),
                                 0.01F))
+                         */
                         .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
                 .mobSpawnSettings(new MobSpawnSettings.Builder().build())

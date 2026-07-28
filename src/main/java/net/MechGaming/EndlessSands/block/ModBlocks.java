@@ -1,10 +1,9 @@
 package net.MechGaming.EndlessSands.block;
 
 import net.MechGaming.EndlessSands.EndlessSands;
-import net.MechGaming.EndlessSands.block.custom.BrittlePotBlock;
-import net.MechGaming.EndlessSands.block.custom.CursedSandBlock;
-import net.MechGaming.EndlessSands.block.custom.CursedSandLayerBlock;
+import net.MechGaming.EndlessSands.block.custom.*;
 import net.MechGaming.EndlessSands.item.ModItems;
+import net.MechGaming.EndlessSands.item.custom.FuelBlockItem;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -96,6 +95,12 @@ public class ModBlocks {
     public static final RegistryObject<Block> CURSED_SAND_LAYER = registerBlockWithoutItem("cursed_sand_layer",
             () -> new CursedSandLayerBlock(BlockBehaviour.Properties.copy(ModBlocks.CURSED_SAND.get()).noOcclusion().randomTicks()));
 
+    public static final RegistryObject<Block> CRUD_LOG = registerFuelBlock("crud_log",
+            () -> new CrudLogBlock(BlockBehaviour.Properties.copy(Blocks.ACACIA_LOG)), 1600);
+
+    public static final RegistryObject<Block> VULTURE_NEST = registerBlock("vulture_nest",
+            () -> new VultureNestBlock(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK).strength(0.4f).noOcclusion()));
+
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block){
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
@@ -113,5 +118,11 @@ public class ModBlocks {
 
     public static void register(IEventBus eventBus){
         BLOCKS.register(eventBus);
+    }
+
+    private static <T extends Block> RegistryObject<T> registerFuelBlock(String name, Supplier<T> block, int burnTime){
+        RegistryObject<T> toReturn = BLOCKS.register(name, block);
+        ModItems.ITEMS.register(name, () -> new FuelBlockItem(toReturn.get(), new Item.Properties(), burnTime));
+        return toReturn;
     }
 }

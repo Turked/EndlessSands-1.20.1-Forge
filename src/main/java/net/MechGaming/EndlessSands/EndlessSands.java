@@ -9,6 +9,8 @@ import net.MechGaming.EndlessSands.item.ModCreativeModeTabs;
 import net.MechGaming.EndlessSands.item.ModItems;
 import net.MechGaming.EndlessSands.network.ModMessages;
 import net.MechGaming.EndlessSands.worldgen.dimension.ModChunkGenerators;
+import net.MechGaming.EndlessSands.worldgen.structure.ModStructurePieces;
+import net.MechGaming.EndlessSands.worldgen.structure.ModStructures;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.CreativeModeTabRegistry;
@@ -45,6 +47,9 @@ public class EndlessSands
 
         ModEntities.register(modEventBus);
         ModChunkGenerators.register(modEventBus);
+
+        ModStructures.register(modEventBus);
+        ModStructurePieces.register(modEventBus);
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);

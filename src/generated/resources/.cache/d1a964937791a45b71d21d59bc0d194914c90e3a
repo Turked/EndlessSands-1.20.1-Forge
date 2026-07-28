@@ -1,5 +1,6 @@
-// 1.20.1	2026-07-21T17:29:58.4238368	Block States: endlesssands
+// 1.20.1	2026-07-28T12:01:45.2237539	Block States: endlesssands
 939338aa0b6d7b793c5566ba884ddaffbd4ba410 assets/endlesssands/blockstates/core_rock.json
+b02c6f961a95e4222b2bef7b9769eb079a204648 assets/endlesssands/blockstates/crud_log.json
 49c7e1506256bf5f3459d07b8c1c4e21068a7243 assets/endlesssands/blockstates/crystal_rock.json
 c568ad27cfe259842d18a8970f93eec6667c0a11 assets/endlesssands/blockstates/cursed_bedrock.json
 9190850c8ece93df77fe54b8a488f812f3ea1673 assets/endlesssands/blockstates/cursed_sand.json
@@ -22,6 +23,11 @@ bc6db894d807b983d23b1d8fb73e9d0cbcaa8eab assets/endlesssands/blockstates/palm_sl
 82df89ffdc11ef1a7c9fcbcf1332fad56676b89c assets/endlesssands/blockstates/suspicious_cursed_sand.json
 475abc64c3c0ea21d62da364c314af24807ed318 assets/endlesssands/blockstates/village_pot.json
 230708c236620540264fb6cb135ca4db63e235f0 assets/endlesssands/models/block/core_rock.json
+79186c578994d721463a34a64c8881bf84cafd5b assets/endlesssands/models/block/crud_log.json
+0401102cfbb0adb12bb5e72667a1e2c5f9292141 assets/endlesssands/models/block/crud_log_x.json
+bfcfd01d44875dade144e8eb2f98a91d5bc2b283 assets/endlesssands/models/block/crud_log_x_bird_droppings.json
+0713196ee5ab950425fbc89d5d1b8ee5c538cc43 assets/endlesssands/models/block/crud_log_z.json
+6a5ce08f2b778e1b7bf1ff12af62fbfae335eb4f assets/endlesssands/models/block/crud_log_z_bird_droppings.json
 8c9d2bae0b6ff3f400fcfac6ac4106d80f537143 assets/endlesssands/models/block/crystal_rock.json
 ba2d740b00cdbfb5468f15c20174d61a04ba81da assets/endlesssands/models/block/cursed_bedrock.json
 fb04c352f691327fdd6644b84b805838110ff6d7 assets/endlesssands/models/block/cursed_sand.json
@@ -66,6 +72,7 @@ f40fa8bb58f10a38eeda4c07df75282814f83e33 assets/endlesssands/models/block/palm_w
 f33720db119c60961bb9d8c89126ce65042dcd8a assets/endlesssands/models/block/suspicious_cursed_sand.json
 5fdbf2895e172b47274bbd2db77662c638a3086f assets/endlesssands/models/block/village_pot.json
 1065ee7fe256348e711cb988cba8f3168e709e89 assets/endlesssands/models/item/core_rock.json
+bbb4cdd06320757ed2b130f62b26618f8c7f46ed assets/endlesssands/models/item/crud_log.json
 5dabbb2b556981190b8ed14f7b27929cff40f866 assets/endlesssands/models/item/crystal_rock.json
 c3de1e8d49b8b53f602e8682b7065a692b5e8b80 assets/endlesssands/models/item/cursed_bedrock.json
 fe3e1d91716b8ca26bfcbfd8d6c1b4101ff4f5d0 assets/endlesssands/models/item/cursed_sand.json

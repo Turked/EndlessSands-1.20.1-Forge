@@ -74,7 +74,8 @@ public final class HeatstrokeEvents {
             return false;
         }
 
-        return player.level().isDay();
+        return player.level().isDay()
+                && player.level().canSeeSky(BlockPos.containing(player.getX(), player.getEyeY(), player.getZ()));
     }
 
     private static int getAllowedTier(
