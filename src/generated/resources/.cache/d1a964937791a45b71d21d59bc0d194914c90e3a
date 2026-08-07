@@ -1,4 +1,4 @@
-// 1.20.1	2026-07-28T12:01:45.2237539	Block States: endlesssands
+// 1.20.1	2026-08-07T03:06:44.1624395	Block States: endlesssands
 939338aa0b6d7b793c5566ba884ddaffbd4ba410 assets/endlesssands/blockstates/core_rock.json
 b02c6f961a95e4222b2bef7b9769eb079a204648 assets/endlesssands/blockstates/crud_log.json
 49c7e1506256bf5f3459d07b8c1c4e21068a7243 assets/endlesssands/blockstates/crystal_rock.json
@@ -22,6 +22,7 @@ bc6db894d807b983d23b1d8fb73e9d0cbcaa8eab assets/endlesssands/blockstates/palm_sl
 138bfb839d9cb64ae4f3d8b85255b9d34fee9087 assets/endlesssands/blockstates/palm_wall.json
 82df89ffdc11ef1a7c9fcbcf1332fad56676b89c assets/endlesssands/blockstates/suspicious_cursed_sand.json
 475abc64c3c0ea21d62da364c314af24807ed318 assets/endlesssands/blockstates/village_pot.json
+1fa1a2e086c2052060fd9e2f76a0a53162899af9 assets/endlesssands/blockstates/vulture_nest.json
 230708c236620540264fb6cb135ca4db63e235f0 assets/endlesssands/models/block/core_rock.json
 79186c578994d721463a34a64c8881bf84cafd5b assets/endlesssands/models/block/crud_log.json
 0401102cfbb0adb12bb5e72667a1e2c5f9292141 assets/endlesssands/models/block/crud_log_x.json

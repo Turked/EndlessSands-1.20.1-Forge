@@ -4,6 +4,7 @@ import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.block.custom.*;
 import net.MechGaming.EndlessSands.item.ModItems;
 import net.MechGaming.EndlessSands.item.custom.FuelBlockItem;
+import net.MechGaming.EndlessSands.item.custom.VultureNestBlockItem;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -109,6 +110,10 @@ public class ModBlocks {
     }
 
     private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block) {
+        if (name.equals("vulture_nest")) {
+            return ModItems.ITEMS.register(name, () -> new VultureNestBlockItem(block.get(), new Item.Properties()));
+        }
+
         return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
 

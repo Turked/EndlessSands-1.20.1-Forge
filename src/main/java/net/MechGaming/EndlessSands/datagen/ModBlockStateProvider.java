@@ -4,6 +4,7 @@ import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.block.ModBlocks;
 import net.MechGaming.EndlessSands.block.custom.CrudLogBlock;
 import net.MechGaming.EndlessSands.block.custom.CursedSandLayerBlock;
+import net.MechGaming.EndlessSands.block.custom.VultureNestBlock;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.*;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
@@ -35,6 +36,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithItem(ModBlocks.SUSPICIOUS_CURSED_SAND);
         blockWithItem(ModBlocks.VILLAGE_POT);
         blockWithItem(ModBlocks.PALM_PLANKS);
+        vultureNest();
 
         blockWithTopBottomAndSidesRandomYRotation(ModBlocks.FERTILE_SOIL, "fertile_soil_side", "fertile_soil_top");
 
@@ -192,4 +194,55 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
         return model;
     }
+
+    private void vultureNest(){
+        Block block = ModBlocks.VULTURE_NEST.get();
+
+        ModelFile empty = models().getExistingFile(modLoc("block/vulture_nest_empty"));
+        ModelFile full = models().getExistingFile(modLoc("block/vulture_nest_full"));
+
+        ModelFile egg1v1 = models().getExistingFile(modLoc("block/vulture_nest_1_egg_variant_1"));
+        ModelFile egg1v2 = models().getExistingFile(modLoc("block/vulture_nest_1_egg_variant_2"));
+        ModelFile egg1v3 = models().getExistingFile(modLoc("block/vulture_nest_1_egg_variant_3"));
+
+        ModelFile egg2v1 = models().getExistingFile(modLoc("block/vulture_nest_2_eggs_variant_1"));
+        ModelFile egg2v2 = models().getExistingFile(modLoc("block/vulture_nest_2_eggs_variant_2"));
+        ModelFile egg2v3 = models().getExistingFile(modLoc("block/vulture_nest_2_eggs_variant_3"));
+
+        getVariantBuilder(block).forAllStates(state -> {
+            int eggs = state.getValue(VultureNestBlock.EGGS);
+            int variant = state.getValue(VultureNestBlock.VARIANT);
+
+            ModelFile model = switch (eggs) {
+                case 0 -> empty;
+                case 1 -> switch (variant) {
+                    case 2 -> egg1v2;
+                    case 3 -> egg1v3;
+                    default -> egg1v1;
+                };
+                case 2 -> switch (variant) {
+                    case 2 -> egg2v2;
+                    case 3 -> egg2v3;
+                    default -> egg2v1;
+                };
+                case 3 -> full;
+                default -> empty;
+            };
+
+            return ConfiguredModel.builder()
+                    .modelFile(model)
+                    .rotationY(vultureNestYRot(state.getValue(VultureNestBlock.FACING)))
+                    .build();
+        });
+    }
+
+    private int vultureNestYRot(Direction facing) {
+        return switch (facing) {
+            case SOUTH -> 90;
+            case WEST -> 180;
+            case NORTH -> 270;
+            default -> 0;
+        };
+    }
+
 }

@@ -49,6 +49,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         simpleItem(ModItems.BOILED_VULTURE_EGG);
         simpleItem(ModItems.HANDFUL_OF_SCRAMBLED_EGGS);
+        withExistingParent("vulture_nest", modLoc("block/vulture_nest_full"));
 
         simpleItem(ModItems.VULTURE_EGG);
         simpleItem(ModItems.ITTY_BITTY_BONE);

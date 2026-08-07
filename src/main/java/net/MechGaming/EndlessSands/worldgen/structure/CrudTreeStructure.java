@@ -47,12 +47,13 @@ public class CrudTreeStructure extends Structure {
         BlockPos basePos = new BlockPos(x, y, z);
         Direction direction = Direction.from2DDataValue(random.nextInt(4));
         int riseIndex = 2 + random.nextInt(2);
-        int eggs = 1 + random.nextInt(3);
-        int birdDroppingsMask = Piece.createBirdDroppingsMask(random);
+        int eggs = random.nextInt(4);
+        int eggVariant = eggs == 1 || eggs == 2 ? 1 + random.nextInt(3) : 0;
+        int birdDroppingsMask = 0;
 
         return Optional.of(new Structure.GenerationStub(
                 basePos,
-                builder -> builder.addPiece(new Piece(basePos, direction, riseIndex, eggs, birdDroppingsMask))
+                builder -> builder.addPiece(new Piece(basePos, direction, riseIndex, eggs, eggVariant, birdDroppingsMask))
         ));
     }
 
@@ -68,20 +69,23 @@ public class CrudTreeStructure extends Structure {
         private static final String DIRECTION = "Direction";
         private static final String RISE_INDEX = "RiseIndex";
         private static final String EGGS = "Eggs";
+        private static final String EGG_VARIANT = "EggVariant";
         private static final String BIRD_DROPPINGS_MASK = "BirdDroppingsMask";
 
         private final BlockPos basePos;
         private final Direction direction;
         private final int riseIndex;
         private final int eggs;
+        private final int eggVariant;
         private final int birdDroppingsMask;
 
-        public Piece(BlockPos basePos, Direction direction, int riseIndex, int eggs, int birdDroppingsMask) {
+        public Piece(BlockPos basePos, Direction direction, int riseIndex, int eggs, int eggVariant, int birdDroppingsMask) {
             super(ModStructurePieces.CRUD_TREE.get(), 0, createBoundingBox(basePos));
             this.basePos = basePos;
             this.direction = direction;
             this.riseIndex = riseIndex;
             this.eggs = eggs;
+            this.eggVariant = eggVariant;
             this.birdDroppingsMask = birdDroppingsMask;
             this.setOrientation(direction);
         }
@@ -91,9 +95,11 @@ public class CrudTreeStructure extends Structure {
             this.basePos = new BlockPos(tag.getInt(BASE_X), tag.getInt(BASE_Y), tag.getInt(BASE_Z));
             this.direction = Direction.from2DDataValue(tag.getInt(DIRECTION));
             this.riseIndex = clamp(tag.getInt(RISE_INDEX), 2, 3);
-            this.eggs = clamp(tag.getInt(EGGS), 1, 3);
+            this.eggs = clamp(tag.getInt(EGGS), 0, 3);
+            this.eggVariant = clamp(tag.getInt(EGG_VARIANT), 0, 3);
             this.birdDroppingsMask = tag.getInt(BIRD_DROPPINGS_MASK);
             this.setOrientation(this.direction);
+
         }
 
         @Override
@@ -104,6 +110,7 @@ public class CrudTreeStructure extends Structure {
             tag.putInt(DIRECTION, this.direction.get2DDataValue());
             tag.putInt(RISE_INDEX, this.riseIndex);
             tag.putInt(EGGS, this.eggs);
+            tag.putInt(EGG_VARIANT, this.eggVariant);
             tag.putInt(BIRD_DROPPINGS_MASK, this.birdDroppingsMask);
         }
 
@@ -130,14 +137,15 @@ public class CrudTreeStructure extends Structure {
                 }
 
                 BlockPos branchPos = this.basePos.relative(this.direction, branchIndex).atY(branchY);
-                boolean hasBirdDroppings = (this.birdDroppingsMask & (1 << (branchIndex - 1))) != 0;
                 placeIfInside(level, box, branchPos,
-                        horizontalLog.setValue(CrudLogBlock.BIRD_DROPPINGS, hasBirdDroppings));
+                        horizontalLog.setValue(CrudLogBlock.BIRD_DROPPINGS, false));
             }
 
             BlockPos nestPos = this.basePos.relative(this.direction, 4).atY(branchY + 1);
             BlockState nest = ModBlocks.VULTURE_NEST.get().defaultBlockState()
-                    .setValue(VultureNestBlock.EGGS, this.eggs);
+                    .setValue(VultureNestBlock.EGGS, this.eggs)
+                    .setValue(VultureNestBlock.VARIANT, this.eggVariant)
+                    .setValue(VultureNestBlock.FACING, this.direction.getClockWise());
             placeIfInside(level, box, nestPos, nest);
         }
 
