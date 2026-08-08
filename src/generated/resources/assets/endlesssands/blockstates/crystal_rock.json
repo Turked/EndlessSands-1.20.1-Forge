@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "endlesssands:block/crystal_rock"
+      },
+      {
+        "model": "endlesssands:block/crystal_rock",
+        "y": 90
+      },
+      {
+        "model": "endlesssands:block/crystal_rock",
+        "y": 180
+      },
+      {
+        "model": "endlesssands:block/crystal_rock",
+        "y": 270
+      }
+    ]
+  }
+}

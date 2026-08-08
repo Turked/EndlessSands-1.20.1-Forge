@@ -1,0 +1,6 @@
+{
+  "type": "endlesssands:crud_tree",
+  "biomes": "#endlesssands:is_cursed_desert",
+  "spawn_overrides": {},
+  "step": "surface_structures"
+}

@@ -1,0 +1,7 @@
+// 1.20.1	2026-07-27T13:57:13.3134196	Tags for minecraft:worldgen/biome mod id endlesssands
+a63a6bbf7dba7c22c702fdec25d600d930379085 data/endlesssands/tags/worldgen/biome/is_cursed_desert.json
+a63a6bbf7dba7c22c702fdec25d600d930379085 data/forge/tags/worldgen/biome/is_desert.json
+a63a6bbf7dba7c22c702fdec25d600d930379085 data/forge/tags/worldgen/biome/is_dry.json
+a63a6bbf7dba7c22c702fdec25d600d930379085 data/forge/tags/worldgen/biome/is_hot.json
+a63a6bbf7dba7c22c702fdec25d600d930379085 data/forge/tags/worldgen/biome/is_hot/nether.json
+a63a6bbf7dba7c22c702fdec25d600d930379085 data/forge/tags/worldgen/biome/is_sandy.json

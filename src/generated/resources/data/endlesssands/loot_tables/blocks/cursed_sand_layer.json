@@ -1,0 +1,84 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "endlesssands:cursed_sand_layer",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "layers": "1"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 1.0,
+                "min": 0.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "endlesssands:cursed_pocket_sand"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "endlesssands:cursed_sand_layer",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "layers": "2"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 0.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "endlesssands:cursed_pocket_sand"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "endlesssands:cursed_sand_layer",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "layers": "3"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 0.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "endlesssands:cursed_pocket_sand"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "endlesssands:blocks/cursed_sand_layer"
+}

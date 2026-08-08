@@ -4,10 +4,12 @@ import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.effect.BuriedInSandState;
 import net.MechGaming.EndlessSands.effect.HeatstrokeState;
 import net.MechGaming.EndlessSands.effect.ModEffects;
+import net.MechGaming.EndlessSands.gamerule.ModGameRules;
 import net.MechGaming.EndlessSands.util.ModTags;
 import net.MechGaming.EndlessSands.worldgen.dimension.ModDimensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -30,6 +32,11 @@ public final class HeatstrokeEvents {
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.END ||
                 !(event.player instanceof ServerPlayer player)) {
+            return;
+        }
+
+        if (!player.level().getGameRules().getBoolean(ModGameRules.DEADLY_SUN)) {
+            clearSunEffects(player);
             return;
         }
 
@@ -198,6 +205,21 @@ public final class HeatstrokeEvents {
                     player.damageSources().magic(),
                     1.0F
             );
+        }
+    }
+
+    private static void clearSunEffects(ServerPlayer player) {
+        HeatstrokeState.reset(player);
+        player.removeEffect(ModEffects.HEATSTROKE.get());
+        removeShortSunEffect(player, MobEffects.DIG_SLOWDOWN, 0);
+        removeShortSunEffect(player, MobEffects.MOVEMENT_SLOWDOWN, 2);
+        removeShortSunEffect(player, MobEffects.HUNGER, 0);
+    }
+
+    private static void removeShortSunEffect(ServerPlayer player, MobEffect effect, int amplifier) {
+        MobEffectInstance instance = player.getEffect(effect);
+        if (instance != null && instance.getAmplifier() == amplifier && instance.getDuration() <= 30) {
+            player.removeEffect(effect);
         }
     }
 }

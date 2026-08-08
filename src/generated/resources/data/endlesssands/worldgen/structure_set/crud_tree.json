@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 1438275917,
+    "separation": 192,
+    "spacing": 256
+  },
+  "structures": [
+    {
+      "structure": "endlesssands:crud_tree",
+      "weight": 1
+    }
+  ]
+}

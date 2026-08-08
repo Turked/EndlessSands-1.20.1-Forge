@@ -8,6 +8,8 @@
     "MultiNoiseBiomeSourceMixin"
   ],
   "client": [
+    "ArmGuardItemRendererMixin",
+    "ArmGuardPlayerPoseMixin",
     "NoCubesCursedSandLayerMixin"
   ],
   "server": [],

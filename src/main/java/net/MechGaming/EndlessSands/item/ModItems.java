@@ -57,6 +57,15 @@ public class ModItems {
     public static final RegistryObject<Item> BOILED_VULTURE_EGG = ITEMS.register("boiled_vulture_egg",
             () -> new Item(new Item.Properties().food(ModFoods.Boiled_VULTURE_EGG)));
 
+    public static final RegistryObject<Item> ARM_GUARD = ITEMS.register("arm_guard",
+            () -> new ArmGuardItem(new Item.Properties().stacksTo(1), false));
+
+    public static final RegistryObject<Item> CREATIVE_ARM_GUARD = ITEMS.register("creative_arm_guard",
+            () -> new ArmGuardItem(new Item.Properties().stacksTo(1), true));
+
+    public static final RegistryObject<Item> VULTURE_SPAWN_EGG = ITEMS.register("vulture_spawn_egg",
+            () -> new VultureSpawnEggItem(new Item.Properties()));
+
     public static final RegistryObject<Item> ROTTED_WOOD = ITEMS.register("rotted_wood",
             () -> new FuelItem(new Item.Properties(), 100));
 

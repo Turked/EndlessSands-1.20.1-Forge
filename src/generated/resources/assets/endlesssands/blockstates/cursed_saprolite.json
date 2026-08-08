@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "endlesssands:block/cursed_saprolite"
+      },
+      {
+        "model": "endlesssands:block/cursed_saprolite",
+        "y": 90
+      },
+      {
+        "model": "endlesssands:block/cursed_saprolite",
+        "y": 180
+      },
+      {
+        "model": "endlesssands:block/cursed_saprolite",
+        "y": 270
+      }
+    ]
+  }
+}

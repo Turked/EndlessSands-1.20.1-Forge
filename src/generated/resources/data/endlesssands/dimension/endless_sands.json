@@ -1,0 +1,7 @@
+{
+  "type": "endlesssands:endless_sands",
+  "generator": {
+    "type": "endlesssands:endless_sands",
+    "biome": "endlesssands:endless_desert"
+  }
+}

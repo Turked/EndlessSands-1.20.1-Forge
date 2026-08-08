@@ -36,6 +36,14 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 Items.CHARCOAL
         );
 
+        this.tag(ModTags.Items.IS_MEAT).add(
+                Items.BEEF,
+                Items.PORKCHOP,
+                Items.MUTTON,
+                Items.CHICKEN,
+                Items.RABBIT
+        );
+
         //this.tag(ModTags.Items.IS_SUN_GEAR).add();
 
         //this.tag(ModTags.Items.DOES_GIVE_SHADE).add();

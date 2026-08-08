@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "axis=x,bird_droppings=false": {
+      "model": "endlesssands:block/crud_log_x"
+    },
+    "axis=x,bird_droppings=true": {
+      "model": "endlesssands:block/crud_log_x_bird_droppings"
+    },
+    "axis=y,bird_droppings=false": {
+      "model": "endlesssands:block/crud_log"
+    },
+    "axis=y,bird_droppings=true": {
+      "model": "endlesssands:block/crud_log"
+    },
+    "axis=z,bird_droppings=false": {
+      "model": "endlesssands:block/crud_log_z"
+    },
+    "axis=z,bird_droppings=true": {
+      "model": "endlesssands:block/crud_log_z_bird_droppings"
+    }
+  }
+}

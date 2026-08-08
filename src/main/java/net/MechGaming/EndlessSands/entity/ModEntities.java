@@ -3,6 +3,7 @@ package net.MechGaming.EndlessSands.entity;
 import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.entity.custom.PocketSandProjectileEntity;
 import net.MechGaming.EndlessSands.entity.custom.RhinoEntity;
+import net.MechGaming.EndlessSands.entity.custom.VultureEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -17,6 +18,13 @@ public class ModEntities {
     public static final RegistryObject<EntityType<RhinoEntity>> RHINO =
             ENTITY_TYPES.register("rhino", () -> EntityType.Builder.of(RhinoEntity::new, MobCategory.CREATURE)
                     .sized(2.5f, 2.5f).build("rhino"));
+
+    public static final RegistryObject<EntityType<VultureEntity>> VULTURE =
+            ENTITY_TYPES.register("vulture", () -> EntityType.Builder.of(VultureEntity::new, MobCategory.CREATURE)
+                    .sized(0.35F, 0.50F)
+                    .clientTrackingRange(10)
+                    .updateInterval(2)
+                    .build("vulture"));
 
     public static void register(IEventBus eventBus){
         ENTITY_TYPES.register(eventBus);

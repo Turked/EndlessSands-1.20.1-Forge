@@ -2,8 +2,11 @@ package net.MechGaming.EndlessSands.event;
 
 import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.entity.ModEntities;
+import net.MechGaming.EndlessSands.entity.client.BabyVultureModel;
 import net.MechGaming.EndlessSands.entity.client.ModModelLayers;
 import net.MechGaming.EndlessSands.entity.client.RhinoModel;
+import net.MechGaming.EndlessSands.entity.client.VultureModel;
+import net.MechGaming.EndlessSands.entity.client.VultureRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -15,10 +18,13 @@ public class ModEventBusClientEvents {
     @SubscribeEvent
     public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(ModModelLayers.RHINO_LAYER, RhinoModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.VULTURE_LAYER, VultureModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.BABY_VULTURE_LAYER, BabyVultureModel::createBodyLayer);
     }
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntities.POCKET_SAND_PROJECTILE.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(ModEntities.VULTURE.get(), VultureRenderer::new);
     }
 }

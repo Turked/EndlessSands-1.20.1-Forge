@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "endlesssands:block/cursed_bedrock"
+      },
+      {
+        "model": "endlesssands:block/cursed_bedrock",
+        "y": 90
+      },
+      {
+        "model": "endlesssands:block/cursed_bedrock",
+        "y": 180
+      },
+      {
+        "model": "endlesssands:block/cursed_bedrock",
+        "y": 270
+      }
+    ]
+  }
+}

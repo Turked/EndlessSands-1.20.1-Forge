@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "endlesssands:block/deep_crystal_rock"
+  }
+}

@@ -52,6 +52,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         withExistingParent("vulture_nest", modLoc("block/vulture_nest_full"));
 
         simpleItem(ModItems.VULTURE_EGG);
+        withExistingParent("creative_arm_guard", modLoc("item/arm_guard"));
+        simpleItem(ModItems.VULTURE_SPAWN_EGG);
         simpleItem(ModItems.ITTY_BITTY_BONE);
         simpleItem(ModItems.OLDWORLD_ROSE);
         simpleItem(ModItems.ROTTED_WOOD);

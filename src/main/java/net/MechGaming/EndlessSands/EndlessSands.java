@@ -2,12 +2,15 @@ package net.MechGaming.EndlessSands;
 
 import com.mojang.logging.LogUtils;
 import net.MechGaming.EndlessSands.block.ModBlocks;
+import net.MechGaming.EndlessSands.block.entity.ModBlockEntities;
 import net.MechGaming.EndlessSands.config.EndlessSandsConfig;
 import net.MechGaming.EndlessSands.effect.ModEffects;
 import net.MechGaming.EndlessSands.entity.ModEntities;
+import net.MechGaming.EndlessSands.gamerule.ModGameRules;
 import net.MechGaming.EndlessSands.item.ModCreativeModeTabs;
 import net.MechGaming.EndlessSands.item.ModItems;
 import net.MechGaming.EndlessSands.network.ModMessages;
+import net.MechGaming.EndlessSands.sound.ModSounds;
 import net.MechGaming.EndlessSands.worldgen.dimension.ModChunkGenerators;
 import net.MechGaming.EndlessSands.worldgen.structure.ModStructurePieces;
 import net.MechGaming.EndlessSands.worldgen.structure.ModStructures;
@@ -44,8 +47,10 @@ public class EndlessSands
 
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
+        ModBlockEntities.register(modEventBus);
 
         ModEntities.register(modEventBus);
+        ModSounds.register(modEventBus);
         ModChunkGenerators.register(modEventBus);
 
         ModStructures.register(modEventBus);
@@ -65,6 +70,7 @@ public class EndlessSands
 
         // Register the Effects
         ModEffects.register(modEventBus);
+        ModGameRules.register();
 
     }
 

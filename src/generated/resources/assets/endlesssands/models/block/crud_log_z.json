@@ -1,0 +1,50 @@
+{
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#side"
+        },
+        "east": {
+          "cullface": "east",
+          "rotation": 90,
+          "texture": "#side"
+        },
+        "north": {
+          "cullface": "north",
+          "texture": "#end"
+        },
+        "south": {
+          "cullface": "south",
+          "texture": "#end"
+        },
+        "up": {
+          "cullface": "up",
+          "texture": "#sky"
+        },
+        "west": {
+          "cullface": "west",
+          "rotation": 90,
+          "texture": "#side"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    }
+  ],
+  "textures": {
+    "end": "endlesssands:block/crud_log_top",
+    "particle": "endlesssands:block/crud_log_side",
+    "side": "endlesssands:block/crud_log_side",
+    "sky": "endlesssands:block/crud_log_side"
+  }
+}

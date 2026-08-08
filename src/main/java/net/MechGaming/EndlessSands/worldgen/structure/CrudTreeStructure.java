@@ -4,6 +4,8 @@ import com.mojang.serialization.Codec;
 import net.MechGaming.EndlessSands.block.ModBlocks;
 import net.MechGaming.EndlessSands.block.custom.CrudLogBlock;
 import net.MechGaming.EndlessSands.block.custom.VultureNestBlock;
+import net.MechGaming.EndlessSands.entity.ModEntities;
+import net.MechGaming.EndlessSands.entity.custom.VultureEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -11,6 +13,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -147,6 +150,28 @@ public class CrudTreeStructure extends Structure {
                     .setValue(VultureNestBlock.VARIANT, this.eggVariant)
                     .setValue(VultureNestBlock.FACING, this.direction.getClockWise());
             placeIfInside(level, box, nestPos, nest);
+            spawnStructureVultures(level, random, nestPos, this.eggs);
+        }
+
+        private static void spawnStructureVultures(WorldGenLevel level, RandomSource random, BlockPos nestPos, int eggs) {
+            int count = switch (eggs) {
+                case 0 -> 1;
+                case 1 -> 2;
+                case 2 -> 4;
+                default -> 6;
+            };
+
+            for (int i = 0; i < count; i++) {
+                VultureEntity vulture = ModEntities.VULTURE.get().create(level.getLevel());
+                if (vulture == null) {
+                    continue;
+                }
+                BlockPos spawnPos = nestPos.offset(random.nextInt(7) - 3, 6 + random.nextInt(5), random.nextInt(7) - 3);
+                vulture.moveTo(spawnPos.getX() + 0.5D, spawnPos.getY(), spawnPos.getZ() + 0.5D, random.nextFloat() * 360.0F, 0.0F);
+                vulture.setHomeNestPos(nestPos);
+                vulture.finalizeSpawn(level, level.getCurrentDifficultyAt(spawnPos), MobSpawnType.STRUCTURE, null, null);
+                level.addFreshEntity(vulture);
+            }
         }
 
         private static BoundingBox createBoundingBox(BlockPos basePos) {

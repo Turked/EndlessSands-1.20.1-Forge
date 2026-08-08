@@ -1,0 +1,27 @@
+{
+  "vulture_ambient": {
+    "sounds": [
+      "endlesssands:entity/vulture_ambient"
+    ]
+  },
+  "vulture_detects": {
+    "sounds": [
+      "endlesssands:entity/vulture_detects"
+    ]
+  },
+  "vulture_eat": {
+    "sounds": [
+      "endlesssands:entity/vulture_eat"
+    ]
+  },
+  "vulture_hurt": {
+    "sounds": [
+      "endlesssands:entity/vulture_hurt"
+    ]
+  },
+  "vulture_take_off": {
+    "sounds": [
+      "endlesssands:entity/vulture_take_off"
+    ]
+  }
+}

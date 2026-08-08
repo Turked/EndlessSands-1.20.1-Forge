@@ -1,7 +1,8 @@
-// 1.20.1	2026-08-07T02:44:39.8830836	Item Models: endlesssands
+// 1.20.1	2026-08-07T23:57:19.6026754	Item Models: endlesssands
 6dd1062ef8b55ea829254b8182e54110949a25ff assets/endlesssands/models/item/bitty_bone.json
 96052d925e03614d647139bdf11ae2053e6b65a9 assets/endlesssands/models/item/boiled_vulture_egg.json
 4e7f3e0181db965300caa704f8a5636cc0c3d879 assets/endlesssands/models/item/brittle_bone_meal.json
+eece9ca455e333c9c97ff05f2602c0d4b4abbeac assets/endlesssands/models/item/creative_arm_guard.json
 67f4f241e4ebbebc28f6c3527141a7339413b55f assets/endlesssands/models/item/cursed_pocket_sand.json
 4a18e1030c9fa0c32d2f44516e948907b70abe8e assets/endlesssands/models/item/dragonite.json
 6b90382d7f88861dfa0bad0abdd8e3f8abb313ad assets/endlesssands/models/item/dragonite_axe.json
@@ -74,3 +75,4 @@ cce7c36b0ce886cccf0cc90c8f31e4d769364b8a assets/endlesssands/models/item/scroll_
 996aaae8c0d4b1490f9cd2f1e2b1eb7da51490a8 assets/endlesssands/models/item/tiny_oldworld_jar.json
 b0c7780ae5141fec9d38fa9c29b70fa0b53cd79a assets/endlesssands/models/item/vulture_egg.json
 6c5246f8d67ad01f869160899f1dbaab4e6eda17 assets/endlesssands/models/item/vulture_nest.json
+be4cd0a8a8184418bfcee10409d9a432884e4be7 assets/endlesssands/models/item/vulture_spawn_egg.json

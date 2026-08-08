@@ -9,4 +9,14 @@ public class ModModelLayers {
             ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "rhino_layer"),
             "main"
     );
+
+    public static final ModelLayerLocation VULTURE_LAYER = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "vulture_layer"),
+            "main"
+    );
+
+    public static final ModelLayerLocation BABY_VULTURE_LAYER = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "baby_vulture_layer"),
+            "main"
+    );
 }

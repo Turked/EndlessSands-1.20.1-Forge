@@ -54,6 +54,9 @@ public class ModTags {
         // Makes it so Crud Log can replace charcoal
         public static final TagKey<Item> CRUD_LOG_RECIPE_EQUIVALENTS = tag("crud_log_recipe_equivalents");
 
+        // Items vultures recognize as meat.
+        public static final TagKey<Item> IS_MEAT = tag("is_meat");
+
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(
                     ResourceLocation.fromNamespaceAndPath(

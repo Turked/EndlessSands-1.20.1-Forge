@@ -34,6 +34,9 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.BRITTLE_BONE_MEAL.get());
                         pOutput.accept(ModItems.OLDWORLD_SCROLL.get());
                         pOutput.accept(ModItems.VULTURE_EGG.get());
+                        pOutput.accept(ModItems.ARM_GUARD.get());
+                        pOutput.accept(ModItems.CREATIVE_ARM_GUARD.get());
+                        pOutput.accept(ModItems.VULTURE_SPAWN_EGG.get());
 
                         //Food Items
                         pOutput.accept(ModItems.HANDFUL_OF_SCRAMBLED_EGGS.get());
