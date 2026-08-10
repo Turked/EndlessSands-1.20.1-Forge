@@ -1,4 +1,4 @@
-// 1.20.1	2026-07-28T09:56:28.6579782	Loot Tables
+// 1.20.1	2026-08-10T14:29:35.278494	Loot Tables
 51254fe95aa5abe2e727c99b7103c21790c4f175 data/endlesssands/loot_tables/blocks/core_rock.json
 f90b967e5e67277478c0ae92bab8f5c8957aa6a4 data/endlesssands/loot_tables/blocks/crud_log.json
 42feda78cb96ffc724a36a700ecc8aedab2e09d3 data/endlesssands/loot_tables/blocks/crystal_rock.json
@@ -20,5 +20,6 @@ c118e23e989d07c8501d35937f9698009a8d829b data/endlesssands/loot_tables/blocks/pa
 4629beae8fc93668bb06c1285b5f37c2d72f4bfd data/endlesssands/loot_tables/blocks/palm_stairs.json
 3572f75b4207b29b46dadfbf1b0beb3eb5d786ab data/endlesssands/loot_tables/blocks/palm_trapdoor.json
 7c3d5f1dad0f9ec60c38b25bfa6c984c780d5579 data/endlesssands/loot_tables/blocks/palm_wall.json
+caf22f8da9943e2b18abd39215c9221e660d97be data/endlesssands/loot_tables/blocks/twig.json
 8c6af95816c92c4708870b242fb7b2719c88a935 data/endlesssands/loot_tables/blocks/village_pot.json
 afffcf74905d868218bcc913bee82479108b2134 data/endlesssands/loot_tables/blocks/vulture_nest.json

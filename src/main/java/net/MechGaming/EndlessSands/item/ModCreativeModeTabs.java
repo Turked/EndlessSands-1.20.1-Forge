@@ -74,6 +74,7 @@ public class ModCreativeModeTabs {
 
 
                         // Advanced Blocks
+                        pOutput.accept(ModBlocks.TWIG.get());
                         pOutput.accept(ModBlocks.VILLAGE_POT.get());
                         pOutput.accept(ModBlocks.VULTURE_NEST.get());
 

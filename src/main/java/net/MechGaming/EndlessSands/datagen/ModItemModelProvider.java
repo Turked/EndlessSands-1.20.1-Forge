@@ -57,6 +57,10 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.ITTY_BITTY_BONE);
         simpleItem(ModItems.OLDWORLD_ROSE);
         simpleItem(ModItems.ROTTED_WOOD);
+        advancementIcon(ModItems.CANT_BEAT_THE_HEAT_ADVANCEMENT_ICON, "cant_beat_the_heat");
+        advancementIcon(ModItems.SCORCHED_EARTH_ADVANCEMENT_ICON, "scorched_earth");
+        advancementIcon(ModItems.THE_SUN_IS_A_DEADLY_LASER_ADVANCEMENT_ICON, "the_sun_is_a_deadly_laser");
+        advancementIcon(ModItems.TOO_HOT_TO_HANDLE_ADVANCEMENT_ICON, "too_hot_to_handle");
         simpleItem(ModItems.SCROLL_OF_LORE);
         simpleItem(ModItems.SCROLL_OF_MEDIOCRITY);
         simpleItem(ModItems.SCROLL_OF_WISDOM);
@@ -139,6 +143,11 @@ public class ModItemModelProvider extends ItemModelProvider {
     private ItemModelBuilder simpleItem(RegistryObject<Item> item) {
         return withExistingParent(item.getId().getPath(), mcLoc("item/generated"))
                 .texture("layer0", modLoc("item/" + item.getId().getPath()));
+    }
+
+    private ItemModelBuilder advancementIcon(RegistryObject<Item> item, String texture) {
+        return withExistingParent(item.getId().getPath(), mcLoc("item/generated"))
+                .texture("layer0", modLoc("advancements/" + texture));
     }
 
     public void trapdoorItem(RegistryObject<Block> block) {

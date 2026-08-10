@@ -55,6 +55,7 @@
   "block.endlesssands.palm_door": "Palm Door",
   "block.endlesssands.palm_trapdoor": "Palm Trapdoor",
 
+  "block.endlesssands.twig": "Twig",
   "block.endlesssands.village_pot": "Village Pot",
   "block.endlesssands.vulture_nest": "Vulture Nest",
 
@@ -77,5 +78,21 @@
   "screen.endlesssands.buried.dont_ask": "Don't ask again",
 
   "effect.endlesssands.heatstroke": "Heatstroke",
-  "effect.endlesssands.spf": "SPF"
+  "effect.endlesssands.spf": "SPF",
+
+  "message.endlesssands.heatstroke.tier_i": "I'm not dressed for this desert",
+  "message.endlesssands.heatstroke.tier_ii": "I need to find myself some more desert gear",
+  "message.endlesssands.heatstroke.tier_iii": "I need to find myself any desert gear",
+  "message.endlesssands.heatstroke.tier_iv": "If I don't find some shade I'll surely die",
+
+  "advancements.endlesssands.what_have_i_done.title": "What have I done?",
+  "advancements.endlesssands.what_have_i_done.description": "Resurrect the Pharoah",
+  "advancements.endlesssands.cant_beat_the_heat.title": "Can't beat the heat",
+  "advancements.endlesssands.cant_beat_the_heat.description": "After 1:00 of open-sky daytime exposure: Mining Fatigue I. Four sun-gear pieces prevent this tier.",
+  "advancements.endlesssands.scorched_earth.title": "Scorched earth",
+  "advancements.endlesssands.scorched_earth.description": "After 3:00 of exposure: Slowness III joins Mining Fatigue I. Three sun-gear pieces cap heatstroke at Tier I.",
+  "advancements.endlesssands.the_sun_is_a_deadly_laser.title": "The sun is a deadly laser",
+  "advancements.endlesssands.the_sun_is_a_deadly_laser.description": "After 4:00 of exposure: Hunger I joins the previous effects. Any sun gear caps heatstroke at Tier II.",
+  "advancements.endlesssands.too_hot_to_handle.title": "Too hot to handle",
+  "advancements.endlesssands.too_hot_to_handle.description": "After 4:30 of exposure: Take half a heart of damage every 2 seconds. Shade helmets, SPF, water, bubbles, or shelter prevent this tier."
 }

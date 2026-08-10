@@ -6,13 +6,16 @@ import net.MechGaming.EndlessSands.effect.BuriedInSandState;
 import net.MechGaming.EndlessSands.network.ModMessages;
 import net.MechGaming.EndlessSands.network.packet.BeginBuriedInSandS2CPacket;
 import net.MechGaming.EndlessSands.worldgen.dimension.ModDimensions;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -20,9 +23,42 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = EndlessSands.MOD_ID)
 public class ModEvents {
+    // Negative moves the chain up; positive moves it down.
+    private static final float HEAT_CHAIN_VERTICAL_OFFSET_ROWS = -1.0F;
+    private static final String[] HEAT_CHAIN = {
+            "cant_beat_the_heat",
+            "scorched_earth",
+            "the_sun_is_a_deadly_laser",
+            "too_hot_to_handle"
+    };
     private static final String HAS_BORN_OF_THE_SAND_SPAWN = EndlessSands.MOD_ID + ".has_born_of_the_sands";
     private static final String RESPAWN_IN_ENDLESS_SANDS = EndlessSands.MOD_ID + ".respawn_in_endless_sands";
     private static final int RANDOM_SPAWN_RADIUS = 1_000_000;
+
+    @SubscribeEvent
+    public static void onDatapackSync(OnDatapackSyncEvent event) {
+        var advancementManager = event.getPlayerList().getServer().getAdvancements();
+        Advancement root = advancementManager.getAdvancement(
+                ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "what_have_i_done")
+        );
+
+        if (root == null || root.getDisplay() == null) {
+            return;
+        }
+
+        float rootX = root.getDisplay().getX();
+        float chainY = root.getDisplay().getY() + HEAT_CHAIN_VERTICAL_OFFSET_ROWS;
+
+        for (int i = 0; i < HEAT_CHAIN.length; i++) {
+            Advancement advancement = advancementManager.getAdvancement(
+                    ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, HEAT_CHAIN[i])
+            );
+
+            if (advancement != null && advancement.getDisplay() != null) {
+                advancement.getDisplay().setLocation(rootX + i + 1.0F, chainY);
+            }
+        }
+    }
 
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event){

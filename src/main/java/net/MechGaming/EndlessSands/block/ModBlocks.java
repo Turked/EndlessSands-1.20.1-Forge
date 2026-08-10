@@ -102,6 +102,13 @@ public class ModBlocks {
     public static final RegistryObject<Block> VULTURE_NEST = registerBlock("vulture_nest",
             () -> new VultureNestBlock(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK).strength(0.4f).noOcclusion()));
 
+    public static final RegistryObject<Block> TWIG = registerBlock("twig",
+            () -> new TwigBlock(BlockBehaviour.Properties.of()
+                    .strength(0.1f)
+                    .sound(SoundType.WOOD)
+                    .noCollission()
+                    .noOcclusion()));
+
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block){
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

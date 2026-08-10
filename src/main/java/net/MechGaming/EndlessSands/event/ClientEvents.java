@@ -2,13 +2,16 @@ package net.MechGaming.EndlessSands.event;
 
 import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.client.BuriedInSandClientState;
+import net.MechGaming.EndlessSands.client.HeatstrokeWarningClientState;
 import net.MechGaming.EndlessSands.item.ModItems;
 import net.MechGaming.EndlessSands.worldgen.dimension.ModDimensions;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
+import net.minecraftforge.client.event.RenderGuiEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -17,6 +20,22 @@ import java.awt.*;
 
 @Mod.EventBusSubscriber(modid = EndlessSands.MOD_ID, value = Dist.CLIENT)
 public class ClientEvents {
+
+    @SubscribeEvent
+    public static void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            HeatstrokeWarningClientState.tick();
+        }
+    }
+
+    @SubscribeEvent
+    public static void onRenderGui(RenderGuiEvent.Post event) {
+        HeatstrokeWarningClientState.render(
+                event.getGuiGraphics(),
+                event.getWindow().getGuiScaledWidth(),
+                event.getWindow().getGuiScaledHeight()
+        );
+    }
 
     @SubscribeEvent
     public static void  onItemTooltip(ItemTooltipEvent event){

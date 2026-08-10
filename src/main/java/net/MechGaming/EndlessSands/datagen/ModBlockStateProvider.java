@@ -4,6 +4,7 @@ import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.block.ModBlocks;
 import net.MechGaming.EndlessSands.block.custom.CrudLogBlock;
 import net.MechGaming.EndlessSands.block.custom.CursedSandLayerBlock;
+import net.MechGaming.EndlessSands.block.custom.TwigBlock;
 import net.MechGaming.EndlessSands.block.custom.VultureNestBlock;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.*;
@@ -37,6 +38,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithItem(ModBlocks.VILLAGE_POT);
         blockWithItem(ModBlocks.PALM_PLANKS);
         vultureNest();
+        twig();
 
         blockWithTopBottomAndSidesRandomYRotation(ModBlocks.FERTILE_SOIL, "fertile_soil_side", "fertile_soil_top");
 
@@ -244,5 +246,232 @@ public class ModBlockStateProvider extends BlockStateProvider {
             default -> 0;
         };
     }
+
+    private void twig() {
+        Block block = ModBlocks.TWIG.get();
+        ModelFile[][][] variantModels = new ModelFile[4][4][16];
+
+        for (int x = 0; x < 4; x++) {
+            for (int z = 0; z < 4; z++) {
+                for (int rotation = 0; rotation < 16; rotation++) {
+                    variantModels[x][z][rotation] = twigVariantModel(
+                            "twig_offset_" + x + "_" + z + "_rotation_" + rotation,
+                            TwigBlock.offsetFor(x),
+                            TwigBlock.offsetFor(z),
+                            rotation
+                    );
+                }
+            }
+        }
+
+        getVariantBuilder(block).forAllStates(state -> {
+            return ConfiguredModel.builder()
+                    .modelFile(variantModels
+                            [state.getValue(TwigBlock.OFFSET_X)]
+                            [state.getValue(TwigBlock.OFFSET_Z)]
+                            [state.getValue(TwigBlock.ROTATION)])
+                    .build();
+        });
+
+        simpleBlockItem(block, models().getExistingFile(modLoc("block/twig")));
+    }
+
+    private ModelFile twigVariantModel(String name, int xOffset, int zOffset, int rotation) {
+        BlockModelBuilder model = models().getBuilder(name)
+                .texture("0", modLoc("block/twig"))
+                .texture("particle", modLoc("block/twig"));
+        float globalAngle = rotation * 22.5F;
+
+        RotatedTwigElement rodGeometry = rotatedTwigElement(
+                6.998F + xOffset, 4.998F + zOffset,
+                8.002F + xOffset, 9.002F + zOffset,
+                7.0F + xOffset, 8.0F + zOffset,
+                0.0F,
+                8.0F + xOffset, 8.0F + zOffset,
+                globalAngle
+        );
+
+        var rod = model.element()
+                .from(rodGeometry.fromX(), -0.002F, rodGeometry.fromZ())
+                .to(rodGeometry.toX(), 1.002F, rodGeometry.toZ());
+        if (rodGeometry.angle() != 0.0F) {
+            rod.rotation()
+                    .origin(rodGeometry.originX(), 0.0F, rodGeometry.originZ())
+                    .axis(Direction.Axis.Y)
+                    .angle(rodGeometry.angle())
+                    .end();
+        }
+        int rodQuarterTurns = rodGeometry.quarterTurns();
+        rod.face(rotatedHorizontalFace(Direction.NORTH, rodQuarterTurns)).uvs(4, 2, 5, 3).texture("#0");
+        rod.face(rotatedHorizontalFace(Direction.EAST, rodQuarterTurns)).uvs(0, 0, 4, 1).texture("#0");
+        rod.face(rotatedHorizontalFace(Direction.SOUTH, rodQuarterTurns)).uvs(3, 4, 4, 5).texture("#0");
+        rod.face(rotatedHorizontalFace(Direction.WEST, rodQuarterTurns)).uvs(0, 1, 4, 2).texture("#0");
+        rod.face(Direction.UP).uvs(1, 6, 0, 2).rotation(faceRotationFor(rodQuarterTurns)).texture("#0");
+        rod.face(Direction.DOWN).uvs(2, 2, 1, 6).rotation(faceRotationFor(rodQuarterTurns)).texture("#0");
+
+        RotatedTwigElement rightBranchGeometry = rotatedTwigElement(
+                7.0F + xOffset, 8.25F + zOffset,
+                8.0F + xOffset, 10.25F + zOffset,
+                7.0F + xOffset, 8.25F + zOffset,
+                -45.0F,
+                8.0F + xOffset, 8.0F + zOffset,
+                globalAngle
+        );
+
+        var rightBranch = model.element()
+                .from(rightBranchGeometry.fromX(), 0.0F, rightBranchGeometry.fromZ())
+                .to(rightBranchGeometry.toX(), 1.0F, rightBranchGeometry.toZ());
+        if (rightBranchGeometry.angle() != 0.0F) {
+            rightBranch.rotation()
+                    .origin(rightBranchGeometry.originX(), 0.0F, rightBranchGeometry.originZ())
+                    .axis(Direction.Axis.Y)
+                    .angle(rightBranchGeometry.angle())
+                    .end();
+        }
+        int rightBranchQuarterTurns = rightBranchGeometry.quarterTurns();
+        rightBranch.face(rotatedHorizontalFace(Direction.NORTH, rightBranchQuarterTurns)).uvs(4, 3, 5, 4).texture("#0");
+        rightBranch.face(rotatedHorizontalFace(Direction.EAST, rightBranchQuarterTurns)).uvs(2, 2, 4, 3).texture("#0");
+        rightBranch.face(rotatedHorizontalFace(Direction.SOUTH, rightBranchQuarterTurns)).uvs(4, 4, 5, 5).texture("#0");
+        rightBranch.face(rotatedHorizontalFace(Direction.WEST, rightBranchQuarterTurns)).uvs(2, 3, 4, 4).texture("#0");
+        rightBranch.face(Direction.UP).uvs(5, 2, 4, 0).rotation(faceRotationFor(rightBranchQuarterTurns)).texture("#0");
+        rightBranch.face(Direction.DOWN).uvs(3, 4, 2, 6).rotation(faceRotationFor(rightBranchQuarterTurns)).texture("#0");
+
+        RotatedTwigElement leftBranchGeometry = rotatedTwigElement(
+                6.999F + xOffset, 8.999F + zOffset,
+                8.001F + xOffset, 10.001F + zOffset,
+                7.0F + xOffset, 8.75F + zOffset,
+                22.5F,
+                8.0F + xOffset, 8.0F + zOffset,
+                globalAngle
+        );
+
+        var leftBranch = model.element()
+                .from(leftBranchGeometry.fromX(), -0.001F, leftBranchGeometry.fromZ())
+                .to(leftBranchGeometry.toX(), 1.001F, leftBranchGeometry.toZ());
+        if (leftBranchGeometry.angle() != 0.0F) {
+            leftBranch.rotation()
+                    .origin(leftBranchGeometry.originX(), 0.0F, leftBranchGeometry.originZ())
+                    .axis(Direction.Axis.Y)
+                    .angle(leftBranchGeometry.angle())
+                    .end();
+        }
+        int leftBranchQuarterTurns = leftBranchGeometry.quarterTurns();
+        leftBranch.face(rotatedHorizontalFace(Direction.NORTH, leftBranchQuarterTurns)).uvs(5, 0, 6, 1).texture("#0");
+        leftBranch.face(rotatedHorizontalFace(Direction.EAST, leftBranchQuarterTurns)).uvs(5, 1, 6, 2).texture("#0");
+        leftBranch.face(rotatedHorizontalFace(Direction.SOUTH, leftBranchQuarterTurns)).uvs(5, 2, 6, 3).texture("#0");
+        leftBranch.face(rotatedHorizontalFace(Direction.WEST, leftBranchQuarterTurns)).uvs(3, 5, 4, 6).texture("#0");
+        leftBranch.face(Direction.UP).uvs(6, 4, 5, 3).rotation(faceRotationFor(leftBranchQuarterTurns)).texture("#0");
+        leftBranch.face(Direction.DOWN).uvs(5, 5, 4, 6).rotation(faceRotationFor(leftBranchQuarterTurns)).texture("#0");
+
+        return model;
+    }
+
+    private RotatedTwigElement rotatedTwigElement(
+            float fromX,
+            float fromZ,
+            float toX,
+            float toZ,
+            float localOriginX,
+            float localOriginZ,
+            float localAngle,
+            float globalOriginX,
+            float globalOriginZ,
+            float globalAngle
+    ) {
+        float centerX = (fromX + toX) / 2.0F;
+        float centerZ = (fromZ + toZ) / 2.0F;
+        float[] locallyRotated = rotatePoint(
+                centerX,
+                centerZ,
+                localOriginX,
+                localOriginZ,
+                localAngle
+        );
+        float[] rotatedCenter = rotatePoint(
+                locallyRotated[0],
+                locallyRotated[1],
+                globalOriginX,
+                globalOriginZ,
+                globalAngle
+        );
+
+        float totalAngle = localAngle + globalAngle;
+        int quarterTurns = (int) Math.floor((totalAngle + 45.0F) / 90.0F);
+        float modelAngle = totalAngle - quarterTurns * 90.0F;
+        float width = toX - fromX;
+        float depth = toZ - fromZ;
+
+        if (Math.abs(quarterTurns) % 2 == 1) {
+            float swap = width;
+            width = depth;
+            depth = swap;
+        }
+
+        return new RotatedTwigElement(
+                rotatedCenter[0] - width / 2.0F,
+                rotatedCenter[1] - depth / 2.0F,
+                rotatedCenter[0] + width / 2.0F,
+                rotatedCenter[1] + depth / 2.0F,
+                rotatedCenter[0],
+                rotatedCenter[1],
+                modelAngle,
+                quarterTurns
+        );
+    }
+
+    private Direction rotatedHorizontalFace(Direction face, int quarterTurns) {
+        Direction result = face;
+
+        for (int i = 0; i < Math.floorMod(quarterTurns, 4); i++) {
+            result = switch (result) {
+                case NORTH -> Direction.WEST;
+                case WEST -> Direction.SOUTH;
+                case SOUTH -> Direction.EAST;
+                case EAST -> Direction.NORTH;
+                default -> result;
+            };
+        }
+
+        return result;
+    }
+
+    private FaceRotation faceRotationFor(int quarterTurns) {
+        return switch (Math.floorMod(-quarterTurns, 4)) {
+            case 1 -> FaceRotation.CLOCKWISE_90;
+            case 2 -> FaceRotation.UPSIDE_DOWN;
+            case 3 -> FaceRotation.COUNTERCLOCKWISE_90;
+            default -> FaceRotation.ZERO;
+        };
+    }
+
+    private float[] rotatePoint(
+            float x,
+            float z,
+            float originX,
+            float originZ,
+            float angleDegrees
+    ) {
+        double angle = Math.toRadians(angleDegrees);
+        double relativeX = x - originX;
+        double relativeZ = z - originZ;
+        double cos = Math.cos(angle);
+        double sin = Math.sin(angle);
+
+        return new float[]{
+                (float) (originX + relativeX * cos + relativeZ * sin),
+                (float) (originZ - relativeX * sin + relativeZ * cos)
+        };
+    }
+
+    private record RotatedTwigElement(
+            float fromX,
+            float fromZ,
+            float toX,
+            float toZ,
+            float originX,
+            float originZ,
+            float angle,
+            int quarterTurns
+    ) {}
 
 }

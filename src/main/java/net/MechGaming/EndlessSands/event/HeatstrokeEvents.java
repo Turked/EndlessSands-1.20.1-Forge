@@ -5,6 +5,8 @@ import net.MechGaming.EndlessSands.effect.BuriedInSandState;
 import net.MechGaming.EndlessSands.effect.HeatstrokeState;
 import net.MechGaming.EndlessSands.effect.ModEffects;
 import net.MechGaming.EndlessSands.gamerule.ModGameRules;
+import net.MechGaming.EndlessSands.network.ModMessages;
+import net.MechGaming.EndlessSands.network.packet.HeatstrokeWarningS2CPacket;
 import net.MechGaming.EndlessSands.util.ModTags;
 import net.MechGaming.EndlessSands.worldgen.dimension.ModDimensions;
 import net.minecraft.core.BlockPos;
@@ -51,11 +53,18 @@ public final class HeatstrokeEvents {
 
         int exposure = HeatstrokeState.getExposure(player);
         int tier = getAllowedTier(player, exposure);
+        int previousTier = HeatstrokeState.getCurrentTier(player);
 
         if (tier < 0) {
+            HeatstrokeState.setCurrentTier(player, -1);
             player.removeEffect(ModEffects.HEATSTROKE.get());
             return;
         }
+
+        if (tier > previousTier) {
+            showTierWarning(player, tier);
+        }
+        HeatstrokeState.setCurrentTier(player, tier);
 
         // Short duration, continuously refreshed while conditions remain valid.
         player.addEffect(new MobEffectInstance(
@@ -68,6 +77,10 @@ public final class HeatstrokeEvents {
         ));
 
         applyTierConsequences(player, tier);
+    }
+
+    private static void showTierWarning(ServerPlayer player, int tier) {
+        ModMessages.sendToPlayer(new HeatstrokeWarningS2CPacket(tier), player);
     }
 
     private static boolean isExposedToDesertSun(ServerPlayer player) {

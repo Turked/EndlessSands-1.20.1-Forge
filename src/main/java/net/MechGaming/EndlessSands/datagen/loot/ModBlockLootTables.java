@@ -34,6 +34,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.dropSelf(ModBlocks.PALM_LOG.get());
         this.dropSelf(ModBlocks.PALM_PLANKS.get());
         this.dropSelf(ModBlocks.CRUD_LOG.get());
+        this.dropSelf(ModBlocks.TWIG.get());
 
         this.dropSelf(ModBlocks.PALM_STAIRS.get());
         this.dropSelf(ModBlocks.PALM_BUTTON.get());

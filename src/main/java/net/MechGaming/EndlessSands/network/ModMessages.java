@@ -4,6 +4,7 @@ import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.network.packet.BeginBuriedInSandS2CPacket;
 import net.MechGaming.EndlessSands.network.packet.EndBuriedInSandS2CPacket;
 import net.MechGaming.EndlessSands.network.packet.EscapeBuriedInSandC2SPacket;
+import net.MechGaming.EndlessSands.network.packet.HeatstrokeWarningS2CPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -55,6 +56,15 @@ public final class ModMessages {
                 EndBuriedInSandS2CPacket::encode,
                 EndBuriedInSandS2CPacket::decode,
                 EndBuriedInSandS2CPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT)
+        );
+
+        CHANNEL.registerMessage(
+                packetId++,
+                HeatstrokeWarningS2CPacket.class,
+                HeatstrokeWarningS2CPacket::encode,
+                HeatstrokeWarningS2CPacket::decode,
+                HeatstrokeWarningS2CPacket::handle,
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT)
         );
     }

@@ -69,6 +69,15 @@ public class ModItems {
     public static final RegistryObject<Item> ROTTED_WOOD = ITEMS.register("rotted_wood",
             () -> new FuelItem(new Item.Properties(), 100));
 
+    public static final RegistryObject<Item> CANT_BEAT_THE_HEAT_ADVANCEMENT_ICON =
+            advancementIcon("cant_beat_the_heat_advancement_icon");
+    public static final RegistryObject<Item> SCORCHED_EARTH_ADVANCEMENT_ICON =
+            advancementIcon("scorched_earth_advancement_icon");
+    public static final RegistryObject<Item> THE_SUN_IS_A_DEADLY_LASER_ADVANCEMENT_ICON =
+            advancementIcon("the_sun_is_a_deadly_laser_advancement_icon");
+    public static final RegistryObject<Item> TOO_HOT_TO_HANDLE_ADVANCEMENT_ICON =
+            advancementIcon("too_hot_to_handle_advancement_icon");
+
     public static final RegistryObject<Item> DRAGONITE = ITEMS.register("dragonite",
             () -> new Item(new Item.Properties()));
 
@@ -98,6 +107,10 @@ public class ModItems {
 
 
 
+
+    private static RegistryObject<Item> advancementIcon(String name) {
+        return ITEMS.register(name, () -> new Item(new Item.Properties().stacksTo(1)));
+    }
 
     public static void register(IEventBus eventBus){
         ITEMS.register(eventBus);
