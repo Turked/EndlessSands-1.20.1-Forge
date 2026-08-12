@@ -4,6 +4,7 @@ import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.entity.custom.PocketSandProjectileEntity;
 import net.MechGaming.EndlessSands.entity.custom.RhinoEntity;
 import net.MechGaming.EndlessSands.entity.custom.VultureEntity;
+import net.MechGaming.EndlessSands.entity.custom.VultureEggProjectileEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -37,4 +38,12 @@ public class ModEntities {
                             .clientTrackingRange(4)
                             .updateInterval(10)
                             .build("pocket_sand_projectile"));
+
+    public static final RegistryObject<EntityType<VultureEggProjectileEntity>> VULTURE_EGG_PROJECTILE =
+            ENTITY_TYPES.register("vulture_egg_projectile", () ->
+                    EntityType.Builder.<VultureEggProjectileEntity>of(VultureEggProjectileEntity::new, MobCategory.MISC)
+                            .sized(0.25F, 0.25F)
+                            .clientTrackingRange(4)
+                            .updateInterval(10)
+                            .build("vulture_egg_projectile"));
 }

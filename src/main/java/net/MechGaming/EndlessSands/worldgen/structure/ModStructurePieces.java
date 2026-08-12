@@ -15,6 +15,11 @@ public class ModStructurePieces {
             STRUCTURE_PIECES.register("crud_tree",
                     () -> (context, tag) -> new CrudTreeStructure.Piece(tag));
 
+    public static final RegistryObject<StructurePieceType> FLOATING_ISLAND =
+            STRUCTURE_PIECES.register("floating_island",
+                    () -> (context, tag) -> new FloatingIslandStructure.Piece(
+                            context.structureTemplateManager(), tag));
+
     public static void register(IEventBus eventBus){
         STRUCTURE_PIECES.register(eventBus);
     }

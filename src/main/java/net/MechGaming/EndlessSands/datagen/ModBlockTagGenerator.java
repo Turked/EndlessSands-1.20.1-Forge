@@ -65,7 +65,8 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
 
         this.tag(BlockTags.MINEABLE_WITH_SHOVEL)
                 .add(
-                        ModBlocks.CURSED_SAND.get()
+                        ModBlocks.CURSED_SAND.get(),
+                        ModBlocks.SUSPICIOUS_CURSED_SAND.get()
                 );
 
         this.tag(BlockTags.FENCES)

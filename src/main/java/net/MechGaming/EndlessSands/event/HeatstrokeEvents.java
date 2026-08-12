@@ -7,7 +7,7 @@ import net.MechGaming.EndlessSands.effect.ModEffects;
 import net.MechGaming.EndlessSands.gamerule.ModGameRules;
 import net.MechGaming.EndlessSands.network.ModMessages;
 import net.MechGaming.EndlessSands.network.packet.HeatstrokeWarningS2CPacket;
-import net.MechGaming.EndlessSands.util.ModTags;
+import net.MechGaming.EndlessSands.util.SunGearHelper;
 import net.MechGaming.EndlessSands.worldgen.dimension.ModDimensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,8 +25,8 @@ public final class HeatstrokeEvents {
     private static final int ONE_SECOND = 20;
     private static final int TIER_I_START = 60 * ONE_SECOND;
     private static final int TIER_II_START = 180 * ONE_SECOND;
-    private static final int TIER_III_START = 240 * ONE_SECOND;
-    private static final int TIER_IV_START = 270 * ONE_SECOND;
+    private static final int TIER_III_START = 300 * ONE_SECOND;
+    private static final int TIER_IV_START = 600 * ONE_SECOND;
 
     private HeatstrokeEvents() {}
 
@@ -72,7 +72,7 @@ public final class HeatstrokeEvents {
                 30,
                 tier,
                 false,
-                true,
+                false,
                 true
         ));
 
@@ -122,14 +122,15 @@ public final class HeatstrokeEvents {
         /*
          * Four pieces prevent tier I.
          * Three pieces prevent tier II and above.
-         * One piece prevents tier III and above.
+         * Two pieces prevent tier III and above.
+         * Shade, water, or SPF separately prevent tier IV.
          */
         int armorCap;
         if (sunGear >= 4) {
             armorCap = -1;
         } else if (sunGear >= 3) {
             armorCap = 0;
-        } else if (sunGear >= 1) {
+        } else if (sunGear >= 2) {
             armorCap = 1;
         } else {
             armorCap = 3;
@@ -148,7 +149,7 @@ public final class HeatstrokeEvents {
         int count = 0;
 
         for (ItemStack armor : player.getArmorSlots()) {
-            if (armor.is(ModTags.Items.IS_SUN_GEAR)) {
+            if (SunGearHelper.isSunGear(armor)) {
                 count++;
             }
         }
@@ -162,7 +163,7 @@ public final class HeatstrokeEvents {
         ItemStack helmet =
                 player.getItemBySlot(EquipmentSlot.HEAD);
 
-        return helmet.is(ModTags.Items.DOES_GIVE_SHADE)
+        return SunGearHelper.givesShade(helmet)
                 || player.hasEffect(ModEffects.SPF.get())
                 || player.isInWaterOrBubble()
                 || !player.level().canSeeSky(
@@ -193,7 +194,7 @@ public final class HeatstrokeEvents {
             player.addEffect(new MobEffectInstance(
                     MobEffects.MOVEMENT_SLOWDOWN,
                     30,
-                    2,
+                    0,
                     false,
                     false,
                     false
@@ -225,7 +226,7 @@ public final class HeatstrokeEvents {
         HeatstrokeState.reset(player);
         player.removeEffect(ModEffects.HEATSTROKE.get());
         removeShortSunEffect(player, MobEffects.DIG_SLOWDOWN, 0);
-        removeShortSunEffect(player, MobEffects.MOVEMENT_SLOWDOWN, 2);
+        removeShortSunEffect(player, MobEffects.MOVEMENT_SLOWDOWN, 0);
         removeShortSunEffect(player, MobEffects.HUNGER, 0);
     }
 

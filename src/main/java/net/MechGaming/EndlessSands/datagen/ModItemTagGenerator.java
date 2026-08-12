@@ -41,11 +41,12 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 Items.PORKCHOP,
                 Items.MUTTON,
                 Items.CHICKEN,
-                Items.RABBIT
+                Items.RABBIT,
+                ModItems.RAW_VULTURE_MEAT.get()
         );
 
-        //this.tag(ModTags.Items.IS_SUN_GEAR).add();
-
-        //this.tag(ModTags.Items.DOES_GIVE_SHADE).add();
+        this.tag(ModTags.Items.IS_SUN_GEAR).add(ModItems.TWIG_HAT.get());
+        this.tag(ModTags.Items.DOES_GIVE_SHADE).add(ModItems.TWIG_HAT.get());
+        this.tag(ModTags.Items.IS_SHADE).add(ModItems.TWIG_HAT.get());
     }
 }

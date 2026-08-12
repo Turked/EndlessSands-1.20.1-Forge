@@ -1,14 +1,17 @@
 package net.MechGaming.EndlessSands.block.custom;
 
 import net.MechGaming.EndlessSands.item.ModItems;
+import net.MechGaming.EndlessSands.block.ModBlocks;
 import net.MechGaming.EndlessSands.block.entity.ModBlockEntities;
 import net.MechGaming.EndlessSands.block.entity.VultureNestBlockEntity;
+import net.MechGaming.EndlessSands.worldgen.VultureHomeSavedData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -28,8 +31,14 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.server.level.ServerLevel;
+
+import java.util.UUID;
 
 public class VultureNestBlock extends BaseEntityBlock {
+    private static final String ITEM_HOME_ID = "VultureHomeId";
+    private static final String ITEM_EGGS = "VultureNestEggs";
+    private static final String ITEM_VARIANT = "VultureNestVariant";
     public static final int MAX_EGGS = 3;
     public static final IntegerProperty EGGS = IntegerProperty.create("eggs", 0, MAX_EGGS);
     public static final IntegerProperty VARIANT = IntegerProperty.create("variant", 0, 3);
@@ -55,6 +64,58 @@ public class VultureNestBlock extends BaseEntityBlock {
                 .setValue(EGGS, 3)
                 .setValue(VARIANT, 0)
                 .setValue(FACING, context.getHorizontalDirection());
+    }
+
+    @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer,
+                            ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        if (!(level instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        UUID requestedHome = getHomeId(stack);
+        UUID owner = placer instanceof Player player ? player.getUUID() : null;
+        UUID homeId = VultureHomeSavedData.get(serverLevel).registerPlacedNest(
+                requestedHome, pos, state.getValue(FACING), owner);
+        if (level.getBlockEntity(pos) instanceof VultureNestBlockEntity nest) {
+            nest.initializeHome(homeId, false);
+        }
+
+        if (stack.hasTag()) {
+            int eggs = Math.max(0, Math.min(MAX_EGGS, stack.getTag().getInt(ITEM_EGGS)));
+            int variant = Math.max(0, Math.min(3, stack.getTag().getInt(ITEM_VARIANT)));
+            level.setBlock(pos, state.setValue(EGGS, eggs).setValue(VARIANT, variant), Block.UPDATE_ALL);
+        }
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (!state.is(newState.getBlock()) && level instanceof ServerLevel serverLevel
+                && level.getBlockEntity(pos) instanceof VultureNestBlockEntity nest) {
+            UUID homeId = nest.getHomeId();
+            if (homeId != null) {
+                VultureHomeSavedData.get(serverLevel).markNestMissing(homeId);
+            }
+        }
+        super.onRemove(state, level, pos, newState, isMoving);
+    }
+
+    public static ItemStack createCarriedNest(BlockState state, @Nullable UUID homeId) {
+        ItemStack stack = new ItemStack(ModBlocks.VULTURE_NEST.get());
+        if (homeId != null) {
+            stack.getOrCreateTag().putUUID(ITEM_HOME_ID, homeId);
+        }
+        stack.getOrCreateTag().putInt(ITEM_EGGS, state.getValue(EGGS));
+        stack.getOrCreateTag().putInt(ITEM_VARIANT, state.getValue(VARIANT));
+        return stack;
+    }
+
+    @Nullable
+    public static UUID getHomeId(ItemStack stack) {
+        return stack.hasTag() && stack.getTag().hasUUID(ITEM_HOME_ID)
+                ? stack.getTag().getUUID(ITEM_HOME_ID)
+                : null;
     }
 
     @Override

@@ -34,7 +34,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithRandomYRotation(ModBlocks.CURSED_BEDROCK);
         cursedSandLayer();
 
-        blockWithItem(ModBlocks.SUSPICIOUS_CURSED_SAND);
+        suspiciousCursedSand();
         blockWithItem(ModBlocks.VILLAGE_POT);
         blockWithItem(ModBlocks.PALM_PLANKS);
         vultureNest();
@@ -62,6 +62,15 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     private void blockWithItem(RegistryObject<Block> blockRegistryObject) {
         simpleBlockWithItem(blockRegistryObject.get(), cubeAll(blockRegistryObject.get()));
+    }
+
+    private void suspiciousCursedSand() {
+        Block block = ModBlocks.SUSPICIOUS_CURSED_SAND.get();
+        ModelFile model = cubeAll(block);
+        getVariantBuilder(block).forAllStates(state -> ConfiguredModel.builder()
+                .modelFile(model)
+                .build());
+        simpleBlockItem(block, model);
     }
 
     private void blockWithTopBottomAndSides(RegistryObject<Block> blockRegistryObject, String sideTexture, String topBottomTexture) {

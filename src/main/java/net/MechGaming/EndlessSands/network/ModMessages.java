@@ -5,6 +5,9 @@ import net.MechGaming.EndlessSands.network.packet.BeginBuriedInSandS2CPacket;
 import net.MechGaming.EndlessSands.network.packet.EndBuriedInSandS2CPacket;
 import net.MechGaming.EndlessSands.network.packet.EscapeBuriedInSandC2SPacket;
 import net.MechGaming.EndlessSands.network.packet.HeatstrokeWarningS2CPacket;
+import net.MechGaming.EndlessSands.network.packet.ArmGuardCommandC2SPacket;
+import net.MechGaming.EndlessSands.network.packet.OpenArmGuardMenuC2SPacket;
+import net.MechGaming.EndlessSands.network.packet.OpenArmGuardMenuS2CPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -66,6 +69,33 @@ public final class ModMessages {
                 HeatstrokeWarningS2CPacket::decode,
                 HeatstrokeWarningS2CPacket::handle,
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT)
+        );
+
+        CHANNEL.registerMessage(
+                packetId++,
+                OpenArmGuardMenuC2SPacket.class,
+                OpenArmGuardMenuC2SPacket::encode,
+                OpenArmGuardMenuC2SPacket::decode,
+                OpenArmGuardMenuC2SPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER)
+        );
+
+        CHANNEL.registerMessage(
+                packetId++,
+                OpenArmGuardMenuS2CPacket.class,
+                OpenArmGuardMenuS2CPacket::encode,
+                OpenArmGuardMenuS2CPacket::decode,
+                OpenArmGuardMenuS2CPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT)
+        );
+
+        CHANNEL.registerMessage(
+                packetId++,
+                ArmGuardCommandC2SPacket.class,
+                ArmGuardCommandC2SPacket::encode,
+                ArmGuardCommandC2SPacket::decode,
+                ArmGuardCommandC2SPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER)
         );
     }
 

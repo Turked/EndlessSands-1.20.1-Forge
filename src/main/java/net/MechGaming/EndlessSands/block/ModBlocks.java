@@ -47,7 +47,8 @@ public class ModBlocks {
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
 
     public static final RegistryObject<Block> SUSPICIOUS_CURSED_SAND = registerBlock("suspicious_cursed_sand",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.SUSPICIOUS_SAND).noLootTable()));
+            () -> new SuspiciousCursedSandBlock(CURSED_SAND.get(),
+                    BlockBehaviour.Properties.copy(Blocks.SUSPICIOUS_SAND).noLootTable()));
 
     public static final RegistryObject<Block> FERTILE_SOIL = registerBlock("fertile_soil",
             () -> new Block(BlockBehaviour.Properties.copy(ModBlocks.CURSED_SAND.get())));
@@ -119,6 +120,10 @@ public class ModBlocks {
     private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block) {
         if (name.equals("vulture_nest")) {
             return ModItems.ITEMS.register(name, () -> new VultureNestBlockItem(block.get(), new Item.Properties()));
+        }
+
+        if (name.equals("twig")) {
+            return ModItems.ITEMS.register(name, () -> new FuelBlockItem(block.get(), new Item.Properties(), 50));
         }
 
         return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));

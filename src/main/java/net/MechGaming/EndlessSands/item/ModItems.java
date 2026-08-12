@@ -49,13 +49,25 @@ public class ModItems {
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> VULTURE_EGG = ITEMS.register("vulture_egg",
-            () -> new Item(new Item.Properties()));
+            () -> new VultureEggItem(new Item.Properties().stacksTo(16)));
+
+    public static final RegistryObject<Item> TWIG_HAT = ITEMS.register("twig_hat",
+            () -> new TwigHatItem(new Item.Properties().durability(55)));
+
+    public static final RegistryObject<Item> TWIG_VISOR = ITEMS.register("twig_visor",
+            () -> new TwigVisorItem(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> HANDFUL_OF_SCRAMBLED_EGGS = ITEMS.register("handful_of_scrambled_eggs",
             () -> new Item(new Item.Properties().food(ModFoods.HANDFUL_OF_SCRAMBLED_EGGS)));
 
     public static final RegistryObject<Item> BOILED_VULTURE_EGG = ITEMS.register("boiled_vulture_egg",
             () -> new Item(new Item.Properties().food(ModFoods.Boiled_VULTURE_EGG)));
+
+    public static final RegistryObject<Item> LEATHER_SCRAP = ITEMS.register("leather_scrap",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> RAW_VULTURE_MEAT = ITEMS.register("raw_vulture_meat",
+            () -> new Item(new Item.Properties().food(ModFoods.VULTURE_JERKY)));
 
     public static final RegistryObject<Item> ARM_GUARD = ITEMS.register("arm_guard",
             () -> new ArmGuardItem(new Item.Properties().stacksTo(1), false));
@@ -77,6 +89,10 @@ public class ModItems {
             advancementIcon("the_sun_is_a_deadly_laser_advancement_icon");
     public static final RegistryObject<Item> TOO_HOT_TO_HANDLE_ADVANCEMENT_ICON =
             advancementIcon("too_hot_to_handle_advancement_icon");
+    public static final RegistryObject<Item> FLOATING_ISLAND_ADVANCEMENT_ICON =
+            advancementIcon("floating_island_advancement_icon");
+    public static final RegistryObject<Item> VULTURE_ADVANCEMENT_ICON = ITEMS.register("vulture_advancement_icon",
+            () -> new VultureAdvancementIconItem(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> DRAGONITE = ITEMS.register("dragonite",
             () -> new Item(new Item.Properties()));

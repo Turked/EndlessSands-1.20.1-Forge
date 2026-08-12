@@ -1,6 +1,15 @@
 {
   "variants": {
-    "": {
+    "dusted=0": {
+      "model": "endlesssands:block/suspicious_cursed_sand"
+    },
+    "dusted=1": {
+      "model": "endlesssands:block/suspicious_cursed_sand"
+    },
+    "dusted=2": {
+      "model": "endlesssands:block/suspicious_cursed_sand"
+    },
+    "dusted=3": {
       "model": "endlesssands:block/suspicious_cursed_sand"
     }
   }

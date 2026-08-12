@@ -6,7 +6,9 @@ import net.MechGaming.EndlessSands.worldgen.biome.ModBiomes;
 import net.MechGaming.EndlessSands.worldgen.dimension.EndlessSandsChunkGenerator;
 import net.MechGaming.EndlessSands.worldgen.dimension.ModDimensions;
 import net.MechGaming.EndlessSands.worldgen.structure.CrudTreeStructure;
+import net.MechGaming.EndlessSands.worldgen.structure.FloatingIslandStructure;
 import net.MechGaming.EndlessSands.worldgen.structure.ModStructures;
+import net.MechGaming.EndlessSands.entity.ModEntities;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
@@ -18,6 +20,7 @@ import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.biome.*;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
@@ -87,6 +90,12 @@ public class ModBiomeProvider {
                 GenerationStep.Decoration.SURFACE_STRUCTURES,
                 TerrainAdjustment.NONE
         )));
+        context.register(ModStructures.FLOATING_ISLAND, new FloatingIslandStructure(new Structure.StructureSettings(
+                biomes.getOrThrow(ModTags.Biomes.IS_CURSED_DESERT),
+                Map.of(),
+                GenerationStep.Decoration.SURFACE_STRUCTURES,
+                TerrainAdjustment.NONE
+        )));
     }
 
     private static void bootstrapStructureSets(BootstapContext<StructureSet> context) {
@@ -95,6 +104,10 @@ public class ModBiomeProvider {
         context.register(ModStructures.CRUD_TREE_SET, new StructureSet(
                 structures.getOrThrow(ModStructures.CRUD_TREE),
                 new RandomSpreadStructurePlacement(256, 192, RandomSpreadType.LINEAR, 1438275917)
+        ));
+        context.register(ModStructures.FLOATING_ISLAND_SET, new StructureSet(
+                structures.getOrThrow(ModStructures.FLOATING_ISLAND),
+                new RandomSpreadStructurePlacement(256, 192, RandomSpreadType.LINEAR, 982451653)
         ));
     }
 
@@ -120,7 +133,10 @@ public class ModBiomeProvider {
                          */
                         .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
                         .build())
-                .mobSpawnSettings(new MobSpawnSettings.Builder().build())
+                .mobSpawnSettings(new MobSpawnSettings.Builder()
+                        .addSpawn(MobCategory.CREATURE,
+                                new MobSpawnSettings.SpawnerData(ModEntities.VULTURE.get(), 10, 4, 4))
+                        .build())
                 .generationSettings(new BiomeGenerationSettings.Builder(placedFeatures, carvers).build())
                 .build();
     }

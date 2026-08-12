@@ -9,6 +9,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.structure.Structure;
 
 public class ModTags {
     public static class Blocks {
@@ -51,6 +52,9 @@ public class ModTags {
         // Helmets that give shade like a hat
         public static final TagKey<Item> DOES_GIVE_SHADE = tag("does_give_shade");
 
+        // Alias tag for shade-granting head gear.
+        public static final TagKey<Item> IS_SHADE = tag("is_shade");
+
         // Makes it so Crud Log can replace charcoal
         public static final TagKey<Item> CRUD_LOG_RECIPE_EQUIVALENTS = tag("crud_log_recipe_equivalents");
 
@@ -64,6 +68,16 @@ public class ModTags {
                             name
                     )
             );
+        }
+    }
+
+    public static class Structures {
+        public static final TagKey<Structure> CRUD_TREES = tag("crud_trees");
+        public static final TagKey<Structure> FLOATING_ISLANDS = tag("floating_islands");
+
+        private static TagKey<Structure> tag(String name) {
+            return TagKey.create(Registries.STRUCTURE,
+                    ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, name));
         }
     }
 }

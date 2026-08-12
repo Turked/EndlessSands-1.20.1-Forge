@@ -15,19 +15,41 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 import java.util.List;
+import java.util.UUID;
+import org.jetbrains.annotations.Nullable;
 
 public class VultureNestBlockEntity extends BlockEntity {
     private static final String PROGRESS_TICKS = "ProgressTicks";
     private static final String LAST_VULTURE_COUNT = "LastVultureCount";
+    private static final String HOME_ID = "HomeId";
+    private static final String NATURAL_HOME = "NaturalHome";
     private static final int EGG_INTERVAL_TICKS = 20 * 60 * 20;
     private static final int SCAN_INTERVAL_TICKS = 100;
 
     private int progressTicks;
     private int lastVultureCount;
     private int scanCooldown;
+    @Nullable
+    private UUID homeId;
+    private boolean naturalHome;
 
     public VultureNestBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.VULTURE_NEST.get(), pos, state);
+    }
+
+    public void initializeHome(UUID homeId, boolean naturalHome) {
+        this.homeId = homeId;
+        this.naturalHome = naturalHome;
+        setChanged();
+    }
+
+    @Nullable
+    public UUID getHomeId() {
+        return this.homeId;
+    }
+
+    public boolean isNaturalHome() {
+        return this.naturalHome;
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, VultureNestBlockEntity blockEntity) {
@@ -113,6 +135,10 @@ public class VultureNestBlockEntity extends BlockEntity {
         super.saveAdditional(tag);
         tag.putInt(PROGRESS_TICKS, this.progressTicks);
         tag.putInt(LAST_VULTURE_COUNT, this.lastVultureCount);
+        if (this.homeId != null) {
+            tag.putUUID(HOME_ID, this.homeId);
+        }
+        tag.putBoolean(NATURAL_HOME, this.naturalHome);
     }
 
     @Override
@@ -120,5 +146,7 @@ public class VultureNestBlockEntity extends BlockEntity {
         super.load(tag);
         this.progressTicks = tag.getInt(PROGRESS_TICKS);
         this.lastVultureCount = tag.getInt(LAST_VULTURE_COUNT);
+        this.homeId = tag.hasUUID(HOME_ID) ? tag.getUUID(HOME_ID) : null;
+        this.naturalHome = tag.getBoolean(NATURAL_HOME);
     }
 }

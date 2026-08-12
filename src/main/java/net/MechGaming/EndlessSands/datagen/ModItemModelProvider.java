@@ -49,6 +49,8 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         simpleItem(ModItems.BOILED_VULTURE_EGG);
         simpleItem(ModItems.HANDFUL_OF_SCRAMBLED_EGGS);
+        simpleItem(ModItems.LEATHER_SCRAP);
+        simpleItem(ModItems.RAW_VULTURE_MEAT);
         withExistingParent("vulture_nest", modLoc("block/vulture_nest_full"));
 
         simpleItem(ModItems.VULTURE_EGG);
@@ -61,6 +63,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         advancementIcon(ModItems.SCORCHED_EARTH_ADVANCEMENT_ICON, "scorched_earth");
         advancementIcon(ModItems.THE_SUN_IS_A_DEADLY_LASER_ADVANCEMENT_ICON, "the_sun_is_a_deadly_laser");
         advancementIcon(ModItems.TOO_HOT_TO_HANDLE_ADVANCEMENT_ICON, "too_hot_to_handle");
+        advancementIcon(ModItems.FLOATING_ISLAND_ADVANCEMENT_ICON, "floating_islands");
+        getBuilder(ModItems.VULTURE_ADVANCEMENT_ICON.getId().getPath())
+                .parent(new ModelFile.UncheckedModelFile("builtin/entity"));
         simpleItem(ModItems.SCROLL_OF_LORE);
         simpleItem(ModItems.SCROLL_OF_MEDIOCRITY);
         simpleItem(ModItems.SCROLL_OF_WISDOM);
@@ -147,7 +152,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     private ItemModelBuilder advancementIcon(RegistryObject<Item> item, String texture) {
         return withExistingParent(item.getId().getPath(), mcLoc("item/generated"))
-                .texture("layer0", modLoc("advancements/" + texture));
+                .texture("layer0", modLoc("item/advancements/" + texture));
     }
 
     public void trapdoorItem(RegistryObject<Block> block) {

@@ -3,6 +3,7 @@ package net.MechGaming.EndlessSands.datagen;
 import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.block.ModBlocks;
 import net.MechGaming.EndlessSands.item.ModItems;
+import net.MechGaming.EndlessSands.recipe.ModRecipeSerializers;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.world.item.Items;
@@ -44,6 +45,45 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .requires(Items.STICK)
                 .unlockedBy(getHasName(Items.STICK), has(Items.STICK))
                 .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.TWIG_HAT.get())
+                .pattern("TTT")
+                .pattern("T T")
+                .define('T', ModBlocks.TWIG.get())
+                .unlockedBy(getHasName(ModBlocks.TWIG.get()), has(ModBlocks.TWIG.get()))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.TWIG_VISOR.get())
+                .pattern("TTT")
+                .define('T', ModBlocks.TWIG.get())
+                .unlockedBy(getHasName(ModBlocks.TWIG.get()), has(ModBlocks.TWIG.get()))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.ARM_GUARD.get())
+                .pattern("TL")
+                .pattern("LT")
+                .define('T', ModBlocks.TWIG.get())
+                .define('L', Items.LEATHER)
+                .unlockedBy(getHasName(ModItems.LEATHER_SCRAP.get()), has(ModItems.LEATHER_SCRAP.get()))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.LEATHER)
+                .pattern("SS")
+                .pattern("SS")
+                .define('S', ModItems.LEATHER_SCRAP.get())
+                .unlockedBy(getHasName(ModItems.LEATHER_SCRAP.get()), has(ModItems.LEATHER_SCRAP.get()))
+                .save(pWriter, EndlessSands.MOD_ID + ":leather_from_scraps");
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModBlocks.TWIG.get(), 3)
+                .requires(ModItems.TWIG_VISOR.get())
+                .unlockedBy(getHasName(ModItems.TWIG_VISOR.get()), has(ModItems.TWIG_VISOR.get()))
+                .save(pWriter, EndlessSands.MOD_ID + ":twig_visor_to_twigs");
+
+        SpecialRecipeBuilder.special(ModRecipeSerializers.TWIG_VISOR_ATTACHMENT.get())
+                .save(pWriter, EndlessSands.MOD_ID + ":twig_visor_attachment");
+
+        SpecialRecipeBuilder.special(ModRecipeSerializers.TWIG_HAT_SALVAGE.get())
+                .save(pWriter, EndlessSands.MOD_ID + ":twig_hat_to_twigs");
     }
 
 

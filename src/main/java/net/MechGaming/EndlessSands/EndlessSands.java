@@ -7,14 +7,19 @@ import net.MechGaming.EndlessSands.config.EndlessSandsConfig;
 import net.MechGaming.EndlessSands.effect.ModEffects;
 import net.MechGaming.EndlessSands.entity.ModEntities;
 import net.MechGaming.EndlessSands.gamerule.ModGameRules;
+import net.MechGaming.EndlessSands.inventory.ModMenuTypes;
 import net.MechGaming.EndlessSands.item.ModCreativeModeTabs;
 import net.MechGaming.EndlessSands.item.ModItems;
+import net.MechGaming.EndlessSands.mixin.BlockEntityTypeAccessor;
 import net.MechGaming.EndlessSands.network.ModMessages;
+import net.MechGaming.EndlessSands.recipe.ModRecipeSerializers;
 import net.MechGaming.EndlessSands.sound.ModSounds;
 import net.MechGaming.EndlessSands.worldgen.dimension.ModChunkGenerators;
 import net.MechGaming.EndlessSands.worldgen.structure.ModStructurePieces;
 import net.MechGaming.EndlessSands.worldgen.structure.ModStructures;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.CreativeModeTabRegistry;
 import net.minecraftforge.common.MinecraftForge;
@@ -28,6 +33,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
+
+import java.util.HashSet;
+import java.util.Set;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(EndlessSands.MOD_ID)
@@ -48,6 +56,8 @@ public class EndlessSands
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModBlockEntities.register(modEventBus);
+        ModRecipeSerializers.register(modEventBus);
+        ModMenuTypes.register(modEventBus);
 
         ModEntities.register(modEventBus);
         ModSounds.register(modEventBus);
@@ -76,7 +86,15 @@ public class EndlessSands
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-        event.enqueueWork(ModMessages::register);
+        event.enqueueWork(() -> {
+            ModMessages.register();
+
+            BlockEntityTypeAccessor brushableType = (BlockEntityTypeAccessor) (Object)
+                    BlockEntityType.BRUSHABLE_BLOCK;
+            Set<Block> validBlocks = new HashSet<>(brushableType.endlessSands$getValidBlocks());
+            validBlocks.add(ModBlocks.SUSPICIOUS_CURSED_SAND.get());
+            brushableType.endlessSands$setValidBlocks(Set.copyOf(validBlocks));
+        });
     }
     // https://www.youtube.com/watch?v=o6Xbp2dTEGA Left off at 13:30
     // Add the example block item to the building blocks tab

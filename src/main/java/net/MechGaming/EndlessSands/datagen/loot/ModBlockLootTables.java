@@ -6,19 +6,15 @@ import net.MechGaming.EndlessSands.item.ModItems;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.world.flag.FeatureFlags;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.RegistryObject;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 
 import java.util.Set;
@@ -77,8 +73,11 @@ public class ModBlockLootTables extends BlockLootSubProvider {
                                         .setProperties(StatePropertiesPredicate.Builder.properties()
                                                 .hasProperty(CursedSandLayerBlock.LAYERS, 3)))
                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 3.0F))))));
-        this.add(ModBlocks.VULTURE_NEST.get(), createSingleItemTable(
-                ModItems.VULTURE_EGG.get(), UniformGenerator.between(1.0F, 3.0F)));
+        this.add(ModBlocks.VULTURE_NEST.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(1.0F))
+                        .add(LootItem.lootTableItem(ModBlocks.TWIG.get())
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(5.0F, 10.0F))))));
 
 
         //Silk Touch Behavior (like grass)

@@ -34,6 +34,9 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.BRITTLE_BONE_MEAL.get());
                         pOutput.accept(ModItems.OLDWORLD_SCROLL.get());
                         pOutput.accept(ModItems.VULTURE_EGG.get());
+                        pOutput.accept(ModItems.TWIG_HAT.get());
+                        pOutput.accept(ModItems.TWIG_VISOR.get());
+                        pOutput.accept(ModItems.LEATHER_SCRAP.get());
                         pOutput.accept(ModItems.ARM_GUARD.get());
                         pOutput.accept(ModItems.CREATIVE_ARM_GUARD.get());
                         pOutput.accept(ModItems.VULTURE_SPAWN_EGG.get());
@@ -41,6 +44,7 @@ public class ModCreativeModeTabs {
                         //Food Items
                         pOutput.accept(ModItems.HANDFUL_OF_SCRAMBLED_EGGS.get());
                         pOutput.accept(ModItems.BOILED_VULTURE_EGG.get());
+                        pOutput.accept(ModItems.RAW_VULTURE_MEAT.get());
 
                         //Fuel Items
                         pOutput.accept(ModItems.ROTTED_WOOD.get());

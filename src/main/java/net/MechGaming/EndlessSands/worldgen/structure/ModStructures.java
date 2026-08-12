@@ -24,6 +24,14 @@ public class ModStructures {
                 }
             });
 
+    public static final RegistryObject<StructureType<FloatingIslandStructure>> FLOATING_ISLAND_TYPE =
+            STRUCTURE_TYPES.register("floating_island", () -> new StructureType<FloatingIslandStructure>() {
+                @Override
+                public Codec<FloatingIslandStructure> codec() {
+                    return FloatingIslandStructure.CODEC;
+                }
+            });
+
     public static final ResourceKey<Structure> CRUD_TREE = ResourceKey.create(
             Registries.STRUCTURE,
             ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "crud_tree")
@@ -32,6 +40,16 @@ public class ModStructures {
     public static final ResourceKey<StructureSet> CRUD_TREE_SET = ResourceKey.create(
             Registries.STRUCTURE_SET,
             ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "crud_tree")
+    );
+
+    public static final ResourceKey<Structure> FLOATING_ISLAND = ResourceKey.create(
+            Registries.STRUCTURE,
+            ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "floating_island")
+    );
+
+    public static final ResourceKey<StructureSet> FLOATING_ISLAND_SET = ResourceKey.create(
+            Registries.STRUCTURE_SET,
+            ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "floating_island")
     );
 
     public static void register(IEventBus eventBus){

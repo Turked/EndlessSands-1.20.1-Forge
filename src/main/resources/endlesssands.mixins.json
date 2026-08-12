@@ -5,12 +5,22 @@
   "refmap": "endlesssands.refmap.json",
   "plugin": "net.MechGaming.EndlessSands.mixin.EndlessSandsMixinPlugin",
   "mixins": [
+    "BlockEntityTypeAccessor",
+    "InventoryMenuMixin",
+    "InventoryMixin",
+    "ServerGamePacketListenerImplMixin",
     "MultiNoiseBiomeSourceMixin"
   ],
   "client": [
+    "AbstractContainerScreenMixin",
     "ArmGuardItemRendererMixin",
     "ArmGuardPlayerPoseMixin",
-    "NoCubesCursedSandLayerMixin"
+    "BookEditScreenMixin",
+    "CreativeModeInventoryScreenMixin",
+    "GuiHotbarMixin",
+    "InventoryScreenMixin",
+    "NoCubesCursedSandLayerMixin",
+    "SlotAccessor"
   ],
   "server": [],
   "minVersion": "0.8"
