@@ -2,6 +2,7 @@ package net.MechGaming.EndlessSands.client.screen;
 
 import net.MechGaming.EndlessSands.inventory.ArmGuardSearchMenu;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -19,12 +20,18 @@ public class ArmGuardSearchScreen extends AbstractContainerScreen<ArmGuardSearch
     }
 
     @Override
+    protected void init() {
+        super.init();
+        this.addRenderableWidget(Button.builder(Component.translatable("gui.done"), button -> submit())
+                .bounds(this.leftPos + (this.imageWidth - 60) / 2, this.topPos + 50, 60, 20)
+                .build());
+    }
+
+    @Override
     protected void containerTick() {
         super.containerTick();
-        if (!this.submitted && !this.menu.getSearchStack().isEmpty()
-                && this.minecraft != null && this.minecraft.gameMode != null) {
-            this.submitted = true;
-            this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, 0);
+        if (!this.menu.getSearchStack().isEmpty()) {
+            submit();
         }
     }
 
@@ -63,5 +70,12 @@ public class ArmGuardSearchScreen extends AbstractContainerScreen<ArmGuardSearch
         graphics.fill(x - 1, y - 1, x + 17, y + 17, 0xFF373737);
         graphics.fill(x, y, x + 17, y + 17, 0xFFFFFFFF);
         graphics.fill(x, y, x + 16, y + 16, 0xFF8B8B8B);
+    }
+
+    private void submit() {
+        if (!this.submitted && this.minecraft != null && this.minecraft.gameMode != null) {
+            this.submitted = true;
+            this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, 0);
+        }
     }
 }

@@ -36,9 +36,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModItems.BITTY_BONE.get()), has(ModItems.BITTY_BONE.get()))
                 .save(pWriter);
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModBlocks.PALM_PLANKS.get(), 2)
-                .requires(ModBlocks.PALM_LOG.get())
-                .unlockedBy(getHasName(ModBlocks.PALM_LOG.get()), has(ModBlocks.PALM_LOG.get()))
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModBlocks.ROTTED_PLANKS.get(), 2)
+                .requires(ModBlocks.ROTTED_LOG.get())
+                .unlockedBy(getHasName(ModBlocks.ROTTED_LOG.get()), has(ModBlocks.ROTTED_LOG.get()))
                 .save(pWriter);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModBlocks.TWIG.get(), 2)
@@ -78,6 +78,10 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .requires(ModItems.TWIG_VISOR.get())
                 .unlockedBy(getHasName(ModItems.TWIG_VISOR.get()), has(ModItems.TWIG_VISOR.get()))
                 .save(pWriter, EndlessSands.MOD_ID + ":twig_visor_to_twigs");
+
+        oreSmelting(pWriter, List.of(ModBlocks.CURSED_COBBLED_SAPROLITE.get()),
+                RecipeCategory.BUILDING_BLOCKS, ModBlocks.CURSED_SAPROLITE.get(),
+                0.1F, 200, "cursed_saprolite");
 
         SpecialRecipeBuilder.special(ModRecipeSerializers.TWIG_VISOR_ATTACHMENT.get())
                 .save(pWriter, EndlessSands.MOD_ID + ":twig_visor_attachment");

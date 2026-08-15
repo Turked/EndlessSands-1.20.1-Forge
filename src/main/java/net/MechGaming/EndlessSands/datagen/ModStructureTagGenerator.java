@@ -24,5 +24,6 @@ public class ModStructureTagGenerator extends TagsProvider<Structure> {
     protected void addTags(HolderLookup.Provider provider) {
         tag(ModTags.Structures.CRUD_TREES).add(ModStructures.CRUD_TREE);
         tag(ModTags.Structures.FLOATING_ISLANDS).add(ModStructures.FLOATING_ISLAND);
+        tag(ModTags.Structures.REMAINS_OF_A_VILLAGE).add(ModStructures.REMAINS_OF_A_VILLAGE);
     }
 }

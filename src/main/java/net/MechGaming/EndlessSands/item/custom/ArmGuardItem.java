@@ -48,7 +48,7 @@ public class ArmGuardItem extends Item {
         if (level.isClientSide) {
             ModMessages.sendToServer(new OpenArmGuardMenuC2SPacket());
         }
-        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+        return InteractionResultHolder.consume(stack);
     }
 
     @Override

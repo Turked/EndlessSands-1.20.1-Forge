@@ -57,7 +57,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         withExistingParent("creative_arm_guard", modLoc("item/arm_guard"));
         simpleItem(ModItems.VULTURE_SPAWN_EGG);
         simpleItem(ModItems.ITTY_BITTY_BONE);
-        simpleItem(ModItems.OLDWORLD_ROSE);
+        simpleItem(ModItems.OLDWORLD_POPPY);
         simpleItem(ModItems.ROTTED_WOOD);
         advancementIcon(ModItems.CANT_BEAT_THE_HEAT_ADVANCEMENT_ICON, "cant_beat_the_heat");
         advancementIcon(ModItems.SCORCHED_EARTH_ADVANCEMENT_ICON, "scorched_earth");
@@ -85,17 +85,17 @@ public class ModItemModelProvider extends ItemModelProvider {
         trimmedArmorItem(ModItems.DRAGONITE_LEGGINGS);
         trimmedArmorItem(ModItems.DRAGONITE_BOOTS);
 
-        simpleBlockItem(ModBlocks.PALM_DOOR);
-        trapdoorItem(ModBlocks.PALM_TRAPDOOR);
+        simpleBlockItem(ModBlocks.ROTTED_DOOR);
+        trapdoorItem(ModBlocks.ROTTED_TRAPDOOR);
 
-        blockItem(ModBlocks.PALM_STAIRS);
-        blockItem(ModBlocks.PALM_SLAB);
-        blockItem(ModBlocks.PALM_PRESSURE_PLATE);
-        blockItem(ModBlocks.PALM_FENCE_GATE);
+        blockItem(ModBlocks.ROTTED_STAIRS);
+        blockItem(ModBlocks.ROTTED_SLAB);
+        blockItem(ModBlocks.ROTTED_PRESSURE_PLATE);
+        blockItem(ModBlocks.ROTTED_FENCE_GATE);
 
-        fenceItem(ModBlocks.PALM_FENCE, ModBlocks.PALM_PLANKS);
-        buttonItem(ModBlocks.PALM_BUTTON, ModBlocks.PALM_PLANKS);
-        wallItem(ModBlocks.PALM_WALL, ModBlocks.PALM_PLANKS);
+        fenceItem(ModBlocks.ROTTED_FENCE, ModBlocks.ROTTED_PLANKS);
+        buttonItem(ModBlocks.ROTTED_BUTTON, ModBlocks.ROTTED_PLANKS);
+        wallItem(ModBlocks.ROTTED_WALL, ModBlocks.ROTTED_PLANKS);
     }
 
     // Shoutout to El_Redstoniano for making this

@@ -74,6 +74,7 @@ public class ModTags {
     public static class Structures {
         public static final TagKey<Structure> CRUD_TREES = tag("crud_trees");
         public static final TagKey<Structure> FLOATING_ISLANDS = tag("floating_islands");
+        public static final TagKey<Structure> REMAINS_OF_A_VILLAGE = tag("remains_of_a_village");
 
         private static TagKey<Structure> tag(String name) {
             return TagKey.create(Registries.STRUCTURE,

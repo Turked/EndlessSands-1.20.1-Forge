@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/outer_stairs",
-  "textures": {
-    "bottom": "endlesssands:block/palm_planks",
-    "side": "endlesssands:block/palm_planks",
-    "top": "endlesssands:block/palm_planks"
-  }
-}

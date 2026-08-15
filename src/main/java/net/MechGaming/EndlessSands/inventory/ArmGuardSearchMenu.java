@@ -83,9 +83,6 @@ public class ArmGuardSearchMenu extends AbstractContainerMenu {
         }
 
         ItemStack locator = this.searchInput.removeItemNoUpdate(INPUT_SLOT);
-        if (locator.isEmpty()) {
-            return false;
-        }
         if (!isSearchToken(locator)) {
             serverPlayer.getInventory().placeItemBackInInventory(locator);
             return false;
@@ -165,7 +162,8 @@ public class ArmGuardSearchMenu extends AbstractContainerMenu {
     }
 
     private static boolean isSearchToken(ItemStack stack) {
-        return stack.is(ModBlocks.CRUD_LOG.get().asItem())
+        return stack.isEmpty()
+                || stack.is(ModBlocks.CRUD_LOG.get().asItem())
                 || stack.is(ModBlocks.TWIG.get().asItem());
     }
 }

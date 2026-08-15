@@ -1,13 +1,13 @@
 {
   "values": [
-    "endlesssands:palm_log",
-    "endlesssands:palm_planks",
-    "endlesssands:palm_door",
-    "endlesssands:palm_trapdoor",
-    "endlesssands:palm_fence",
-    "endlesssands:palm_wall",
-    "endlesssands:palm_slab",
-    "endlesssands:palm_button",
-    "endlesssands:palm_fence_gate"
+    "endlesssands:rotted_log",
+    "endlesssands:rotted_planks",
+    "endlesssands:rotted_door",
+    "endlesssands:rotted_trapdoor",
+    "endlesssands:rotted_fence",
+    "endlesssands:rotted_wall",
+    "endlesssands:rotted_slab",
+    "endlesssands:rotted_button",
+    "endlesssands:rotted_fence_gate"
   ]
 }

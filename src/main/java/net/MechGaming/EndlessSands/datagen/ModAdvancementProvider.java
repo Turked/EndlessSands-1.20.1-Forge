@@ -234,8 +234,12 @@ public class ModAdvancementProvider extends ForgeAdvancementProvider {
                     ModItems.OLDWORLD_SCROLL.get(),
                     Component.translatable("advancements.endlesssands.the_ruins_of_the_oldworld.title"),
                     Component.literal("Your loyal avian friend can lead you there... just don't get your hopes up on what you will find."),
-                    "unobtainable",
-                    new ImpossibleTrigger.TriggerInstance(),
+                    "located_remains_of_a_village",
+                    PlayerTrigger.TriggerInstance.located(
+                            LocationPredicate.Builder.location()
+                                    .setStructure(ModStructures.REMAINS_OF_A_VILLAGE)
+                                    .build()
+                    ),
                     saver,
                     existingFileHelper
             );

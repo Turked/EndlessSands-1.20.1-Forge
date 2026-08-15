@@ -6,6 +6,8 @@ import net.MechGaming.EndlessSands.client.screen.ArmGuardSearchScreen;
 import net.MechGaming.EndlessSands.entity.ModEntities;
 import net.MechGaming.EndlessSands.entity.client.BabyVultureModel;
 import net.MechGaming.EndlessSands.entity.client.ModModelLayers;
+import net.MechGaming.EndlessSands.entity.client.OldworldGolemModel;
+import net.MechGaming.EndlessSands.entity.client.OldworldGolemRenderer;
 import net.MechGaming.EndlessSands.entity.client.RhinoModel;
 import net.MechGaming.EndlessSands.entity.client.VultureModel;
 import net.MechGaming.EndlessSands.entity.client.VultureRenderer;
@@ -23,8 +25,9 @@ import net.minecraftforge.fml.common.Mod;
 public class ModEventBusClientEvents {
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
-        event.enqueueWork(() -> MenuScreens.register(
-                ModMenuTypes.ARM_GUARD_SEARCH.get(), ArmGuardSearchScreen::new));
+        event.enqueueWork(() -> {
+            MenuScreens.register(ModMenuTypes.ARM_GUARD_SEARCH.get(), ArmGuardSearchScreen::new);
+        });
     }
 
     @SubscribeEvent
@@ -32,6 +35,7 @@ public class ModEventBusClientEvents {
         event.registerLayerDefinition(ModModelLayers.RHINO_LAYER, RhinoModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.VULTURE_LAYER, VultureModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.BABY_VULTURE_LAYER, BabyVultureModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.OLDWORLD_GOLEM_LAYER, OldworldGolemModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -39,6 +43,7 @@ public class ModEventBusClientEvents {
         event.registerEntityRenderer(ModEntities.POCKET_SAND_PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(ModEntities.VULTURE_EGG_PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(ModEntities.VULTURE.get(), VultureRenderer::new);
+        event.registerEntityRenderer(ModEntities.OLDWORLD_GOLEM.get(), OldworldGolemRenderer::new);
     }
 
     @SubscribeEvent

@@ -30,7 +30,7 @@ public class TinyOldworldJarItem extends Item {
     // loot list
     private static final List<Supplier<? extends Item>> LOOT_ITEMS = List.of(
             () -> Items.DIRT,
-            ModItems.OLDWORLD_ROSE,
+            ModItems.OLDWORLD_POPPY,
             () -> Items.EMERALD,
             () -> Items.CLAY_BALL
     );

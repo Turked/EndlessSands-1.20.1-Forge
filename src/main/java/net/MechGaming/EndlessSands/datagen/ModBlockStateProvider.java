@@ -27,6 +27,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
     protected void registerStatesAndModels() {
         blockWithRandomYRotation(ModBlocks.CURSED_SAND);
         blockWithRandomYRotation(ModBlocks.CURSED_SAPROLITE);
+        blockWithRandomYRotation(ModBlocks.CURSED_COBBLED_SAPROLITE);
         blockWithRandomYRotation(ModBlocks.CORE_ROCK);
         blockWithRandomYRotation(ModBlocks.DEEP_CRYSTAL_ROCK);
         blockWithRandomYRotation(ModBlocks.LOWER_CRUST_ROCK);
@@ -36,28 +37,36 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
         suspiciousCursedSand();
         blockWithItem(ModBlocks.VILLAGE_POT);
-        blockWithItem(ModBlocks.PALM_PLANKS);
+        blockWithItem(ModBlocks.ROTTED_PLANKS);
         vultureNest();
         twig();
+        oldworldSapling();
 
         blockWithTopBottomAndSidesRandomYRotation(ModBlocks.FERTILE_SOIL, "fertile_soil_side", "fertile_soil_top");
 
-        blockWithTopBottomAndSides(ModBlocks.PALM_LOG, "palm_log_side", "palm_log_top");
+        blockWithTopBottomAndSides(ModBlocks.ROTTED_LOG, "rotted_log_side", "rotted_log_top");
         crudLog();
 
-        stairsBlock(((StairBlock) ModBlocks.PALM_STAIRS.get()), blockTexture(ModBlocks.PALM_PLANKS.get()));
-        slabBlock(((SlabBlock) ModBlocks.PALM_SLAB.get()), blockTexture(ModBlocks.PALM_PLANKS.get()), blockTexture(ModBlocks.PALM_PLANKS.get()));
+        stairsBlock(((StairBlock) ModBlocks.ROTTED_STAIRS.get()), blockTexture(ModBlocks.ROTTED_PLANKS.get()));
+        slabBlock(((SlabBlock) ModBlocks.ROTTED_SLAB.get()), blockTexture(ModBlocks.ROTTED_PLANKS.get()), blockTexture(ModBlocks.ROTTED_PLANKS.get()));
 
-        buttonBlock(((ButtonBlock) ModBlocks.PALM_BUTTON.get()), blockTexture(ModBlocks.PALM_PLANKS.get()));
-        pressurePlateBlock(((PressurePlateBlock) ModBlocks.PALM_PRESSURE_PLATE.get()), blockTexture(ModBlocks.PALM_PLANKS.get()));
+        buttonBlock(((ButtonBlock) ModBlocks.ROTTED_BUTTON.get()), blockTexture(ModBlocks.ROTTED_PLANKS.get()));
+        pressurePlateBlock(((PressurePlateBlock) ModBlocks.ROTTED_PRESSURE_PLATE.get()), blockTexture(ModBlocks.ROTTED_PLANKS.get()));
 
-        fenceBlock(((FenceBlock) ModBlocks.PALM_FENCE.get()), blockTexture(ModBlocks.PALM_PLANKS.get()));
-        fenceGateBlock(((FenceGateBlock) ModBlocks.PALM_FENCE_GATE.get()), blockTexture(ModBlocks.PALM_PLANKS.get()));
-        wallBlock(((WallBlock) ModBlocks.PALM_WALL.get()), blockTexture(ModBlocks.PALM_PLANKS.get()));
+        fenceBlock(((FenceBlock) ModBlocks.ROTTED_FENCE.get()), blockTexture(ModBlocks.ROTTED_PLANKS.get()));
+        fenceGateBlock(((FenceGateBlock) ModBlocks.ROTTED_FENCE_GATE.get()), blockTexture(ModBlocks.ROTTED_PLANKS.get()));
+        wallBlock(((WallBlock) ModBlocks.ROTTED_WALL.get()), blockTexture(ModBlocks.ROTTED_PLANKS.get()));
 
-        doorBlockWithRenderType(((DoorBlock) ModBlocks.PALM_DOOR.get()), modLoc("block/palm_door_bottom"), modLoc("block/palm_door_top"), "cutout");
-        trapdoorBlockWithRenderType(((TrapDoorBlock) ModBlocks.PALM_TRAPDOOR.get()), modLoc("block/palm_trapdoor"), true, "cutout");
+        doorBlockWithRenderType(((DoorBlock) ModBlocks.ROTTED_DOOR.get()), modLoc("block/rotted_door_bottom"), modLoc("block/rotted_door_top"), "cutout");
+        trapdoorBlockWithRenderType(((TrapDoorBlock) ModBlocks.ROTTED_TRAPDOOR.get()), modLoc("block/rotted_trapdoor"), true, "cutout");
 
+    }
+
+    private void oldworldSapling() {
+        Block block = ModBlocks.OLDWORLD_SAPLING.get();
+        ModelFile model = models().getExistingFile(modLoc("block/oldworld_sapling"));
+        simpleBlock(block, model);
+        simpleBlockItem(block, model);
     }
 
     private void blockWithItem(RegistryObject<Block> blockRegistryObject) {

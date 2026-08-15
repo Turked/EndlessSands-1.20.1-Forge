@@ -21,6 +21,9 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
+        this.tag(BlockTags.SAPLINGS)
+                .add(ModBlocks.OLDWORLD_SAPLING.get());
+
         this.tag(ModTags.Blocks.BLOODIED)
                 .add(ModBlocks.CURSED_SAND.get());
 
@@ -32,15 +35,15 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 );
 
         this.tag(ModTags.Blocks.XYLOPHAGE)
-                .add(   ModBlocks.PALM_LOG.get(),
-                        ModBlocks.PALM_PLANKS.get(),
-                        ModBlocks.PALM_DOOR.get(),
-                        ModBlocks.PALM_TRAPDOOR.get(),
-                        ModBlocks.PALM_FENCE.get(),
-                        ModBlocks.PALM_WALL.get(),
-                        ModBlocks.PALM_SLAB.get(),
-                        ModBlocks.PALM_BUTTON.get(),
-                        ModBlocks.PALM_FENCE_GATE.get()
+                .add(   ModBlocks.ROTTED_LOG.get(),
+                        ModBlocks.ROTTED_PLANKS.get(),
+                        ModBlocks.ROTTED_DOOR.get(),
+                        ModBlocks.ROTTED_TRAPDOOR.get(),
+                        ModBlocks.ROTTED_FENCE.get(),
+                        ModBlocks.ROTTED_WALL.get(),
+                        ModBlocks.ROTTED_SLAB.get(),
+                        ModBlocks.ROTTED_BUTTON.get(),
+                        ModBlocks.ROTTED_FENCE_GATE.get()
                 );
 
         this.tag(BlockTags.NEEDS_IRON_TOOL);
@@ -54,11 +57,14 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
         this.tag(ModTags.Blocks.NEEDS_DRAGONITE_TOOL);
 
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .add(ModBlocks.CURSED_SAPROLITE.get());
+                .add(
+                        ModBlocks.CURSED_SAPROLITE.get(),
+                        ModBlocks.CURSED_COBBLED_SAPROLITE.get()
+                );
 
         this.tag(BlockTags.MINEABLE_WITH_AXE)
                 .add(
-                        ModBlocks.PALM_LOG.get(),
+                        ModBlocks.ROTTED_LOG.get(),
                         ModBlocks.CRUD_LOG.get(),
                         ModBlocks.VULTURE_NEST.get()
                 );
@@ -71,15 +77,15 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
 
         this.tag(BlockTags.FENCES)
                 .add(
-                        ModBlocks.PALM_FENCE.get()
+                        ModBlocks.ROTTED_FENCE.get()
                 );
         this.tag(BlockTags.FENCE_GATES)
                 .add(
-                        ModBlocks.PALM_FENCE_GATE.get()
+                        ModBlocks.ROTTED_FENCE_GATE.get()
                 );
         this.tag(BlockTags.WALLS)
                 .add(
-                        ModBlocks.PALM_WALL.get()
+                        ModBlocks.ROTTED_WALL.get()
                 );
     }
 }

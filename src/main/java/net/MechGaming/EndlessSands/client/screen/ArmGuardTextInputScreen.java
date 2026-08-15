@@ -67,10 +67,8 @@ public class ArmGuardTextInputScreen extends Screen {
 
     private void submit() {
         String value = this.input.getValue();
-        if (this.action != ArmGuardAction.SEARCH || !value.trim().isEmpty()) {
-            ModMessages.sendToServer(new ArmGuardCommandC2SPacket(
-                    this.action, this.vultureId, value));
-        }
+        ModMessages.sendToServer(new ArmGuardCommandC2SPacket(
+                this.action, this.vultureId, value));
         this.minecraft.setScreen(null);
     }
 

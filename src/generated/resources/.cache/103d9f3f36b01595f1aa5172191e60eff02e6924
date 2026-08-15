@@ -1,8 +1,11 @@
-// 1.20.1	2026-08-10T17:30:19.0969917	Registries
+// 1.20.1	2026-08-13T20:56:49.4998299	Registries
 a4dda94896a1efc445e919abe88e95272bf0cf6a data/endlesssands/dimension/endless_sands.json
 c9b908d0e85db69e0ce572e92f12ee2369fb998d data/endlesssands/dimension_type/endless_sands.json
 cd705a50352edf369e08c747eb845fc59a317e8b data/endlesssands/worldgen/biome/endless_desert.json
+c9f2eecdf1fee8d3ddf5df0768a73f08eb1a75b1 data/endlesssands/worldgen/biome/oldworld_growth.json
 c6795a08897feeee9c882ce6fd856a98fcc1a744 data/endlesssands/worldgen/structure/crud_tree.json
 7c1630658eb55c0b742fde48761f63362dff7e56 data/endlesssands/worldgen/structure/floating_island.json
+c8fb18d269a28ced065fefeda38c48ea30d5a823 data/endlesssands/worldgen/structure/remains_of_a_village.json
 91b11b19751da940018268539a3035a68acd48e8 data/endlesssands/worldgen/structure_set/crud_tree.json
 b30dfb77f9f17555da42c8b0dafac979a91ab1e8 data/endlesssands/worldgen/structure_set/floating_island.json
+abbda1059556d7b5a51a9004ed3c8b2d4d14bf7c data/endlesssands/worldgen/structure_set/remains_of_a_village.json

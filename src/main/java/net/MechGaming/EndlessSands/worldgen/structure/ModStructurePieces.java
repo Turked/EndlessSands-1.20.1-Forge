@@ -20,6 +20,11 @@ public class ModStructurePieces {
                     () -> (context, tag) -> new FloatingIslandStructure.Piece(
                             context.structureTemplateManager(), tag));
 
+    public static final RegistryObject<StructurePieceType> REMAINS_OF_A_VILLAGE =
+            STRUCTURE_PIECES.register("remains_of_a_village",
+                    () -> (context, tag) -> new RemainsOfVillageStructure.Piece(
+                            context.structureTemplateManager(), tag));
+
     public static void register(IEventBus eventBus){
         STRUCTURE_PIECES.register(eventBus);
     }

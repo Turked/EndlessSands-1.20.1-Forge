@@ -23,7 +23,7 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.CURSED_POCKET_SAND.get());
                         pOutput.accept(ModItems.BITTY_BONE.get());
                         pOutput.accept(ModItems.ITTY_BITTY_BONE.get());
-                        pOutput.accept(ModItems.OLDWORLD_ROSE.get());
+                        pOutput.accept(ModItems.OLDWORLD_POPPY.get());
                         pOutput.accept(ModItems.SCROLL_OF_LORE.get());
                         pOutput.accept(ModItems.SCROLL_OF_WISDOM.get());
                         pOutput.accept(ModItems.SCROLL_OF_MEDIOCRITY.get());
@@ -67,14 +67,16 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModBlocks.CURSED_SAND.get());
                         pOutput.accept(ModBlocks.SUSPICIOUS_CURSED_SAND.get());
                         pOutput.accept(ModBlocks.CURSED_SAPROLITE.get());
+                        pOutput.accept(ModBlocks.CURSED_COBBLED_SAPROLITE.get());
                         pOutput.accept(ModBlocks.CORE_ROCK.get());
                         pOutput.accept(ModBlocks.DEEP_CRYSTAL_ROCK.get());
                         pOutput.accept(ModBlocks.LOWER_CRUST_ROCK.get());
                         pOutput.accept(ModBlocks.CRYSTAL_ROCK.get());
                         pOutput.accept(ModBlocks.CURSED_BEDROCK.get());
                         pOutput.accept(ModBlocks.FERTILE_SOIL.get());
-                        pOutput.accept(ModBlocks.PALM_LOG.get());
-                        pOutput.accept(ModBlocks.PALM_PLANKS.get());
+                        pOutput.accept(ModBlocks.OLDWORLD_SAPLING.get());
+                        pOutput.accept(ModBlocks.ROTTED_LOG.get());
+                        pOutput.accept(ModBlocks.ROTTED_PLANKS.get());
 
 
                         // Advanced Blocks
@@ -83,15 +85,15 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModBlocks.VULTURE_NEST.get());
 
                         //Building Blocks
-                        pOutput.accept(ModBlocks.PALM_DOOR.get());
-                        pOutput.accept(ModBlocks.PALM_SLAB.get());
-                        pOutput.accept(ModBlocks.PALM_TRAPDOOR.get());
-                        pOutput.accept(ModBlocks.PALM_WALL.get());
-                        pOutput.accept(ModBlocks.PALM_FENCE.get());
-                        pOutput.accept(ModBlocks.PALM_FENCE_GATE.get());
-                        pOutput.accept(ModBlocks.PALM_BUTTON.get());
-                        pOutput.accept(ModBlocks.PALM_PRESSURE_PLATE.get());
-                        pOutput.accept(ModBlocks.PALM_STAIRS.get());
+                        pOutput.accept(ModBlocks.ROTTED_DOOR.get());
+                        pOutput.accept(ModBlocks.ROTTED_SLAB.get());
+                        pOutput.accept(ModBlocks.ROTTED_TRAPDOOR.get());
+                        pOutput.accept(ModBlocks.ROTTED_WALL.get());
+                        pOutput.accept(ModBlocks.ROTTED_FENCE.get());
+                        pOutput.accept(ModBlocks.ROTTED_FENCE_GATE.get());
+                        pOutput.accept(ModBlocks.ROTTED_BUTTON.get());
+                        pOutput.accept(ModBlocks.ROTTED_PRESSURE_PLATE.get());
+                        pOutput.accept(ModBlocks.ROTTED_STAIRS.get());
                     })
                     .build());
 

@@ -19,4 +19,9 @@ public class ModModelLayers {
             ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "baby_vulture_layer"),
             "main"
     );
+
+    public static final ModelLayerLocation OLDWORLD_GOLEM_LAYER = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "oldworld_golem_layer"),
+            "main"
+    );
 }

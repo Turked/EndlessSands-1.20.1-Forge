@@ -32,6 +32,14 @@ public class ModStructures {
                 }
             });
 
+    public static final RegistryObject<StructureType<RemainsOfVillageStructure>> REMAINS_OF_A_VILLAGE_TYPE =
+            STRUCTURE_TYPES.register("remains_of_a_village", () -> new StructureType<RemainsOfVillageStructure>() {
+                @Override
+                public Codec<RemainsOfVillageStructure> codec() {
+                    return RemainsOfVillageStructure.CODEC;
+                }
+            });
+
     public static final ResourceKey<Structure> CRUD_TREE = ResourceKey.create(
             Registries.STRUCTURE,
             ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "crud_tree")
@@ -50,6 +58,16 @@ public class ModStructures {
     public static final ResourceKey<StructureSet> FLOATING_ISLAND_SET = ResourceKey.create(
             Registries.STRUCTURE_SET,
             ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "floating_island")
+    );
+
+    public static final ResourceKey<Structure> REMAINS_OF_A_VILLAGE = ResourceKey.create(
+            Registries.STRUCTURE,
+            ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "remains_of_a_village")
+    );
+
+    public static final ResourceKey<StructureSet> REMAINS_OF_A_VILLAGE_SET = ResourceKey.create(
+            Registries.STRUCTURE_SET,
+            ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "remains_of_a_village")
     );
 
     public static void register(IEventBus eventBus){

@@ -8,6 +8,7 @@ import net.MechGaming.EndlessSands.worldgen.dimension.ModDimensions;
 import net.MechGaming.EndlessSands.worldgen.structure.CrudTreeStructure;
 import net.MechGaming.EndlessSands.worldgen.structure.FloatingIslandStructure;
 import net.MechGaming.EndlessSands.worldgen.structure.ModStructures;
+import net.MechGaming.EndlessSands.worldgen.structure.RemainsOfVillageStructure;
 import net.MechGaming.EndlessSands.entity.ModEntities;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
@@ -47,6 +48,7 @@ public class ModBiomeProvider {
 
     private static void bootstrapBiomes(BootstapContext<Biome> context){
         context.register(ModBiomes.ENDLESS_DESERT, endlessDesert(context));
+        context.register(ModBiomes.OLDWORLD_GROWTH, oldworldGrowth(context));
     }
 
     private static void bootstrapDimensionTypes(BootstapContext<DimensionType> context){
@@ -96,6 +98,12 @@ public class ModBiomeProvider {
                 GenerationStep.Decoration.SURFACE_STRUCTURES,
                 TerrainAdjustment.NONE
         )));
+        context.register(ModStructures.REMAINS_OF_A_VILLAGE, new RemainsOfVillageStructure(new Structure.StructureSettings(
+                biomes.getOrThrow(ModTags.Biomes.IS_CURSED_DESERT),
+                Map.of(),
+                GenerationStep.Decoration.SURFACE_STRUCTURES,
+                TerrainAdjustment.NONE
+        )));
     }
 
     private static void bootstrapStructureSets(BootstapContext<StructureSet> context) {
@@ -108,6 +116,10 @@ public class ModBiomeProvider {
         context.register(ModStructures.FLOATING_ISLAND_SET, new StructureSet(
                 structures.getOrThrow(ModStructures.FLOATING_ISLAND),
                 new RandomSpreadStructurePlacement(256, 192, RandomSpreadType.LINEAR, 982451653)
+        ));
+        context.register(ModStructures.REMAINS_OF_A_VILLAGE_SET, new StructureSet(
+                structures.getOrThrow(ModStructures.REMAINS_OF_A_VILLAGE),
+                new RandomSpreadStructurePlacement(256, 192, RandomSpreadType.LINEAR, 204685447)
         ));
     }
 
@@ -137,6 +149,26 @@ public class ModBiomeProvider {
                         .addSpawn(MobCategory.CREATURE,
                                 new MobSpawnSettings.SpawnerData(ModEntities.VULTURE.get(), 10, 4, 4))
                         .build())
+                .generationSettings(new BiomeGenerationSettings.Builder(placedFeatures, carvers).build())
+                .build();
+    }
+
+    private static Biome oldworldGrowth(BootstapContext<Biome> context) {
+        HolderGetter<PlacedFeature> placedFeatures = context.lookup(Registries.PLACED_FEATURE);
+        HolderGetter<ConfiguredWorldCarver<?>> carvers = context.lookup(Registries.CONFIGURED_CARVER);
+
+        return new Biome.BiomeBuilder()
+                .hasPrecipitation(true)
+                .temperature(0.8F)
+                .downfall(0.4F)
+                .specialEffects(new BiomeSpecialEffects.Builder()
+                        .skyColor(7907327)
+                        .fogColor(12638463)
+                        .waterColor(4159204)
+                        .waterFogColor(329011)
+                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
+                        .build())
+                .mobSpawnSettings(new MobSpawnSettings.Builder().build())
                 .generationSettings(new BiomeGenerationSettings.Builder(placedFeatures, carvers).build())
                 .build();
     }

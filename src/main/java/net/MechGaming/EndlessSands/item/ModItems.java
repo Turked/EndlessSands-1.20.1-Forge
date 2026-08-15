@@ -27,7 +27,7 @@ public class ModItems {
     public static final RegistryObject<Item> TINY_OLDWORLD_JAR = ITEMS.register("tiny_oldworld_jar",
             () -> new TinyOldworldJarItem(new Item.Properties()));
 
-    public static final RegistryObject<Item> OLDWORLD_ROSE = ITEMS.register("oldworld_rose",
+    public static final RegistryObject<Item> OLDWORLD_POPPY = ITEMS.register("oldworld_poppy",
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> BRITTLE_BONE_MEAL = ITEMS.register("brittle_bone_meal",

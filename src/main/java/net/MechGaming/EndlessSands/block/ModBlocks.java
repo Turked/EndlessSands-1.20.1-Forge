@@ -27,9 +27,10 @@ public class ModBlocks {
     // You can override default block behaviors with . like ...copy(Blocks.SAND).sound(SoundType.SOUL_SAND)
 
     public static final RegistryObject<Block> CURSED_SAPROLITE = registerBlock("cursed_saprolite",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.SANDSTONE)
-                    .strength(55.0f)
-                    .requiresCorrectToolForDrops()));
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> CURSED_COBBLED_SAPROLITE = registerBlock("cursed_cobbled_saprolite",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBBLESTONE)));
 
     public static final RegistryObject<Block> CORE_ROCK = registerBlock("core_rock",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.BEDROCK)));
@@ -53,45 +54,48 @@ public class ModBlocks {
     public static final RegistryObject<Block> FERTILE_SOIL = registerBlock("fertile_soil",
             () -> new Block(BlockBehaviour.Properties.copy(ModBlocks.CURSED_SAND.get())));
 
-    public static final RegistryObject<Block> PALM_LOG = registerBlock("palm_log",
+    public static final RegistryObject<Block> OLDWORLD_SAPLING = registerBlock("oldworld_sapling",
+            () -> new OldworldSaplingBlock(BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)));
+
+    public static final RegistryObject<Block> ROTTED_LOG = registerBlock("rotted_log",
             () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.ACACIA_LOG)));
 
     public static final RegistryObject<Block> VILLAGE_POT = registerBlock("village_pot",
             () -> new BrittlePotBlock(BlockBehaviour.Properties.copy(Blocks.DECORATED_POT)));
 
-    public static final RegistryObject<Block> PALM_PLANKS = registerBlock("palm_planks",
+    public static final RegistryObject<Block> ROTTED_PLANKS = registerBlock("rotted_planks",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
 
-    public static final RegistryObject<Block> PALM_STAIRS = registerBlock("palm_stairs",
-            () -> new StairBlock(() -> ModBlocks.PALM_PLANKS.get().defaultBlockState(),
+    public static final RegistryObject<Block> ROTTED_STAIRS = registerBlock("rotted_stairs",
+            () -> new StairBlock(() -> ModBlocks.ROTTED_PLANKS.get().defaultBlockState(),
                     BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
 
-    public static final RegistryObject<Block> PALM_SLAB = registerBlock("palm_slab",
+    public static final RegistryObject<Block> ROTTED_SLAB = registerBlock("rotted_slab",
             () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
 
-    public static final RegistryObject<Block> PALM_BUTTON = registerBlock("palm_button",
+    public static final RegistryObject<Block> ROTTED_BUTTON = registerBlock("rotted_button",
             () -> new ButtonBlock(BlockBehaviour.Properties.copy(Blocks.OAK_BUTTON),
                     BlockSetType.ACACIA, 10, true));
 
-    public static final RegistryObject<Block> PALM_PRESSURE_PLATE = registerBlock("palm_pressure_plate",
+    public static final RegistryObject<Block> ROTTED_PRESSURE_PLATE = registerBlock("rotted_pressure_plate",
             () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING,
                     BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS),
                     BlockSetType.ACACIA));
 
-    public static final RegistryObject<Block> PALM_FENCE = registerBlock("palm_fence",
+    public static final RegistryObject<Block> ROTTED_FENCE = registerBlock("rotted_fence",
             () -> new FenceBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
 
-    public static final RegistryObject<Block> PALM_FENCE_GATE = registerBlock("palm_fence_gate",
+    public static final RegistryObject<Block> ROTTED_FENCE_GATE = registerBlock("rotted_fence_gate",
             () -> new FenceGateBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS),
                     SoundEvents.FENCE_GATE_OPEN, SoundEvents.FENCE_GATE_CLOSE));
 
-    public static final RegistryObject<Block> PALM_WALL = registerBlock("palm_wall",
+    public static final RegistryObject<Block> ROTTED_WALL = registerBlock("rotted_wall",
             () -> new WallBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
 
-    public static final RegistryObject<Block> PALM_DOOR = registerBlock("palm_door",
+    public static final RegistryObject<Block> ROTTED_DOOR = registerBlock("rotted_door",
             () -> new DoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS).noOcclusion(), BlockSetType.ACACIA));
 
-    public static final RegistryObject<Block> PALM_TRAPDOOR = registerBlock("palm_trapdoor",
+    public static final RegistryObject<Block> ROTTED_TRAPDOOR = registerBlock("rotted_trapdoor",
             () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS).noOcclusion(), BlockSetType.ACACIA));
 
     public static final RegistryObject<Block> CURSED_SAND_LAYER = registerBlockWithoutItem("cursed_sand_layer",

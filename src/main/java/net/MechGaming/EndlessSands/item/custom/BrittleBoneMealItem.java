@@ -1,6 +1,7 @@
 package net.MechGaming.EndlessSands.item.custom;
 
 import javax.annotation.Nullable;
+import net.MechGaming.EndlessSands.block.custom.OldworldSaplingBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -89,6 +90,16 @@ public class BrittleBoneMealItem extends Item {
         BlockState blockstate = pLevel.getBlockState(pPos);
         int hook = net.minecraftforge.event.ForgeEventFactory.onApplyBonemeal(player, pLevel, pPos, blockstate, pStack);
         if (hook != 0) return hook > 0;
+        if (blockstate.getBlock() instanceof OldworldSaplingBlock oldworldSapling) {
+            if (!oldworldSapling.isValidBonemealTarget(pLevel, pPos, blockstate, pLevel.isClientSide)) {
+                return false;
+            }
+            if (pLevel instanceof ServerLevel serverLevel) {
+                oldworldSapling.applyBrittleBoneMeal(serverLevel, pPos, blockstate);
+                pStack.shrink(1);
+            }
+            return true;
+        }
         if (blockstate.getBlock() instanceof BonemealableBlock) {
             BonemealableBlock bonemealableblock = (BonemealableBlock)blockstate.getBlock();
             if (bonemealableblock.isValidBonemealTarget(pLevel, pPos, blockstate, pLevel.isClientSide)) {

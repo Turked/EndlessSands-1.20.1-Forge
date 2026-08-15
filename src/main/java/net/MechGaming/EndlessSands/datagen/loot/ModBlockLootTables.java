@@ -27,30 +27,30 @@ public class ModBlockLootTables extends BlockLootSubProvider {
     @Override
     protected void generate() {
         //Drop Self
-        this.dropSelf(ModBlocks.PALM_LOG.get());
-        this.dropSelf(ModBlocks.PALM_PLANKS.get());
+        this.dropSelf(ModBlocks.ROTTED_LOG.get());
+        this.dropSelf(ModBlocks.ROTTED_PLANKS.get());
         this.dropSelf(ModBlocks.CRUD_LOG.get());
         this.dropSelf(ModBlocks.TWIG.get());
+        this.dropSelf(ModBlocks.OLDWORLD_SAPLING.get());
 
-        this.dropSelf(ModBlocks.PALM_STAIRS.get());
-        this.dropSelf(ModBlocks.PALM_BUTTON.get());
-        this.dropSelf(ModBlocks.PALM_PRESSURE_PLATE.get());
-        this.dropSelf(ModBlocks.PALM_TRAPDOOR.get());
-        this.dropSelf(ModBlocks.PALM_FENCE.get());
-        this.dropSelf(ModBlocks.PALM_FENCE_GATE.get());
-        this.dropSelf(ModBlocks.PALM_WALL.get());
+        this.dropSelf(ModBlocks.ROTTED_STAIRS.get());
+        this.dropSelf(ModBlocks.ROTTED_BUTTON.get());
+        this.dropSelf(ModBlocks.ROTTED_PRESSURE_PLATE.get());
+        this.dropSelf(ModBlocks.ROTTED_TRAPDOOR.get());
+        this.dropSelf(ModBlocks.ROTTED_FENCE.get());
+        this.dropSelf(ModBlocks.ROTTED_FENCE_GATE.get());
+        this.dropSelf(ModBlocks.ROTTED_WALL.get());
 
-        //Change later to drop cobbled versions
-        this.dropSelf(ModBlocks.CURSED_SAPROLITE.get());
+        this.dropSelf(ModBlocks.CURSED_COBBLED_SAPROLITE.get());
         this.dropSelf(ModBlocks.DEEP_CRYSTAL_ROCK.get());
         this.dropSelf(ModBlocks.LOWER_CRUST_ROCK.get());
         this.dropSelf(ModBlocks.CRYSTAL_ROCK.get());
         this.dropSelf(ModBlocks.CURSED_BEDROCK.get());
 
-        this.add(ModBlocks.PALM_SLAB.get(),
-                block -> createSlabItemTable(ModBlocks.PALM_SLAB.get()));
-        this.add(ModBlocks.PALM_DOOR.get(),
-                block -> createDoorTable(ModBlocks.PALM_DOOR.get()));
+        this.add(ModBlocks.ROTTED_SLAB.get(),
+                block -> createSlabItemTable(ModBlocks.ROTTED_SLAB.get()));
+        this.add(ModBlocks.ROTTED_DOOR.get(),
+                block -> createDoorTable(ModBlocks.ROTTED_DOOR.get()));
 
         //Randomized Drops
         this.add(ModBlocks.CURSED_SAND.get(), createSingleItemTable(
@@ -85,6 +85,8 @@ public class ModBlockLootTables extends BlockLootSubProvider {
                 ModBlocks.FERTILE_SOIL.get(), ModBlocks.CURSED_SAND.get()));
         this.add(ModBlocks.VILLAGE_POT.get(), createSingleItemTableWithSilkTouch(
                 ModBlocks.VILLAGE_POT.get(), ModItems.ROTTED_WOOD.get()));
+        this.add(ModBlocks.CURSED_SAPROLITE.get(), createSingleItemTableWithSilkTouch(
+                ModBlocks.CURSED_SAPROLITE.get(), ModBlocks.CURSED_COBBLED_SAPROLITE.get()));
 
         //Drop Nothing
         this.add(ModBlocks.CORE_ROCK.get(), noDrop());

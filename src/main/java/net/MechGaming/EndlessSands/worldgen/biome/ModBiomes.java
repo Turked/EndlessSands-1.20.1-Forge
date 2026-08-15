@@ -9,5 +9,7 @@ import net.minecraft.world.level.biome.Biome;
 public class ModBiomes {
     public static final ResourceKey<Biome> ENDLESS_DESERT = ResourceKey.create(Registries.BIOME,
             ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "endless_desert"));
+    public static final ResourceKey<Biome> OLDWORLD_GROWTH = ResourceKey.create(Registries.BIOME,
+            ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "oldworld_growth"));
 
 }

@@ -709,7 +709,11 @@ public class VultureEntity extends TamableAnimal {
 
         GuardCommand command;
         BlockPos target;
-        if (locator.is(ModBlocks.CRUD_LOG.get().asItem())) {
+        if (locator.isEmpty()) {
+            command = GuardCommand.SEARCH_REMAINS_OF_A_VILLAGE;
+            target = player.serverLevel().findNearestMapStructure(
+                    ModTags.Structures.REMAINS_OF_A_VILLAGE, this.blockPosition(), 256, false);
+        } else if (locator.is(ModBlocks.CRUD_LOG.get().asItem())) {
             command = GuardCommand.SEARCH_CRUD_TREE;
             target = player.serverLevel().findNearestMapStructure(
                     ModTags.Structures.CRUD_TREES, this.blockPosition(), 256, false);
@@ -808,7 +812,7 @@ public class VultureEntity extends TamableAnimal {
                 tickCommandFollow(serverPlayer);
                 yield true;
             }
-            case SEARCH_CRUD_TREE, SEARCH_FLOATING_ISLAND, FLY_HOME -> {
+            case SEARCH_CRUD_TREE, SEARCH_FLOATING_ISLAND, SEARCH_REMAINS_OF_A_VILLAGE, FLY_HOME -> {
                 tickCommandDestination();
                 yield true;
             }
@@ -1888,7 +1892,14 @@ public class VultureEntity extends TamableAnimal {
         if (this.distanceToSqr(item) < 1.8D) {
             this.brainState = BrainState.EATING_ITEM;
             this.actionTicks = EATING_TICKS;
-            this.entityData.set(MOUTH_STACK, item.getItem().copyWithCount(1));
+            ItemStack itemStack = item.getItem();
+            this.entityData.set(MOUTH_STACK, itemStack.copyWithCount(1));
+            itemStack.shrink(1);
+            if (itemStack.isEmpty()) {
+                item.discard();
+            } else {
+                item.setItem(itemStack);
+            }
             setAnimation(VultureAnimation.EATING_OFF_GROUND);
         }
     }
@@ -1901,13 +1912,6 @@ public class VultureEntity extends TamableAnimal {
             return;
         }
 
-        Entity entity = this.level().getEntity(this.targetItemId);
-        if (entity instanceof ItemEntity item && item.isAlive() && isMeat(item.getItem())) {
-            item.getItem().shrink(1);
-            if (item.getItem().isEmpty()) {
-                item.discard();
-            }
-        }
         this.entityData.set(MOUTH_STACK, ItemStack.EMPTY);
         takeOff();
     }
@@ -1938,18 +1942,15 @@ public class VultureEntity extends TamableAnimal {
         if (!creativeGuard && !this.isTame() && this.actionTicks <= 0) {
             ItemStack meat = player.getMainHandItem();
             this.entityData.set(MOUTH_STACK, meat.copyWithCount(1));
+            if (!player.getAbilities().instabuild) {
+                meat.shrink(1);
+            }
             this.actionTicks = EATING_TICKS;
         } else if (!creativeGuard && !this.isTame()) {
             this.actionTicks--;
             playEatingSoundIfDue();
             if (this.actionTicks <= 0) {
-                ItemStack meat = player.getMainHandItem();
-                if (!meat.isEmpty() && isMeat(meat)) {
-                    if (!player.getAbilities().instabuild) {
-                        meat.shrink(1);
-                    }
-                    tryTameFromFood(player, this.entityData.get(MOUTH_STACK));
-                }
+                tryTameFromFood(player, this.entityData.get(MOUTH_STACK));
                 this.entityData.set(MOUTH_STACK, ItemStack.EMPTY);
                 if (!this.isTame()) {
                     takeOff();
@@ -2580,7 +2581,8 @@ public class VultureEntity extends TamableAnimal {
         FOLLOW,
         SEARCH_CRUD_TREE,
         SEARCH_FLOATING_ISLAND,
-        FLY_HOME;
+        FLY_HOME,
+        SEARCH_REMAINS_OF_A_VILLAGE;
 
         private static GuardCommand byId(int id) {
             GuardCommand[] values = values();

@@ -1,6 +1,7 @@
 package net.MechGaming.EndlessSands.entity;
 
 import net.MechGaming.EndlessSands.EndlessSands;
+import net.MechGaming.EndlessSands.entity.custom.OldworldGolemEntity;
 import net.MechGaming.EndlessSands.entity.custom.PocketSandProjectileEntity;
 import net.MechGaming.EndlessSands.entity.custom.RhinoEntity;
 import net.MechGaming.EndlessSands.entity.custom.VultureEntity;
@@ -26,6 +27,13 @@ public class ModEntities {
                     .clientTrackingRange(10)
                     .updateInterval(2)
                     .build("vulture"));
+
+    public static final RegistryObject<EntityType<OldworldGolemEntity>> OLDWORLD_GOLEM =
+            ENTITY_TYPES.register("oldworld_golem", () -> EntityType.Builder.of(OldworldGolemEntity::new, MobCategory.CREATURE)
+                    .sized(1.4F, 2.7F)
+                    .clientTrackingRange(10)
+                    .updateInterval(3)
+                    .build("oldworld_golem"));
 
     public static void register(IEventBus eventBus){
         ENTITY_TYPES.register(eventBus);
