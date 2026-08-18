@@ -26,6 +26,10 @@ public final class Lavalogging {
                 && !state.getValue(LAVA_LOGGED);
     }
 
+    public static BlockState geometryState(BlockState state) {
+        return isLavaLogged(state) ? state.setValue(LAVA_LOGGED, false) : state;
+    }
+
     public static BlockState withFluid(BlockState state, Fluid fluid) {
         return state
                 .setValue(BlockStateProperties.WATERLOGGED, fluid == Fluids.WATER)

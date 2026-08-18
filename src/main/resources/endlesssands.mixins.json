@@ -7,10 +7,13 @@
   "mixins": [
     "BlockEntityTypeAccessor",
     "BlockItemMixin",
+    "BlockMixin",
     "BlockStateBaseMixin",
+    "BlockStateCacheMixin",
     "BucketItemMixin",
     "InventoryMenuMixin",
     "InventoryMixin",
+    "LavaFluidMixin",
     "ServerGamePacketListenerImplMixin",
     "MultiNoiseBiomeSourceMixin",
     "SimpleWaterloggedBlockMixin",
