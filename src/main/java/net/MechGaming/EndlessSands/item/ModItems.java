@@ -5,15 +5,21 @@ import net.MechGaming.EndlessSands.block.custom.BrittlePotBlock;
 import net.MechGaming.EndlessSands.item.custom.*;
 import net.minecraft.world.item.*;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.rmi.registry.Registry;
-
 public class ModItems {
+    public static final String UPGRADE_AQUATIC_MOD_ID = "upgrade_aquatic";
+
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, EndlessSands.MOD_ID);
+    private static final DeferredRegister<Item> OPTIONAL_ITEMS =
+            DeferredRegister.create(ForgeRegistries.ITEMS, EndlessSands.MOD_ID);
+
+    public static final RegistryObject<Item> ELDER_EYE = OPTIONAL_ITEMS.register("elder_eye",
+            () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> CURSED_POCKET_SAND = ITEMS.register("cursed_pocket_sand",
             () -> new CursedPocketSandItem(new Item.Properties()));
@@ -130,5 +136,8 @@ public class ModItems {
 
     public static void register(IEventBus eventBus){
         ITEMS.register(eventBus);
+        if (!ModList.get().isLoaded(UPGRADE_AQUATIC_MOD_ID)) {
+            OPTIONAL_ITEMS.register(eventBus);
+        }
     }
 }

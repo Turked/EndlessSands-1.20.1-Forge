@@ -58,6 +58,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.VULTURE_SPAWN_EGG);
         simpleItem(ModItems.ITTY_BITTY_BONE);
         simpleItem(ModItems.OLDWORLD_POPPY);
+        simpleItem(ModItems.ELDER_EYE);
         simpleItem(ModItems.ROTTED_WOOD);
         advancementIcon(ModItems.CANT_BEAT_THE_HEAT_ADVANCEMENT_ICON, "cant_beat_the_heat");
         advancementIcon(ModItems.SCORCHED_EARTH_ADVANCEMENT_ICON, "scorched_earth");

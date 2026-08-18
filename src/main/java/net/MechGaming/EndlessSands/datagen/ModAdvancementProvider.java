@@ -5,6 +5,7 @@ import net.MechGaming.EndlessSands.block.ModBlocks;
 import net.MechGaming.EndlessSands.effect.ModEffects;
 import net.MechGaming.EndlessSands.entity.ModEntities;
 import net.MechGaming.EndlessSands.item.ModItems;
+import net.MechGaming.EndlessSands.util.ModTags;
 import net.MechGaming.EndlessSands.worldgen.dimension.ModDimensions;
 import net.MechGaming.EndlessSands.worldgen.structure.ModStructures;
 import net.minecraft.advancements.Advancement;
@@ -14,6 +15,9 @@ import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.EffectsChangedTrigger;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.ImpossibleTrigger;
+import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.critereon.KilledTrigger;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.advancements.critereon.MobEffectsPredicate;
@@ -27,7 +31,9 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeAdvancementProvider;
 import net.minecraftforge.registries.RegistryObject;
@@ -48,6 +54,11 @@ public class ModAdvancementProvider extends ForgeAdvancementProvider {
     private static final class EndlessSandsAdvancements implements AdvancementGenerator {
         private static final ResourceLocation ROOT_ID = modLoc("what_have_i_done");
         private static final ResourceLocation BACKGROUND = modLoc("textures/block/cursed_sand.png");
+        private static final ResourceLocation FAR_OFF_VOICE_ROOT_ID = modLoc("a_far_off_voice");
+        private static final ResourceLocation END_PORTAL_BACKGROUND = ResourceLocation.fromNamespaceAndPath(
+                "minecraft",
+                "textures/entity/end_portal.png"
+        );
         private static final TextColor ORANGE = TextColor.fromRgb(0xFFA500);
         private static final TextColor RED = TextColor.fromRgb(0xFF5555);
         private static final TextColor COOL_BLUE = TextColor.fromRgb(0x55D6FF);
@@ -76,6 +87,78 @@ public class ModAdvancementProvider extends ForgeAdvancementProvider {
                             )
                     )
                     .save(saver, ROOT_ID, existingFileHelper);
+
+            Advancement farOffVoiceRoot = Advancement.Builder.advancement()
+                    .display(
+                            Items.DIAMOND_SWORD,
+                            Component.translatable("advancements.endlesssands.a_far_off_voice.title"),
+                            Component.translatable("advancements.endlesssands.a_far_off_voice.description"),
+                            END_PORTAL_BACKGROUND,
+                            FrameType.TASK,
+                            false,
+                            false,
+                            false
+                    )
+                    .addCriterion("show_tab", PlayerTrigger.TriggerInstance.tick())
+                    .save(saver, FAR_OFF_VOICE_ROOT_ID, existingFileHelper);
+
+            Advancement slayChampion = Advancement.Builder.advancement()
+                    .parent(farOffVoiceRoot)
+                    .display(
+                            Items.DIAMOND_SWORD,
+                            Component.translatable("advancements.endlesssands.slay_the_champion.title"),
+                            Component.literal("Woah I'm surprised there's any of your kind left in that realm, I thought you all evolved into your end. Collect that ")
+                                    .append(bold("fragement"))
+                                    .append(Component.literal(" of the champion and keep it safe. I'll speak to you again soon.\n"))
+                                    .append(colored("Defeat any boss\n", ORANGE))
+                                    .append(colored(
+                                            "I wonder what that strange voice was, should I really be listening to it?",
+                                            COOL_BLUE
+                                    )),
+                            null,
+                            FrameType.CHALLENGE,
+                            true,
+                            true,
+                            false
+                    )
+                    .addCriterion(
+                            "slain_boss",
+                            KilledTrigger.TriggerInstance.playerKilledEntity(
+                                    EntityPredicate.Builder.entity().of(Tags.EntityTypes.BOSSES)
+                            )
+                    )
+                    .save(saver, modLoc("slay_the_champion"), existingFileHelper);
+
+            Advancement.Builder.advancement()
+                    .parent(slayChampion)
+                    .display(
+                            Items.NETHER_STAR,
+                            Component.translatable("advancements.endlesssands.collect_fragments.title"),
+                            Component.translatable("advancements.endlesssands.collect_fragments.description"),
+                            null,
+                            FrameType.TASK,
+                            true,
+                            true,
+                            false
+                    )
+                    .addCriterion(
+                            "collected_all_fragments",
+                            InventoryChangeTrigger.TriggerInstance.hasItems(
+                                    ItemPredicate.Builder.item()
+                                            .of(ModTags.Items.ELDER_EYES)
+                                            .withCount(MinMaxBounds.Ints.atLeast(1))
+                                            .build(),
+                                    ItemPredicate.Builder.item()
+                                            .of(Items.NETHER_STAR)
+                                            .withCount(MinMaxBounds.Ints.atLeast(1))
+                                            .build(),
+                                    ItemPredicate.Builder.item()
+                                            .of(Items.DRAGON_EGG)
+                                            .withCount(MinMaxBounds.Ints.atLeast(1))
+                                            .build()
+                            )
+                    )
+                    .save(saver, modLoc("collect_fragments"), existingFileHelper);
 
             heatstrokeAdvancement(
                     root,

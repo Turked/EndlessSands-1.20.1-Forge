@@ -28,6 +28,9 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.SCROLL_OF_WISDOM.get());
                         pOutput.accept(ModItems.SCROLL_OF_MEDIOCRITY.get());
                         pOutput.accept(ModItems.SCROLL_OF_YEARNING.get());
+                        if (ModItems.ELDER_EYE.isPresent()) {
+                            pOutput.accept(ModItems.ELDER_EYE.get());
+                        }
 
                         // Advanced Items
                         pOutput.accept(ModItems.TINY_OLDWORLD_JAR.get());

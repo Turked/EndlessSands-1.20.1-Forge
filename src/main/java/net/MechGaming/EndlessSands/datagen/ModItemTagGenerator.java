@@ -7,6 +7,7 @@ import net.MechGaming.EndlessSands.util.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -48,5 +49,9 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         this.tag(ModTags.Items.IS_SUN_GEAR).add(ModItems.TWIG_HAT.get());
         this.tag(ModTags.Items.DOES_GIVE_SHADE).add(ModItems.TWIG_HAT.get());
         this.tag(ModTags.Items.IS_SHADE).add(ModItems.TWIG_HAT.get());
+
+        this.tag(ModTags.Items.ELDER_EYES)
+                .addOptional(ModItems.ELDER_EYE.getId())
+                .addOptional(ResourceLocation.fromNamespaceAndPath("upgrade_aquatic", "elder_eye"));
     }
 }

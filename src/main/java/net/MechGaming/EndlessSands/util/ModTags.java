@@ -61,6 +61,9 @@ public class ModTags {
         // Items vultures recognize as meat.
         public static final TagKey<Item> IS_MEAT = tag("is_meat");
 
+        // The built-in Elder Eye or Upgrade Aquatic's Elder Eye block item.
+        public static final TagKey<Item> ELDER_EYES = tag("elder_eyes");
+
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(
                     ResourceLocation.fromNamespaceAndPath(

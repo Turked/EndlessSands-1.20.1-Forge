@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-13T20:56:49.5038298	Block States: endlesssands
+// 1.20.1	2026-08-14T21:33:10.9197437	Block States: endlesssands
 939338aa0b6d7b793c5566ba884ddaffbd4ba410 assets/endlesssands/blockstates/core_rock.json
 b02c6f961a95e4222b2bef7b9769eb079a204648 assets/endlesssands/blockstates/crud_log.json
 49c7e1506256bf5f3459d07b8c1c4e21068a7243 assets/endlesssands/blockstates/crystal_rock.json
@@ -19,8 +19,8 @@ d57f3c48b523e059f54fe3aba9f4ec4111659fee assets/endlesssands/blockstates/rotted_
 5cfea937e497aad05abca28a930494ebaefc955f assets/endlesssands/blockstates/rotted_planks.json
 b11f672fbbff18fe8e75244e1f1e0b31ef0729bc assets/endlesssands/blockstates/rotted_pressure_plate.json
 94203c383189df80e459ca419a3ab08f63f27059 assets/endlesssands/blockstates/rotted_slab.json
-8238bd34fd665bdd3bd4a2eff88a8ac31ef1bdb9 assets/endlesssands/blockstates/rotted_stairs.json
-c83df92528361d142106c198c9bd1d1027ec9ff8 assets/endlesssands/blockstates/rotted_trapdoor.json
+545b3c938376e2d2a9369d68a0a1b8fd600c48e4 assets/endlesssands/blockstates/rotted_stairs.json
+ffd522c7fde90c410258fbae7efb2fc5b83ddfee assets/endlesssands/blockstates/rotted_trapdoor.json
 db5383aa3bbdd1a640a62fef92b20770f9fff094 assets/endlesssands/blockstates/rotted_wall.json
 9945dae1c9d82e4c896a25da7a2979d1f4c19b78 assets/endlesssands/blockstates/suspicious_cursed_sand.json
 3723c375c64e88b7e76b798c55d0dffab192d071 assets/endlesssands/blockstates/twig.json

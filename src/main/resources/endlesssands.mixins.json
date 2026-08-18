@@ -6,10 +6,15 @@
   "plugin": "net.MechGaming.EndlessSands.mixin.EndlessSandsMixinPlugin",
   "mixins": [
     "BlockEntityTypeAccessor",
+    "BlockItemMixin",
+    "BlockStateBaseMixin",
+    "BucketItemMixin",
     "InventoryMenuMixin",
     "InventoryMixin",
     "ServerGamePacketListenerImplMixin",
-    "MultiNoiseBiomeSourceMixin"
+    "MultiNoiseBiomeSourceMixin",
+    "SimpleWaterloggedBlockMixin",
+    "StateDefinitionBuilderMixin"
   ],
   "client": [
     "AbstractContainerScreenMixin",

@@ -17,6 +17,7 @@
   "item.endlesssands.dragonite_chestplate": "Dragonite Chestplate",
   "item.endlesssands.dragonite_leggings": "Dragonite Leggings",
   "item.endlesssands.dragonite_boots": "Dragonite Boots",
+  "item.endlesssands.elder_eye": "Elder Eye",
 
   "item.endlesssands.tiny_oldworld_jar": "Tiny Oldworld Crate",
   "item.endlesssands.brittle_bone_meal": "Brittle Bone Meal",
@@ -128,5 +129,10 @@
   "advancements.endlesssands.new_best_friend.title": "New best friend",
   "advancements.endlesssands.new_best_friend.description": "Tame yourself a loyal avian companion... just make sure you've got the proper gear to do so first",
   "advancements.endlesssands.the_ruins_of_the_oldworld.title": "The ruins of the Oldworld",
-  "advancements.endlesssands.the_ruins_of_the_oldworld.description": "Your loyal avian friend can lead you there... just don't get your hopes up on what you will find."
+  "advancements.endlesssands.the_ruins_of_the_oldworld.description": "Your loyal avian friend can lead you there... just don't get your hopes up on what you will find.",
+  "advancements.endlesssands.a_far_off_voice.title": "A far off voice",
+  "advancements.endlesssands.a_far_off_voice.description": "A distant presence reaches across realms.",
+  "advancements.endlesssands.slay_the_champion.title": "Slay the champion",
+  "advancements.endlesssands.collect_fragments.title": "Collect fragments",
+  "advancements.endlesssands.collect_fragments.description": "Collect an Elder Eye, Nether Star, and Dragon Egg."
 }

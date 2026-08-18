@@ -1,6 +1,7 @@
-// 1.20.1	2026-08-11T02:17:09.2078788	Tags for minecraft:item mod id endlesssands
+// 1.20.1	2026-08-14T21:02:37.2209745	Tags for minecraft:item mod id endlesssands
 c47bcdcf34bc752887cea25ae782f4c7c9b1dc2c data/endlesssands/tags/items/crud_log_recipe_equivalents.json
 0e4bdb03ec35370825a62f716e765a900bb4152e data/endlesssands/tags/items/does_give_shade.json
+2b1f4d34c8f03af5af25af8d0530786390304f30 data/endlesssands/tags/items/elder_eyes.json
 5086889ee0ab95f358d85f6cbbc52c030ffb3428 data/endlesssands/tags/items/is_meat.json
 0e4bdb03ec35370825a62f716e765a900bb4152e data/endlesssands/tags/items/is_shade.json
 0e4bdb03ec35370825a62f716e765a900bb4152e data/endlesssands/tags/items/is_sun_gear.json

@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-13T08:08:36.8666612	Item Models: endlesssands
+// 1.20.1	2026-08-14T21:02:37.2159794	Item Models: endlesssands
 6dd1062ef8b55ea829254b8182e54110949a25ff assets/endlesssands/models/item/bitty_bone.json
 96052d925e03614d647139bdf11ae2053e6b65a9 assets/endlesssands/models/item/boiled_vulture_egg.json
 4e7f3e0181db965300caa704f8a5636cc0c3d879 assets/endlesssands/models/item/brittle_bone_meal.json
@@ -55,6 +55,7 @@ ba287d3d19743ba28fb443e1d15e997ed94cff3c assets/endlesssands/models/item/dragoni
 b92c08b404da891e6960cd3e996ff5650672ed9b assets/endlesssands/models/item/dragonite_pickaxe.json
 bfd411d1eeb6dad5cdba3acd8ddf97d848851cdb assets/endlesssands/models/item/dragonite_shovel.json
 584701da02cf12f2e11e1160e53d60e673e9dd27 assets/endlesssands/models/item/dragonite_sword.json
+6526993b36ec900042028b6e12358e989ee514e6 assets/endlesssands/models/item/elder_eye.json
 e5b29f3b52734a0e453e3472494a30fb715c3d62 assets/endlesssands/models/item/floating_island_advancement_icon.json
 de2992b1d1f0759804126c1a347e56e4f190de81 assets/endlesssands/models/item/handful_of_scrambled_eggs.json
 3028fb4ea117a46cd8a89bb54bef54b903650e4a assets/endlesssands/models/item/itty_bitty_bone.json
