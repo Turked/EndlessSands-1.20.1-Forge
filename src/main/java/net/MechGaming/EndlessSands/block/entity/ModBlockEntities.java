@@ -16,6 +16,10 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("vulture_nest", () ->
                     BlockEntityType.Builder.of(VultureNestBlockEntity::new, ModBlocks.VULTURE_NEST.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<LinedStairBlockEntity>> LINED_STAIRS =
+            BLOCK_ENTITIES.register("lined_stairs", () ->
+                    BlockEntityType.Builder.of(LinedStairBlockEntity::new, ModBlocks.LINED_STAIRS.get()).build(null));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }

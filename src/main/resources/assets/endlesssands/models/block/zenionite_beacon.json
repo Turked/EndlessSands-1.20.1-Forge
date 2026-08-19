@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/beacon",
+  "textures": {
+    "particle": "endlesssands:block/missing_texture",
+    "glass": "endlesssands:block/missing_texture",
+    "obsidian": "endlesssands:block/missing_texture",
+    "beacon": "endlesssands:block/missing_texture"
+  }
+}

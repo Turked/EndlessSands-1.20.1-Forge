@@ -40,6 +40,7 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.TWIG_HAT.get());
                         pOutput.accept(ModItems.TWIG_VISOR.get());
                         pOutput.accept(ModItems.LEATHER_SCRAP.get());
+                        pOutput.accept(ModItems.LIQUID_LINING.get());
                         pOutput.accept(ModItems.ARM_GUARD.get());
                         pOutput.accept(ModItems.CREATIVE_ARM_GUARD.get());
                         pOutput.accept(ModItems.VULTURE_SPAWN_EGG.get());
@@ -75,6 +76,11 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModBlocks.DEEP_CRYSTAL_ROCK.get());
                         pOutput.accept(ModBlocks.LOWER_CRUST_ROCK.get());
                         pOutput.accept(ModBlocks.CRYSTAL_ROCK.get());
+                        pOutput.accept(ModBlocks.ZENIONITE.get());
+                        pOutput.accept(ModBlocks.ZENIONITE_PORTAL_FRAME.get());
+                        pOutput.accept(ModBlocks.ZENIONITE_BEACON.get());
+                        pOutput.accept(ModBlocks.ZENIONITE_STAIRS.get());
+                        pOutput.accept(ModBlocks.LINED_STAIRS_ITEM.get());
                         pOutput.accept(ModBlocks.CURSED_BEDROCK.get());
                         pOutput.accept(ModBlocks.FERTILE_SOIL.get());
                         pOutput.accept(ModBlocks.OLDWORLD_SAPLING.get());

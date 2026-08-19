@@ -41,6 +41,12 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModBlocks.ROTTED_LOG.get()), has(ModBlocks.ROTTED_LOG.get()))
                 .save(pWriter);
 
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.LIQUID_LINING.get(), 16)
+                .requires(Items.HONEYCOMB)
+                .requires(Items.SLIME_BALL)
+                .unlockedBy(getHasName(Items.HONEYCOMB), has(Items.HONEYCOMB))
+                .save(pWriter);
+
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModBlocks.TWIG.get(), 2)
                 .requires(Items.STICK)
                 .unlockedBy(getHasName(Items.STICK), has(Items.STICK))
@@ -88,6 +94,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         SpecialRecipeBuilder.special(ModRecipeSerializers.TWIG_HAT_SALVAGE.get())
                 .save(pWriter, EndlessSands.MOD_ID + ":twig_hat_to_twigs");
+
+        SpecialRecipeBuilder.special(ModRecipeSerializers.LINED_STAIRS.get())
+                .save(pWriter, EndlessSands.MOD_ID + ":lined_stairs");
     }
 
 

@@ -34,6 +34,10 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.dropSelf(ModBlocks.OLDWORLD_SAPLING.get());
 
         this.dropSelf(ModBlocks.ROTTED_STAIRS.get());
+        this.dropSelf(ModBlocks.ZENIONITE.get());
+        this.dropSelf(ModBlocks.ZENIONITE_PORTAL_FRAME.get());
+        this.dropSelf(ModBlocks.ZENIONITE_BEACON.get());
+        this.dropSelf(ModBlocks.ZENIONITE_STAIRS.get());
         this.dropSelf(ModBlocks.ROTTED_BUTTON.get());
         this.dropSelf(ModBlocks.ROTTED_PRESSURE_PLATE.get());
         this.dropSelf(ModBlocks.ROTTED_TRAPDOOR.get());

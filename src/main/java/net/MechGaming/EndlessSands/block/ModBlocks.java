@@ -4,6 +4,7 @@ import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.block.custom.*;
 import net.MechGaming.EndlessSands.item.ModItems;
 import net.MechGaming.EndlessSands.item.custom.FuelBlockItem;
+import net.MechGaming.EndlessSands.item.custom.LinedStairBlockItem;
 import net.MechGaming.EndlessSands.item.custom.VultureNestBlockItem;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
@@ -11,6 +12,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -43,6 +45,33 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> CRYSTAL_ROCK = registerBlock("crystal_rock",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+    public static final RegistryObject<Block> ZENIONITE = registerBlock("zenionite",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.DIAMOND_BLOCK)));
+
+    public static final RegistryObject<EndPortalFrameBlock> ZENIONITE_PORTAL_FRAME =
+            registerBlock("zenionite_portal_frame",
+                    () -> new EndPortalFrameBlock(BlockBehaviour.Properties.copy(Blocks.END_PORTAL_FRAME)));
+
+    public static final RegistryObject<BeaconBlock> ZENIONITE_BEACON =
+            registerBlock("zenionite_beacon",
+                    () -> new BeaconBlock(BlockBehaviour.Properties.copy(Blocks.BEACON)));
+
+    public static final RegistryObject<StairBlock> ZENIONITE_STAIRS =
+            registerBlock("zenionite_stairs",
+                    () -> new StairBlock(() -> ZENIONITE.get().defaultBlockState(),
+                            BlockBehaviour.Properties.copy(ZENIONITE.get())));
+
+    public static final RegistryObject<LinedStairBlock> LINED_STAIRS =
+            BLOCKS.register("lined_stairs", () -> new LinedStairBlock(
+                    BlockBehaviour.Properties.copy(Blocks.SANDSTONE_STAIRS)
+                            .noLootTable()
+                            .pushReaction(PushReaction.BLOCK)
+            ));
+
+    public static final RegistryObject<Item> LINED_STAIRS_ITEM =
+            ModItems.ITEMS.register("lined_stairs",
+                    () -> new LinedStairBlockItem(LINED_STAIRS.get(), new Item.Properties()));
 
     public static final RegistryObject<Block> CURSED_BEDROCK = registerBlock("cursed_bedrock",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));

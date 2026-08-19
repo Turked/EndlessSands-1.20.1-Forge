@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/end_portal_frame",
+  "textures": {
+    "particle": "endlesssands:block/missing_texture",
+    "bottom": "endlesssands:block/missing_texture",
+    "top": "endlesssands:block/missing_texture",
+    "side": "endlesssands:block/missing_texture"
+  }
+}

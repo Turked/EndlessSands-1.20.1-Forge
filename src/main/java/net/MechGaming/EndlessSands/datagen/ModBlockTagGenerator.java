@@ -59,8 +59,16 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(
                         ModBlocks.CURSED_SAPROLITE.get(),
-                        ModBlocks.CURSED_COBBLED_SAPROLITE.get()
+                        ModBlocks.CURSED_COBBLED_SAPROLITE.get(),
+                        ModBlocks.ZENIONITE.get(),
+                        ModBlocks.ZENIONITE_PORTAL_FRAME.get(),
+                        ModBlocks.ZENIONITE_BEACON.get(),
+                        ModBlocks.ZENIONITE_STAIRS.get(),
+                        ModBlocks.LINED_STAIRS.get()
                 );
+
+        this.tag(BlockTags.STAIRS)
+                .add(ModBlocks.ZENIONITE_STAIRS.get(), ModBlocks.LINED_STAIRS.get());
 
         this.tag(BlockTags.MINEABLE_WITH_AXE)
                 .add(

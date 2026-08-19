@@ -94,6 +94,12 @@ public class EndlessSands
             Set<Block> validBlocks = new HashSet<>(brushableType.endlessSands$getValidBlocks());
             validBlocks.add(ModBlocks.SUSPICIOUS_CURSED_SAND.get());
             brushableType.endlessSands$setValidBlocks(Set.copyOf(validBlocks));
+
+            BlockEntityTypeAccessor beaconType = (BlockEntityTypeAccessor) (Object)
+                    BlockEntityType.BEACON;
+            Set<Block> beaconBlocks = new HashSet<>(beaconType.endlessSands$getValidBlocks());
+            beaconBlocks.add(ModBlocks.ZENIONITE_BEACON.get());
+            beaconType.endlessSands$setValidBlocks(Set.copyOf(beaconBlocks));
         });
     }
     // https://www.youtube.com/watch?v=o6Xbp2dTEGA Left off at 13:30

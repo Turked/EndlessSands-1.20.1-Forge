@@ -72,6 +72,9 @@ public class ModItems {
     public static final RegistryObject<Item> LEATHER_SCRAP = ITEMS.register("leather_scrap",
             () -> new Item(new Item.Properties()));
 
+    public static final RegistryObject<Item> LIQUID_LINING = ITEMS.register("liquid_lining",
+            () -> new Item(new Item.Properties()));
+
     public static final RegistryObject<Item> RAW_VULTURE_MEAT = ITEMS.register("raw_vulture_meat",
             () -> new Item(new Item.Properties().food(ModFoods.VULTURE_JERKY)));
 

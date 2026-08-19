@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-13T20:56:49.4978368	Loot Tables
+// 1.20.1	2026-08-18T23:08:17.9215596	Loot Tables
 f339e1868a3609b695b17d6595983fd2d951c201 data/endlesssands/loot_tables/archaeology/suspicious_cursed_sand.json
 51254fe95aa5abe2e727c99b7103c21790c4f175 data/endlesssands/loot_tables/blocks/core_rock.json
 f90b967e5e67277478c0ae92bab8f5c8957aa6a4 data/endlesssands/loot_tables/blocks/crud_log.json
@@ -26,5 +26,9 @@ c9d07a47f65478ac9385807a300ff21e503e036e data/endlesssands/loot_tables/blocks/ro
 caf22f8da9943e2b18abd39215c9221e660d97be data/endlesssands/loot_tables/blocks/twig.json
 8c6af95816c92c4708870b242fb7b2719c88a935 data/endlesssands/loot_tables/blocks/village_pot.json
 e377798d53db7b192004b20c87785dd82ecbeacf data/endlesssands/loot_tables/blocks/vulture_nest.json
+b9bcebbc9f2f03db2fac05f7dd1e379e199d4251 data/endlesssands/loot_tables/blocks/zenionite.json
+2f0e2abc68a5a1f82ecee888f9d5e614627623a2 data/endlesssands/loot_tables/blocks/zenionite_beacon.json
+f5294ea5a3244bc487369da7ae0f14b791a72aea data/endlesssands/loot_tables/blocks/zenionite_portal_frame.json
+a2e9f37870d1eb998fcf150fff54509679a32c77 data/endlesssands/loot_tables/blocks/zenionite_stairs.json
 78faf56f2ffe08e4a367a8056cd0538fb5660dbd data/endlesssands/loot_tables/entities/oldworld_golem.json
 1df73ebc938c829ec3d4384d1ecb3d87028eafdb data/endlesssands/loot_tables/entities/vulture.json

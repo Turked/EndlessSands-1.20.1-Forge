@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-13T20:56:49.4868248	Tags for minecraft:block mod id endlesssands
+// 1.20.1	2026-08-18T23:08:17.9185603	Tags for minecraft:block mod id endlesssands
 3d667fe2c017040430e5c7bc701f04d11975c1ba data/endlesssands/tags/blocks/bloodied.json
 1af2d63a2758e41629ce48455a8ec95723a508c8 data/endlesssands/tags/blocks/granular.json
 35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/endlesssands/tags/blocks/needs_dragonite_tool.json
@@ -7,10 +7,11 @@
 146334df7a51b8245cfd66d35f92409ece0bac7a data/minecraft/tags/blocks/fences.json
 b14bf796ed5b957474af20a6f28d38a09ddd7218 data/minecraft/tags/blocks/fence_gates.json
 68393140e849c3dfa64e326b90393be9b07f7235 data/minecraft/tags/blocks/mineable/axe.json
-02c6c25ecee5aa4ddd7372d5e8fff56aabf00d65 data/minecraft/tags/blocks/mineable/pickaxe.json
+8a9f40334b6cbd48c1c4ee4e003d504d3c04de2f data/minecraft/tags/blocks/mineable/pickaxe.json
 c8a31f9b860103907bdd2041d5989bca58ca69e8 data/minecraft/tags/blocks/mineable/shovel.json
 35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/minecraft/tags/blocks/needs_diamond_tool.json
 35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/minecraft/tags/blocks/needs_iron_tool.json
 35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/minecraft/tags/blocks/needs_stone_tool.json
 5e882470fb7147fde1e1376c80b24baf2ac91a32 data/minecraft/tags/blocks/saplings.json
+e4d89cee90b2d475d161f34baae0d9ed5211b44b data/minecraft/tags/blocks/stairs.json
 050b59f484dea4101d63162ebebb671cbf520eb3 data/minecraft/tags/blocks/walls.json

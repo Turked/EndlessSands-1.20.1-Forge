@@ -1,6 +1,11 @@
 {
   "values": [
     "endlesssands:cursed_saprolite",
-    "endlesssands:cursed_cobbled_saprolite"
+    "endlesssands:cursed_cobbled_saprolite",
+    "endlesssands:zenionite",
+    "endlesssands:zenionite_portal_frame",
+    "endlesssands:zenionite_beacon",
+    "endlesssands:zenionite_stairs",
+    "endlesssands:lined_stairs"
   ]
 }

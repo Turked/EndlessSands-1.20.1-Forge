@@ -20,6 +20,10 @@ public class ModRecipeSerializers {
             RECIPE_SERIALIZERS.register("crafting_special_twig_hat_salvage",
                     () -> new SimpleCraftingRecipeSerializer<>(TwigHatSalvageRecipe::new));
 
+    public static final RegistryObject<RecipeSerializer<LinedStairRecipe>> LINED_STAIRS =
+            RECIPE_SERIALIZERS.register("crafting_special_lined_stairs",
+                    () -> new SimpleCraftingRecipeSerializer<>(LinedStairRecipe::new));
+
     public static void register(IEventBus eventBus) {
         RECIPE_SERIALIZERS.register(eventBus);
     }

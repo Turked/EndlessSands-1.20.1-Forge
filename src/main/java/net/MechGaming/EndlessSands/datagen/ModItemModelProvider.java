@@ -50,6 +50,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.BOILED_VULTURE_EGG);
         simpleItem(ModItems.HANDFUL_OF_SCRAMBLED_EGGS);
         simpleItem(ModItems.LEATHER_SCRAP);
+        simpleItem(ModItems.LIQUID_LINING);
         simpleItem(ModItems.RAW_VULTURE_MEAT);
         withExistingParent("vulture_nest", modLoc("block/vulture_nest_full"));
 
@@ -90,6 +91,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         trapdoorItem(ModBlocks.ROTTED_TRAPDOOR);
 
         blockItem(ModBlocks.ROTTED_STAIRS);
+        blockItem(ModBlocks.ZENIONITE_STAIRS);
         blockItem(ModBlocks.ROTTED_SLAB);
         blockItem(ModBlocks.ROTTED_PRESSURE_PLATE);
         blockItem(ModBlocks.ROTTED_FENCE_GATE);
@@ -161,7 +163,7 @@ public class ModItemModelProvider extends ItemModelProvider {
                 modLoc("block/" + block.getId().getPath() + "_bottom"));
     }
 
-    public void blockItem(RegistryObject<Block> block) {
+    public void blockItem(RegistryObject<? extends Block> block) {
         this.withExistingParent(block.getId().getPath(),
                 modLoc("block/" + block.getId().getPath()));
     }

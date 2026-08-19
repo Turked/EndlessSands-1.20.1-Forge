@@ -32,6 +32,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithRandomYRotation(ModBlocks.DEEP_CRYSTAL_ROCK);
         blockWithRandomYRotation(ModBlocks.LOWER_CRUST_ROCK);
         blockWithRandomYRotation(ModBlocks.CRYSTAL_ROCK);
+        blockWithRandomYRotation(ModBlocks.ZENIONITE, modLoc("block/missing_texture"));
         blockWithRandomYRotation(ModBlocks.CURSED_BEDROCK);
         cursedSandLayer();
 
@@ -48,6 +49,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         crudLog();
 
         stairsBlock(((StairBlock) ModBlocks.ROTTED_STAIRS.get()), blockTexture(ModBlocks.ROTTED_PLANKS.get()));
+        stairsBlock(ModBlocks.ZENIONITE_STAIRS.get(), modLoc("block/missing_texture"));
         slabBlock(((SlabBlock) ModBlocks.ROTTED_SLAB.get()), blockTexture(ModBlocks.ROTTED_PLANKS.get()), blockTexture(ModBlocks.ROTTED_PLANKS.get()));
 
         buttonBlock(((ButtonBlock) ModBlocks.ROTTED_BUTTON.get()), blockTexture(ModBlocks.ROTTED_PLANKS.get()));
@@ -93,8 +95,15 @@ public class ModBlockStateProvider extends BlockStateProvider {
     }
 
     private void blockWithRandomYRotation(RegistryObject<Block> blockRegistryObject) {
+        blockWithRandomYRotation(blockRegistryObject, blockTexture(blockRegistryObject.get()));
+    }
+
+    private void blockWithRandomYRotation(
+            RegistryObject<Block> blockRegistryObject,
+            net.minecraft.resources.ResourceLocation texture
+    ) {
         Block block = blockRegistryObject.get();
-        ModelFile model = cubeAll(block);
+        ModelFile model = models().cubeAll(blockRegistryObject.getId().getPath(), texture);
 
         getVariantBuilder(block)
                 .partialState()

@@ -20,6 +20,11 @@ build
 # other
 eclipse
 run
+!run/
+run/*
+!run/gameteststructures/
+run/gameteststructures/*
+!run/gameteststructures/empty.snbt
 
 # Files from Forge MDK
 forge*changelog.txt

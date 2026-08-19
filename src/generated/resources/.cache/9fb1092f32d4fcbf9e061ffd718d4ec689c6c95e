@@ -1,10 +1,11 @@
-// 1.20.1	2026-08-12T23:12:30.3624202	Recipes
+// 1.20.1	2026-08-18T23:08:17.9225611	Recipes
 52943cc00c3d5ca1f1dd554ad607f10561aff808 data/endlesssands/advancements/recipes/building_blocks/cursed_saprolite_from_smelting_cursed_cobbled_saprolite.json
 503c59dff77891c9733c8744256baba9bd9ee742 data/endlesssands/advancements/recipes/combat/arm_guard.json
 93d9208d4bf989caa2681b0457a737aca7770468 data/endlesssands/advancements/recipes/combat/twig_hat.json
 f10adc87132e62ffee5fe3d6cc294961bbfbf448 data/endlesssands/advancements/recipes/misc/cursed_sand.json
 0e9b12d859a8d8fd76fe4453375e6eb8010d3ec5 data/endlesssands/advancements/recipes/misc/itty_bitty_bone.json
 d02bf7b3719bb036dc752cbce814c64133da6cde data/endlesssands/advancements/recipes/misc/leather_from_scraps.json
+ef19cfb8ad78d649f3a8eb5b7286947c79d3465e data/endlesssands/advancements/recipes/misc/liquid_lining.json
 db24ae64c3a5df6f5672ce71568db676c8d6efd6 data/endlesssands/advancements/recipes/misc/rotted_planks.json
 4a0f33f080d175bf1baa67021f2dbdafc21a850e data/endlesssands/advancements/recipes/misc/twig.json
 a360a6baa41c6f04503a365661f20fc0b5cb8caa data/endlesssands/advancements/recipes/misc/twig_visor.json
@@ -14,6 +15,8 @@ a0c3518fbdbcfdf19349f036521455f2d9508e9d data/endlesssands/recipes/arm_guard.jso
 73bc7f1d9920e84909b738572046f4e8db211048 data/endlesssands/recipes/cursed_saprolite_from_smelting_cursed_cobbled_saprolite.json
 7c07e0676da97d1aa389a04e631b0088ec02f097 data/endlesssands/recipes/itty_bitty_bone.json
 7b4cd819c043159794813c2396beae70f2ff6ec6 data/endlesssands/recipes/leather_from_scraps.json
+dda51c303fe1312aa448948bd68197597c68f577 data/endlesssands/recipes/lined_stairs.json
+690517dbd36a237f0d338c4eb014027ab16a64fe data/endlesssands/recipes/liquid_lining.json
 a4f929889c7485e63af60eef9e300fdead762477 data/endlesssands/recipes/rotted_planks.json
 e9ec0caf27fe6e19ffd785c93ff337b2e7e8683c data/endlesssands/recipes/twig.json
 c78cd2342dcdeae80325bc76d1e60705cbe1b2b7 data/endlesssands/recipes/twig_hat.json
