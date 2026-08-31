@@ -2,6 +2,7 @@ package net.MechGaming.EndlessSands.util;
 
 import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.block.custom.LinedStairBlock;
+import net.MechGaming.EndlessSands.block.custom.ZenioniteStairBlock;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
@@ -29,7 +30,9 @@ public final class LinedStairData {
     }
 
     public static boolean isValidSourceBlock(@Nullable Block block) {
-        if (!(block instanceof StairBlock) || block instanceof LinedStairBlock) {
+        if (!(block instanceof StairBlock)
+                || block instanceof LinedStairBlock
+                || block instanceof ZenioniteStairBlock) {
             return false;
         }
 

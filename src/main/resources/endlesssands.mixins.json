@@ -6,6 +6,7 @@
   "plugin": "net.MechGaming.EndlessSands.mixin.EndlessSandsMixinPlugin",
   "mixins": [
     "BlockEntityTypeAccessor",
+    "FlowingFluidAccessor",
     "InventoryMenuMixin",
     "InventoryMixin",
     "LinedStairFlowingFluidMixin",
@@ -18,8 +19,10 @@
     "ArmGuardPlayerPoseMixin",
     "BookEditScreenMixin",
     "CreativeModeInventoryScreenMixin",
+    "EmbeddiumLinedStairFluidRendererMixin",
     "GuiHotbarMixin",
     "InventoryScreenMixin",
+    "LinedStairLiquidBlockRendererMixin",
     "NoCubesCursedSandLayerMixin",
     "SlotAccessor"
   ],

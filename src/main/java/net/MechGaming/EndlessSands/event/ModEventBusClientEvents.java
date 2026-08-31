@@ -3,6 +3,11 @@ package net.MechGaming.EndlessSands.event;
 import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.client.ModKeyMappings;
 import net.MechGaming.EndlessSands.client.screen.ArmGuardSearchScreen;
+import net.MechGaming.EndlessSands.client.screen.ZenioniteBatteryScreen;
+import net.MechGaming.EndlessSands.client.screen.ZenioniteChargerScreen;
+import net.MechGaming.EndlessSands.client.render.ZenioniteBatteryRenderer;
+import net.MechGaming.EndlessSands.client.render.ZenioniteStairRenderer;
+import net.MechGaming.EndlessSands.block.entity.ModBlockEntities;
 import net.MechGaming.EndlessSands.entity.ModEntities;
 import net.MechGaming.EndlessSands.entity.client.BabyVultureModel;
 import net.MechGaming.EndlessSands.entity.client.ModModelLayers;
@@ -27,6 +32,8 @@ public class ModEventBusClientEvents {
     public static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             MenuScreens.register(ModMenuTypes.ARM_GUARD_SEARCH.get(), ArmGuardSearchScreen::new);
+            MenuScreens.register(ModMenuTypes.ZENIONITE_CHARGER.get(), ZenioniteChargerScreen::new);
+            MenuScreens.register(ModMenuTypes.ZENIONITE_BATTERY.get(), ZenioniteBatteryScreen::new);
         });
     }
 
@@ -40,6 +47,10 @@ public class ModEventBusClientEvents {
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(
+                ModBlockEntities.ZENIONITE_BATTERY.get(), ZenioniteBatteryRenderer::new);
+        event.registerBlockEntityRenderer(
+                ModBlockEntities.ZENIONITE_STAIRS.get(), ZenioniteStairRenderer::new);
         event.registerEntityRenderer(ModEntities.POCKET_SAND_PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(ModEntities.VULTURE_EGG_PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(ModEntities.VULTURE.get(), VultureRenderer::new);

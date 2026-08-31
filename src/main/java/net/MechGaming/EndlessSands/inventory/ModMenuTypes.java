@@ -15,6 +15,12 @@ public final class ModMenuTypes {
     public static final RegistryObject<MenuType<ArmGuardSearchMenu>> ARM_GUARD_SEARCH =
             MENU_TYPES.register("arm_guard_search", () -> IForgeMenuType.create(ArmGuardSearchMenu::new));
 
+    public static final RegistryObject<MenuType<ZenioniteChargerMenu>> ZENIONITE_CHARGER =
+            MENU_TYPES.register("zenionite_charger", () -> IForgeMenuType.create(ZenioniteChargerMenu::new));
+
+    public static final RegistryObject<MenuType<ZenioniteBatteryMenu>> ZENIONITE_BATTERY =
+            MENU_TYPES.register("zenionite_battery", () -> IForgeMenuType.create(ZenioniteBatteryMenu::new));
+
     private ModMenuTypes() {
     }
 

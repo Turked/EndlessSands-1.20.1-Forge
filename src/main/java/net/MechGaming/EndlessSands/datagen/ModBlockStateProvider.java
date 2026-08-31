@@ -6,6 +6,8 @@ import net.MechGaming.EndlessSands.block.custom.CrudLogBlock;
 import net.MechGaming.EndlessSands.block.custom.CursedSandLayerBlock;
 import net.MechGaming.EndlessSands.block.custom.TwigBlock;
 import net.MechGaming.EndlessSands.block.custom.VultureNestBlock;
+import net.MechGaming.EndlessSands.block.custom.ZenioniteBatteryBlock;
+import net.MechGaming.EndlessSands.block.custom.ZenioniteChargerBlock;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.*;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
@@ -32,7 +34,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithRandomYRotation(ModBlocks.DEEP_CRYSTAL_ROCK);
         blockWithRandomYRotation(ModBlocks.LOWER_CRUST_ROCK);
         blockWithRandomYRotation(ModBlocks.CRYSTAL_ROCK);
-        blockWithRandomYRotation(ModBlocks.ZENIONITE, modLoc("block/missing_texture"));
+        blockWithItem(ModBlocks.ZENIONITE, modLoc("block/zenionite_block"));
+        zenioniteCharger();
+        zenioniteBattery();
         blockWithRandomYRotation(ModBlocks.CURSED_BEDROCK);
         cursedSandLayer();
 
@@ -49,7 +53,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         crudLog();
 
         stairsBlock(((StairBlock) ModBlocks.ROTTED_STAIRS.get()), blockTexture(ModBlocks.ROTTED_PLANKS.get()));
-        stairsBlock(ModBlocks.ZENIONITE_STAIRS.get(), modLoc("block/missing_texture"));
+        stairsBlock(ModBlocks.ZENIONITE_STAIRS.get(), modLoc("block/zenionite_block"));
         slabBlock(((SlabBlock) ModBlocks.ROTTED_SLAB.get()), blockTexture(ModBlocks.ROTTED_PLANKS.get()), blockTexture(ModBlocks.ROTTED_PLANKS.get()));
 
         buttonBlock(((ButtonBlock) ModBlocks.ROTTED_BUTTON.get()), blockTexture(ModBlocks.ROTTED_PLANKS.get()));
@@ -71,8 +75,146 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleBlockItem(block, model);
     }
 
+    private void zenioniteCharger() {
+        Block block = ModBlocks.ZENIONITE_CHARGER.get();
+        BlockModelBuilder base = models().cubeBottomTop(
+                        "zenionite_charger_base",
+                        modLoc("block/zenionite_charger_side_empty"),
+                        modLoc("block/zenionite_charger_bottom"),
+                        modLoc("block/zenionite_charger_top")
+                )
+                .renderType("cutout");
+
+        var multipart = getMultipartBuilder(block);
+        multipart.part().modelFile(base).addModel().end();
+
+        for (int level = 1; level <= 8; level++) {
+            multipart.part()
+                    .modelFile(zenioniteChargerBarModel("water", level))
+                    .addModel()
+                    .condition(ZenioniteChargerBlock.WATER, level)
+                    .end();
+            multipart.part()
+                    .modelFile(zenioniteChargerBarModel("lava", level))
+                    .addModel()
+                    .condition(ZenioniteChargerBlock.LAVA, level)
+                    .end();
+            multipart.part()
+                    .modelFile(zenioniteChargerBarModel("power", level, false))
+                    .addModel()
+                    .condition(ZenioniteChargerBlock.POWER, level)
+                    .condition(ZenioniteChargerBlock.POWER_DRAINING, false)
+                    .end();
+            multipart.part()
+                    .modelFile(zenioniteChargerBarModel("power", level, true))
+                    .addModel()
+                    .condition(ZenioniteChargerBlock.POWER, level)
+                    .condition(ZenioniteChargerBlock.POWER_DRAINING, true)
+                    .end();
+        }
+
+        simpleBlockItem(block, base);
+    }
+
+    private ModelFile zenioniteChargerBarModel(String bar, int level) {
+        return zenioniteChargerBarModel(bar, level, false);
+    }
+
+    private ModelFile zenioniteChargerBarModel(String bar, int level, boolean topAnchored) {
+        float height = level * 2.0F;
+        float fromY = topAnchored ? 16.0F - height : 0.0F;
+        float toY = topAnchored ? 16.0F : height;
+        float textureTop = topAnchored ? 0.0F : 16.0F - height;
+        float textureBottom = topAnchored ? height : 16.0F;
+        String modelSuffix = topAnchored ? "_draining" : "";
+        BlockModelBuilder model = models().getBuilder(
+                        "zenionite_charger_" + bar + modelSuffix + "_" + level)
+                .texture("particle", modLoc("block/zenionite_charger_side_empty"))
+                .texture("bar", modLoc("block/zenionite_charger_side_" + bar + "_iso"))
+                .renderType("cutout");
+
+        var overlay = model.element()
+                .from(-0.002F, fromY, -0.002F)
+                .to(16.002F, toY, 16.002F);
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            overlay.face(direction)
+                    .uvs(0.0F, textureTop, 16.0F, textureBottom)
+                    .texture("#bar")
+                    .cullface(direction);
+        }
+
+        return model;
+    }
+
+    private void zenioniteBattery() {
+        Block block = ModBlocks.ZENIONITE_BATTERY.get();
+        BlockModelBuilder topBottom = models().getBuilder("zenionite_battery_top_bottom")
+                .texture("particle", modLoc("block/zenionite_battery_side_no_connections"))
+                .texture("top", modLoc("block/zenionite_charger_top"))
+                .texture("bottom", modLoc("block/zenionite_charger_bottom"));
+        var topBottomElement = topBottom.element().from(0.0F, 0.0F, 0.0F)
+                .to(16.0F, 16.0F, 16.0F);
+        topBottomElement.face(Direction.UP).texture("#top").cullface(Direction.UP);
+        topBottomElement.face(Direction.DOWN).texture("#bottom").cullface(Direction.DOWN);
+
+        var multipart = getMultipartBuilder(block);
+        multipart.part().modelFile(topBottom).addModel().end();
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            ModelFile portFace = zenioniteBatteryFaceModel(direction, false);
+            ModelFile smoothFace = zenioniteBatteryFaceModel(direction, true);
+
+            multipart.part().modelFile(portFace).addModel()
+                    .condition(ZenioniteBatteryBlock.HAS_HORIZONTAL_CONNECTION, false)
+                    .end();
+            multipart.part().modelFile(portFace).addModel()
+                    .condition(ZenioniteBatteryBlock.HAS_HORIZONTAL_CONNECTION, true)
+                    .condition(ZenioniteBatteryBlock.connectionProperty(direction), true)
+                    .end();
+            multipart.part().modelFile(smoothFace).addModel()
+                    .condition(ZenioniteBatteryBlock.HAS_HORIZONTAL_CONNECTION, true)
+                    .condition(ZenioniteBatteryBlock.connectionProperty(direction), false)
+                    .end();
+        }
+
+        BlockModelBuilder itemModel = models().cubeBottomTop(
+                "zenionite_battery",
+                modLoc("block/zenionite_battery_side_no_connections"),
+                modLoc("block/zenionite_charger_bottom"),
+                modLoc("block/zenionite_charger_top")
+        );
+        simpleBlockItem(block, itemModel);
+    }
+
+    private ModelFile zenioniteBatteryFaceModel(Direction direction, boolean smooth) {
+        String faceName = direction.getName().toLowerCase();
+        String textureName = smooth
+                ? "zenionite_battery_side_smooth"
+                : "zenionite_battery_side_no_connections";
+        BlockModelBuilder model = models().getBuilder(
+                        "zenionite_battery_" + (smooth ? "smooth_" : "port_") + faceName)
+                .texture("particle", modLoc("block/zenionite_battery_side_no_connections"))
+                .texture("side", modLoc("block/" + textureName));
+        model.element()
+                .from(0.0F, 0.0F, 0.0F)
+                .to(16.0F, 16.0F, 16.0F)
+                .face(direction)
+                .texture("#side")
+                .cullface(direction);
+        return model;
+    }
+
     private void blockWithItem(RegistryObject<Block> blockRegistryObject) {
         simpleBlockWithItem(blockRegistryObject.get(), cubeAll(blockRegistryObject.get()));
+    }
+
+    private void blockWithItem(
+            RegistryObject<Block> blockRegistryObject,
+            net.minecraft.resources.ResourceLocation texture
+    ) {
+        simpleBlockWithItem(
+                blockRegistryObject.get(),
+                models().cubeAll(blockRegistryObject.getId().getPath(), texture)
+        );
     }
 
     private void suspiciousCursedSand() {

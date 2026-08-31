@@ -5,11 +5,32 @@ import net.minecraftforge.common.ForgeConfigSpec;
 public class EndlessSandsConfig {
     public static final ForgeConfigSpec SPEC;
 
+    public static final int DEFAULT_RF_MULTIPLIER = 1;
+    public static final int DEFAULT_RF_TRANSFER_INTERVAL_TICKS = 10;
+
     public static final ForgeConfigSpec.BooleanValue TRULY_ENDLESS_DESERT;
     public static final ForgeConfigSpec.BooleanValue BORN_OF_THE_SAND;
     public static final ForgeConfigSpec.BooleanValue ENDLESS_CURSE_FREE_DESERT;
     public static final ForgeConfigSpec.BooleanValue TAG_ENDLESS_DESERT_AS_DESERT_FOR_MOB_SPAWNING;
     public static final ForgeConfigSpec.BooleanValue TAG_ENDLESS_DESERT_AS_DESERT_FOR_STRUCTURE_SPAWNING;
+    public static final ForgeConfigSpec.IntValue RF_MULTIPLIER;
+    public static final ForgeConfigSpec.IntValue RF_TRANSFER_INTERVAL_TICKS;
+
+    public static int getRfMultiplier() {
+        try {
+            return Math.max(1, RF_MULTIPLIER.get());
+        } catch (IllegalStateException ignored) {
+            return DEFAULT_RF_MULTIPLIER;
+        }
+    }
+
+    public static int getRfTransferIntervalTicks() {
+        try {
+            return Math.max(1, RF_TRANSFER_INTERVAL_TICKS.get());
+        } catch (IllegalStateException ignored) {
+            return DEFAULT_RF_TRANSFER_INTERVAL_TICKS;
+        }
+    }
 
     static {
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
@@ -21,20 +42,33 @@ public class EndlessSandsConfig {
                 .define("trulyEndlessDesert", false);
 
         BORN_OF_THE_SAND = builder
-                .comment("If true, new players spawn inside the Endless Sands dimension.")
+                .comment("", "If true, new players spawn inside the Endless Sands dimension.")
                 .define("bornOfTheSand", false);
 
         ENDLESS_CURSE_FREE_DESERT = builder
-                .comment("If true, every vanilla Overworld biome source query returns the vanilla desert biome.")
+                .comment("", "If true, every vanilla Overworld biome source query returns the vanilla desert biome.")
                 .define("endlessCurseFreeDesert", false);
 
         TAG_ENDLESS_DESERT_AS_DESERT_FOR_MOB_SPAWNING = builder
-                .comment("If true, Endless Desert should count as a desert biome for desert mob spawning logic.")
+                .comment("", "If true, Endless Desert should count as a desert biome for desert mob spawning logic.")
                 .define("tagEndlessDesertAsDesertForMobSpawning", true);
 
         TAG_ENDLESS_DESERT_AS_DESERT_FOR_STRUCTURE_SPAWNING = builder
-                .comment("If true, Endless Desert should count as a desert biome for desert structure spawning logic. Not wired yet.")
+                .comment("", "If true, Endless Desert should count as a desert biome for desert structure spawning logic. Not wired yet.")
                 .define("tagEndlessDesertAsDesertForStructureSpawning", false);
+
+        builder.pop();
+
+        builder.push("zenioniteCharger");
+
+        RF_MULTIPLIER = builder
+                .comment("adjust this number to balance this mod alongside your other tech mods.")
+                .defineInRange("rfMultiplier", DEFAULT_RF_MULTIPLIER, 1, Integer.MAX_VALUE / 80);
+
+        RF_TRANSFER_INTERVAL_TICKS = builder
+                .comment("", "Number of game ticks between each 1 RF transfer. 20 ticks equals one second.")
+                .defineInRange("rfTransferIntervalTicks", DEFAULT_RF_TRANSFER_INTERVAL_TICKS,
+                        1, Integer.MAX_VALUE);
 
         builder.pop();
 

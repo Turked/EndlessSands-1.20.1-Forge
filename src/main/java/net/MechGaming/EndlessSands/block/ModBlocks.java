@@ -49,6 +49,14 @@ public class ModBlocks {
     public static final RegistryObject<Block> ZENIONITE = registerBlock("zenionite",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.DIAMOND_BLOCK)));
 
+    public static final RegistryObject<ZenioniteChargerBlock> ZENIONITE_CHARGER =
+            registerBlock("zenionite_charger",
+                    () -> new ZenioniteChargerBlock(BlockBehaviour.Properties.copy(ZENIONITE.get())));
+
+    public static final RegistryObject<ZenioniteBatteryBlock> ZENIONITE_BATTERY =
+            registerBlock("zenionite_battery",
+                    () -> new ZenioniteBatteryBlock(BlockBehaviour.Properties.copy(ZENIONITE.get())));
+
     public static final RegistryObject<EndPortalFrameBlock> ZENIONITE_PORTAL_FRAME =
             registerBlock("zenionite_portal_frame",
                     () -> new EndPortalFrameBlock(BlockBehaviour.Properties.copy(Blocks.END_PORTAL_FRAME)));
@@ -57,10 +65,9 @@ public class ModBlocks {
             registerBlock("zenionite_beacon",
                     () -> new BeaconBlock(BlockBehaviour.Properties.copy(Blocks.BEACON)));
 
-    public static final RegistryObject<StairBlock> ZENIONITE_STAIRS =
+    public static final RegistryObject<ZenioniteStairBlock> ZENIONITE_STAIRS =
             registerBlock("zenionite_stairs",
-                    () -> new StairBlock(() -> ZENIONITE.get().defaultBlockState(),
-                            BlockBehaviour.Properties.copy(ZENIONITE.get())));
+                    () -> new ZenioniteStairBlock(BlockBehaviour.Properties.copy(ZENIONITE.get())));
 
     public static final RegistryObject<LinedStairBlock> LINED_STAIRS =
             BLOCKS.register("lined_stairs", () -> new LinedStairBlock(

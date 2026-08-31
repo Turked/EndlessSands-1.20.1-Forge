@@ -27,33 +27,47 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
 public class LinedStairBlock extends StairBlock implements EntityBlock {
-    public static final IntegerProperty EXACT_WATER_LEVEL =
+    public static final BooleanProperty LAVA_LOGGED =
+            BooleanProperty.create("endlesssands_lava_logged");
+    public static final IntegerProperty EXACT_FLUID_LEVEL =
             IntegerProperty.create("endlesssands_water_level", 0, 9);
+    /**
+     * @deprecated The stored level now applies to either water or lava. Kept as an
+     * alias so existing integrations continue to compile and saved water states
+     * retain their serialized property name.
+     */
+    @Deprecated
+    public static final IntegerProperty EXACT_WATER_LEVEL = EXACT_FLUID_LEVEL;
 
     public LinedStairBlock(BlockBehaviour.Properties properties) {
-        super(() -> Blocks.SANDSTONE_STAIRS.defaultBlockState(), properties);
+        super(
+                () -> Blocks.SANDSTONE_STAIRS.defaultBlockState(),
+                properties.lightLevel(state -> state.hasProperty(LAVA_LOGGED) && state.getValue(LAVA_LOGGED) ? 15 : 0)
+        );
         registerDefaultState(defaultBlockState()
                 .setValue(WATERLOGGED, false)
-                .setValue(EXACT_WATER_LEVEL, 0));
+                .setValue(LAVA_LOGGED, false)
+                .setValue(EXACT_FLUID_LEVEL, 0));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(EXACT_WATER_LEVEL);
+        builder.add(LAVA_LOGGED, EXACT_FLUID_LEVEL);
     }
 
     @Nullable
@@ -65,74 +79,101 @@ public class LinedStairBlock extends StairBlock implements EntityBlock {
 
     @Override
     public FluidState getFluidState(BlockState state) {
-        if (!state.getValue(WATERLOGGED)) {
+        boolean lavaLogged = state.getValue(LAVA_LOGGED);
+        boolean waterlogged = state.getValue(WATERLOGGED);
+        if (!lavaLogged && !waterlogged) {
             return Fluids.EMPTY.defaultFluidState();
         }
 
-        int encodedLevel = state.getValue(EXACT_WATER_LEVEL);
+        FlowingFluid source = lavaLogged ? Fluids.LAVA : Fluids.WATER;
+        FlowingFluid flowing = lavaLogged ? Fluids.FLOWING_LAVA : Fluids.FLOWING_WATER;
+        int encodedLevel = state.getValue(EXACT_FLUID_LEVEL);
         if (encodedLevel == 9) {
-            return Fluids.WATER.getSource(false);
+            return source.getSource(false);
         }
         if (encodedLevel == 0) {
-            return Fluids.FLOWING_WATER.getFlowing(8, true);
+            return flowing.getFlowing(8, true);
         }
-        return Fluids.FLOWING_WATER.getFlowing(encodedLevel, false);
+        return flowing.getFlowing(encodedLevel, false);
     }
 
     public static BlockState withFluidState(BlockState state, FluidState fluidState) {
-        if (!fluidState.is(FluidTags.WATER)) {
-            return state.setValue(WATERLOGGED, false).setValue(EXACT_WATER_LEVEL, 0);
+        boolean water = fluidState.is(FluidTags.WATER);
+        boolean lava = fluidState.is(FluidTags.LAVA);
+        if (!water && !lava) {
+            return state
+                    .setValue(WATERLOGGED, false)
+                    .setValue(LAVA_LOGGED, false)
+                    .setValue(EXACT_FLUID_LEVEL, 0);
         }
 
         int encodedLevel;
         if (fluidState.isSource()) {
             encodedLevel = 9;
-        } else if (fluidState.getValue(net.minecraft.world.level.material.FlowingFluid.FALLING)) {
+        } else if (fluidState.hasProperty(FlowingFluid.FALLING) && fluidState.getValue(FlowingFluid.FALLING)) {
             encodedLevel = 0;
         } else {
             encodedLevel = Mth.clamp(fluidState.getAmount(), 1, 8);
         }
-        return state.setValue(WATERLOGGED, true).setValue(EXACT_WATER_LEVEL, encodedLevel);
+        return state
+                .setValue(WATERLOGGED, water)
+                .setValue(LAVA_LOGGED, lava)
+                .setValue(EXACT_FLUID_LEVEL, encodedLevel);
     }
 
     @Override
     public boolean canPlaceLiquid(BlockGetter level, BlockPos pos, BlockState state, Fluid fluid) {
-        return (fluid.isSame(Fluids.WATER) || fluid.isSame(Fluids.FLOWING_WATER))
-                && !getFluidState(state).isSource();
-    }
-
-    @Override
-    public boolean placeLiquid(LevelAccessor level, BlockPos pos, BlockState state, FluidState incoming) {
-        if (!incoming.is(FluidTags.WATER)) {
+        if (!isSupportedFluid(fluid)) {
             return false;
         }
 
         FluidState current = getFluidState(state);
-        if (!current.isEmpty() && waterStrength(incoming) <= waterStrength(current)) {
+        return current.isEmpty()
+                || sameFluidFamily(current, fluid) && !current.isSource();
+    }
+
+    @Override
+    public boolean placeLiquid(LevelAccessor level, BlockPos pos, BlockState state, FluidState incoming) {
+        if (!isSupportedFluid(incoming.getType())) {
             return false;
+        }
+
+        FluidState current = getFluidState(state);
+        if (!current.isEmpty()) {
+            if (!sameFluidFamily(current, incoming.getType())
+                    || fluidStrength(incoming) <= fluidStrength(current)) {
+                return false;
+            }
         }
 
         if (!level.isClientSide()) {
             BlockState updated = withFluidState(state, incoming);
             level.setBlock(pos, updated, 3);
-            scheduleExactWaterTick(level, pos, updated);
+            scheduleFluidTick(level, pos, updated);
         }
         return true;
     }
 
     @Override
     public ItemStack pickupBlock(LevelAccessor level, BlockPos pos, BlockState state) {
-        if (!getFluidState(state).isSource()) {
+        FluidState storedFluid = getFluidState(state);
+        if (!storedFluid.isSource()) {
             return ItemStack.EMPTY;
         }
 
         level.setBlock(pos, withFluidState(state, Fluids.EMPTY.defaultFluidState()), 3);
-        return new ItemStack(Items.WATER_BUCKET);
+        return new ItemStack(storedFluid.is(FluidTags.LAVA) ? Items.LAVA_BUCKET : Items.WATER_BUCKET);
     }
 
     @Override
     public Optional<SoundEvent> getPickupSound() {
         return Optional.of(SoundEvents.BUCKET_FILL);
+    }
+
+    @Override
+    public Optional<SoundEvent> getPickupSound(BlockState state) {
+        FluidState fluidState = getFluidState(state);
+        return fluidState.isEmpty() ? Optional.empty() : fluidState.getType().getPickupSound();
     }
 
     @Override
@@ -145,7 +186,7 @@ public class LinedStairBlock extends StairBlock implements EntityBlock {
             BlockPos neighborPos
     ) {
         BlockState updated = super.updateShape(state, direction, neighborState, level, pos, neighborPos);
-        scheduleExactWaterTick(level, pos, updated);
+        scheduleFluidTick(level, pos, updated);
         return updated;
     }
 
@@ -159,13 +200,13 @@ public class LinedStairBlock extends StairBlock implements EntityBlock {
             boolean moving
     ) {
         super.neighborChanged(state, level, pos, neighborBlock, neighborPos, moving);
-        scheduleExactWaterTick(level, pos, state);
+        scheduleFluidTick(level, pos, state);
     }
 
     @Override
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean moving) {
         super.onPlace(state, level, pos, oldState, moving);
-        scheduleExactWaterTick(level, pos, state);
+        scheduleFluidTick(level, pos, state);
     }
 
     @Override
@@ -224,14 +265,29 @@ public class LinedStairBlock extends StairBlock implements EntityBlock {
                 : LinedStairData.FALLBACK_STAIR_ID;
     }
 
-    private static int waterStrength(FluidState state) {
+    private static boolean isSupportedFluid(Fluid fluid) {
+        return fluid.is(FluidTags.WATER) || fluid.is(FluidTags.LAVA);
+    }
+
+    private static boolean sameFluidFamily(FluidState state, Fluid fluid) {
+        return state.is(FluidTags.WATER) && fluid.is(FluidTags.WATER)
+                || state.is(FluidTags.LAVA) && fluid.is(FluidTags.LAVA);
+    }
+
+    private static int fluidStrength(FluidState state) {
         return state.isSource() ? 9 : state.getAmount();
     }
 
-    public static void scheduleExactWaterTick(LevelAccessor level, BlockPos pos, BlockState state) {
+    public static void scheduleFluidTick(LevelAccessor level, BlockPos pos, BlockState state) {
         FluidState fluidState = state.getFluidState();
         if (!fluidState.isEmpty()) {
             level.scheduleTick(pos, fluidState.getType(), fluidState.getType().getTickDelay(level));
         }
+    }
+
+    /** @deprecated Use {@link #scheduleFluidTick(LevelAccessor, BlockPos, BlockState)}. */
+    @Deprecated
+    public static void scheduleExactWaterTick(LevelAccessor level, BlockPos pos, BlockState state) {
+        scheduleFluidTick(level, pos, state);
     }
 }

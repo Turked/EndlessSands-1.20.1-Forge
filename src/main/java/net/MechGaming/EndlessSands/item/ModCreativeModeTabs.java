@@ -80,6 +80,8 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModBlocks.ZENIONITE_PORTAL_FRAME.get());
                         pOutput.accept(ModBlocks.ZENIONITE_BEACON.get());
                         pOutput.accept(ModBlocks.ZENIONITE_STAIRS.get());
+                        pOutput.accept(ModBlocks.ZENIONITE_CHARGER.get());
+                        pOutput.accept(ModBlocks.ZENIONITE_BATTERY.get());
                         pOutput.accept(ModBlocks.LINED_STAIRS_ITEM.get());
                         pOutput.accept(ModBlocks.CURSED_BEDROCK.get());
                         pOutput.accept(ModBlocks.FERTILE_SOIL.get());

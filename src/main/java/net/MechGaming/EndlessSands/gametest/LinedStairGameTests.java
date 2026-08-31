@@ -11,6 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.TransientCraftingContainer;
@@ -119,6 +120,57 @@ public final class LinedStairGameTests {
         helper.succeed();
     }
 
+    @GameTest(template = "empty")
+    public static void exactLavaStatesAndBuckets(GameTestHelper helper) {
+        LinedStairBlock block = ModBlocks.LINED_STAIRS.get();
+        BlockPos relativePos = new BlockPos(1, 1, 1);
+        BlockPos absolutePos = helper.absolutePos(relativePos);
+        helper.setBlock(relativePos, block.defaultBlockState());
+
+        BlockState flowEight = LinedStairBlock.withFluidState(
+                block.defaultBlockState(),
+                Fluids.FLOWING_LAVA.getFlowing(8, false)
+        );
+        helper.assertTrue(flowEight.getFluidState().is(FluidTags.LAVA), "Flowing lava was not retained");
+        helper.assertTrue(!flowEight.getFluidState().isSource(), "Lava flow level 8 collapsed into a source");
+        helper.assertTrue(flowEight.getFluidState().getAmount() == 8, "Lava flow level 8 lost its amount");
+
+        BlockState falling = LinedStairBlock.withFluidState(
+                block.defaultBlockState(),
+                Fluids.FLOWING_LAVA.getFlowing(8, true)
+        );
+        helper.assertTrue(falling.getFluidState().is(FluidTags.LAVA), "Falling lava was not retained");
+        helper.assertTrue(
+                falling.getFluidState().getValue(net.minecraft.world.level.material.FlowingFluid.FALLING),
+                "Falling lava lost its falling state"
+        );
+
+        helper.setBlock(relativePos, flowEight);
+        ItemStack flowingPickup = block.pickupBlock(helper.getLevel(), absolutePos, flowEight);
+        helper.assertTrue(flowingPickup.isEmpty(), "A full-height non-source lava flow was bucketed");
+        helper.assertTrue(
+                helper.getLevel().getFluidState(absolutePos).is(FluidTags.LAVA)
+                        && helper.getLevel().getFluidState(absolutePos).getAmount() == 8
+                        && !helper.getLevel().getFluidState(absolutePos).isSource(),
+                "A refused bucket pickup changed full-height flowing lava"
+        );
+        helper.setBlock(relativePos, block.defaultBlockState());
+
+        helper.assertTrue(
+                block.placeLiquid(helper.getLevel(), absolutePos, helper.getLevel().getBlockState(absolutePos),
+                        Fluids.LAVA.getSource(false)),
+                "A lava bucket source could not enter an empty lined stair"
+        );
+        BlockState sourceFilled = helper.getLevel().getBlockState(absolutePos);
+        helper.assertTrue(sourceFilled.getFluidState().is(FluidTags.LAVA), "Source lava was not retained");
+        helper.assertTrue(sourceFilled.getFluidState().isSource(), "Source lava was not retained as a source");
+        ItemStack pickup = block.pickupBlock(helper.getLevel(), absolutePos, sourceFilled);
+        helper.assertTrue(pickup.is(Items.LAVA_BUCKET), "Source pickup did not return a lava bucket");
+        helper.assertTrue(helper.getLevel().getBlockState(absolutePos).is(block), "Lava pickup removed the lined stair");
+        helper.assertTrue(helper.getLevel().getFluidState(absolutePos).isEmpty(), "Lava pickup left fluid behind");
+        helper.succeed();
+    }
+
     @GameTest(template = "empty", timeoutTicks = 80)
     public static void vanillaDispenserBucketsRoundTrip(GameTestHelper helper) {
         BlockPos dispenserPos = new BlockPos(1, 1, 1);
@@ -155,6 +207,48 @@ public final class LinedStairGameTests {
             helper.assertTrue(
                     helper.getBlockState(linedPos).is(ModBlocks.LINED_STAIRS.get()),
                     "Dispenser extraction removed the lined stair"
+            );
+            helper.succeed();
+        });
+    }
+
+    @GameTest(template = "empty", timeoutTicks = 80)
+    public static void vanillaDispenserLavaBucketsRoundTrip(GameTestHelper helper) {
+        BlockPos dispenserPos = new BlockPos(1, 1, 1);
+        BlockPos linedPos = new BlockPos(2, 1, 1);
+        BlockPos powerPos = new BlockPos(1, 2, 1);
+        helper.setBlock(
+                dispenserPos,
+                Blocks.DISPENSER.defaultBlockState().setValue(DispenserBlock.FACING, Direction.EAST)
+        );
+        helper.setBlock(linedPos, ModBlocks.LINED_STAIRS.get().defaultBlockState());
+        DispenserBlockEntity dispenser = (DispenserBlockEntity) helper.getLevel()
+                .getBlockEntity(helper.absolutePos(dispenserPos));
+        dispenser.setItem(0, new ItemStack(Items.LAVA_BUCKET));
+        helper.setBlock(powerPos, Blocks.REDSTONE_BLOCK);
+
+        helper.runAtTickTime(8, () -> {
+            BlockState state = helper.getBlockState(linedPos);
+            helper.assertTrue(
+                    state.getFluidState().is(FluidTags.LAVA) && state.getFluidState().isSource(),
+                    "A dispenser lava bucket did not lava-log the lined stair"
+            );
+            helper.assertTrue(dispenser.getItem(0).is(Items.BUCKET), "Lava insertion did not leave an empty bucket");
+            helper.setBlock(powerPos, Blocks.AIR);
+        });
+        helper.runAtTickTime(12, () -> helper.setBlock(powerPos, Blocks.REDSTONE_BLOCK));
+        helper.runAtTickTime(20, () -> {
+            helper.assertTrue(
+                    helper.getBlockState(linedPos).getFluidState().isEmpty(),
+                    "A dispenser empty bucket did not extract a lava-logged source"
+            );
+            helper.assertTrue(
+                    dispenser.getItem(0).is(Items.LAVA_BUCKET),
+                    "Dispenser extraction did not return a lava bucket"
+            );
+            helper.assertTrue(
+                    helper.getBlockState(linedPos).is(ModBlocks.LINED_STAIRS.get()),
+                    "Dispenser lava extraction removed the lined stair"
             );
             helper.succeed();
         });
@@ -219,6 +313,66 @@ public final class LinedStairGameTests {
         });
     }
 
+    @GameTest(template = "empty", timeoutTicks = 520)
+    public static void lavaFlowsThroughAndRecedesWithoutReplacingStairs(GameTestHelper helper) {
+        LinedStairBlock linedStair = ModBlocks.LINED_STAIRS.get();
+        BlockState alignedStair = linedStair.defaultBlockState()
+                .setValue(LinedStairBlock.FACING, Direction.NORTH)
+                .setValue(LinedStairBlock.HALF, Half.BOTTOM)
+                .setValue(LinedStairBlock.SHAPE, StairsShape.STRAIGHT);
+        BlockPos sourcePos = new BlockPos(1, 1, 1);
+        BlockPos firstStairPos = new BlockPos(2, 1, 1);
+        BlockPos secondStairPos = new BlockPos(3, 1, 1);
+        BlockPos exitPos = new BlockPos(4, 1, 1);
+
+        for (int x = 0; x <= 5; x++) {
+            for (int z = 0; z <= 2; z++) {
+                helper.setBlock(new BlockPos(x, 0, z), Blocks.STONE);
+            }
+            helper.setBlock(new BlockPos(x, 1, 0), Blocks.STONE);
+            helper.setBlock(new BlockPos(x, 1, 2), Blocks.STONE);
+        }
+        helper.setBlock(new BlockPos(0, 1, 1), Blocks.STONE);
+        helper.setBlock(firstStairPos, alignedStair);
+        helper.setBlock(secondStairPos, alignedStair);
+        helper.setBlock(sourcePos, Blocks.LAVA);
+
+        helper.runAtTickTime(150, () -> {
+            helper.assertTrue(
+                    helper.getBlockState(firstStairPos).getFluidState().is(FluidTags.LAVA),
+                    "Lava did not enter the first lined stair"
+            );
+            helper.assertTrue(
+                    helper.getBlockState(secondStairPos).getFluidState().is(FluidTags.LAVA),
+                    "Lava did not continue through aligned stair openings"
+            );
+            helper.assertTrue(
+                    helper.getBlockState(exitPos).getFluidState().is(FluidTags.LAVA),
+                    "Lava did not flow back out of the lined stairs"
+            );
+            helper.setBlock(sourcePos, Blocks.AIR);
+        });
+        helper.runAtTickTime(450, () -> {
+            helper.assertTrue(
+                    helper.getBlockState(firstStairPos).is(linedStair)
+                            && helper.getBlockState(secondStairPos).is(linedStair),
+                    "Receding lava replaced a lined stair"
+            );
+            helper.assertTrue(
+                    helper.getBlockEntity(firstStairPos) instanceof LinedStairBlockEntity
+                            && helper.getBlockEntity(secondStairPos) instanceof LinedStairBlockEntity,
+                    "Receding lava deleted a lined stair block entity"
+            );
+            helper.assertTrue(
+                    helper.getBlockState(firstStairPos).getFluidState().isEmpty()
+                            && helper.getBlockState(secondStairPos).getFluidState().isEmpty()
+                            && helper.getBlockState(exitPos).getFluidState().isEmpty(),
+                    "Stored flowing lava did not weaken and disappear after its source was removed"
+            );
+            helper.succeed();
+        });
+    }
+
     @GameTest(template = "empty", timeoutTicks = 80)
     public static void fallingWaterEntersFromAbove(GameTestHelper helper) {
         BlockPos linedPos = new BlockPos(1, 1, 1);
@@ -246,10 +400,37 @@ public final class LinedStairGameTests {
         });
     }
 
+    @GameTest(template = "empty", timeoutTicks = 220)
+    public static void fallingLavaEntersFromAbove(GameTestHelper helper) {
+        BlockPos linedPos = new BlockPos(1, 1, 1);
+        BlockPos sourcePos = new BlockPos(1, 3, 1);
+        helper.setBlock(new BlockPos(1, 0, 1), Blocks.STONE);
+        helper.setBlock(
+                linedPos,
+                ModBlocks.LINED_STAIRS.get().defaultBlockState()
+                        .setValue(LinedStairBlock.FACING, Direction.NORTH)
+                        .setValue(LinedStairBlock.HALF, Half.BOTTOM)
+                        .setValue(LinedStairBlock.SHAPE, StairsShape.STRAIGHT)
+        );
+        helper.setBlock(sourcePos, Blocks.LAVA);
+
+        helper.runAtTickTime(140, () -> {
+            BlockState state = helper.getBlockState(linedPos);
+            helper.assertTrue(state.is(ModBlocks.LINED_STAIRS.get()), "Falling lava replaced the lined stair");
+            helper.assertTrue(state.getFluidState().is(FluidTags.LAVA), "Falling lava did not enter from above");
+            helper.assertTrue(
+                    !state.getFluidState().isSource()
+                            && state.getFluidState().getValue(net.minecraft.world.level.material.FlowingFluid.FALLING),
+                    "Vertical flow did not preserve its falling-lava state"
+            );
+            helper.succeed();
+        });
+    }
+
     @GameTest(template = "empty")
     public static void identityAndRegistrationStayLocal(GameTestHelper helper) {
         helper.assertTrue(
-                ModBlocks.LINED_STAIRS.get().getStateDefinition().getPossibleStates().size() == 800,
+                ModBlocks.LINED_STAIRS.get().getStateDefinition().getPossibleStates().size() == 1600,
                 "Universal lined stair state count changed unexpectedly"
         );
         helper.assertTrue(
