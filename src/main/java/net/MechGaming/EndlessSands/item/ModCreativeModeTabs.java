@@ -33,6 +33,8 @@ public class ModCreativeModeTabs {
                         }
 
                         // Advanced Items
+                        pOutput.accept(ModItems.ANCIENT_OCEAN_WATER_BUCKET.get());
+                        pOutput.accept(ModItems.STAR_TOUCHED_LAVA_BUCKET.get());
                         pOutput.accept(ModItems.TINY_OLDWORLD_JAR.get());
                         pOutput.accept(ModItems.BRITTLE_BONE_MEAL.get());
                         pOutput.accept(ModItems.OLDWORLD_SCROLL.get());
@@ -81,6 +83,7 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModBlocks.ZENIONITE_BEACON.get());
                         pOutput.accept(ModBlocks.ZENIONITE_STAIRS.get());
                         pOutput.accept(ModBlocks.ZENIONITE_CHARGER.get());
+                        pOutput.accept(ModBlocks.CREATIVE_ZENIONITE_CHARGER.get());
                         pOutput.accept(ModBlocks.ZENIONITE_BATTERY.get());
                         pOutput.accept(ModBlocks.LINED_STAIRS_ITEM.get());
                         pOutput.accept(ModBlocks.CURSED_BEDROCK.get());

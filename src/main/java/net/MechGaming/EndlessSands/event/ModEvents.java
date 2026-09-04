@@ -15,6 +15,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.RelativeMovement;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -26,10 +30,14 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = EndlessSands.MOD_ID)
 public class ModEvents {
@@ -108,6 +116,37 @@ public class ModEvents {
 
         if (isLookingAtVulture(player)) {
             player.getAdvancements().award(advancement, LOOK_AT_VULTURE_CRITERION);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPrisonRealmLivingTick(LivingEvent.LivingTickEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (entity.level().isClientSide
+                || !entity.level().dimension().equals(ModDimensions.PRISON_REALM_LEVEL)
+                || entity.tickCount % 20 != 0) {
+            return;
+        }
+
+        entity.addEffect(new MobEffectInstance(
+                MobEffects.SATURATION, 40, 4, true, false, true));
+        entity.addEffect(new MobEffectInstance(
+                MobEffects.REGENERATION, 40, 4, true, false, true));
+    }
+
+    @SubscribeEvent
+    public static void onPrisonRealmSpawnCheck(MobSpawnEvent.SpawnPlacementCheck event) {
+        if (event.getLevel().getLevel().dimension()
+                .equals(ModDimensions.PRISON_REALM_LEVEL)) {
+            event.setResult(net.minecraftforge.eventbus.api.Event.Result.DENY);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPrisonRealmFinalizeSpawn(MobSpawnEvent.FinalizeSpawn event) {
+        if (event.getLevel().getLevel().dimension()
+                .equals(ModDimensions.PRISON_REALM_LEVEL)) {
+            event.setSpawnCancelled(true);
         }
     }
 
@@ -222,6 +261,55 @@ public class ModEvents {
         && !event.getDimension().equals(ModDimensions.ENDLESS_SANDS_LEVEL)){
             event.setCanceled(true);
         }
+    }
+
+    public static boolean enterEndlessSands(ServerPlayer player) {
+        if (player.level().dimension().equals(ModDimensions.ENDLESS_SANDS_LEVEL)) {
+            return false;
+        }
+        return teleportToRandomEndlessSpawn(player);
+    }
+
+    public static boolean enterPrisonRealm(LivingEntity entity, BlockPos arrivalPosition) {
+        if (!(entity.level() instanceof ServerLevel)
+                || entity.level().dimension().equals(ModDimensions.PRISON_REALM_LEVEL)
+                || entity.getServer() == null) {
+            return false;
+        }
+
+        ServerLevel prisonRealm = entity.getServer().getLevel(
+                ModDimensions.PRISON_REALM_LEVEL);
+        if (prisonRealm == null) {
+            return false;
+        }
+
+        int x = arrivalPosition.getX();
+        int z = arrivalPosition.getZ();
+        prisonRealm.getChunk(x >> 4, z >> 4);
+        double targetX = x + 0.5D;
+        double targetY = 1.0D;
+        double targetZ = z + 0.5D;
+        entity.setPortalCooldown();
+
+        if (entity instanceof ServerPlayer player) {
+            player.teleportTo(
+                    prisonRealm,
+                    targetX,
+                    targetY,
+                    targetZ,
+                    player.getYRot(),
+                    player.getXRot());
+            return player.level() == prisonRealm;
+        }
+
+        return entity.teleportTo(
+                prisonRealm,
+                targetX,
+                targetY,
+                targetZ,
+                Set.<RelativeMovement>of(),
+                entity.getYRot(),
+                entity.getXRot());
     }
 
     private static boolean teleportToRandomEndlessSpawn(ServerPlayer player){

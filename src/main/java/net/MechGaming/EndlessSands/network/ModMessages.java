@@ -8,6 +8,7 @@ import net.MechGaming.EndlessSands.network.packet.HeatstrokeWarningS2CPacket;
 import net.MechGaming.EndlessSands.network.packet.ArmGuardCommandC2SPacket;
 import net.MechGaming.EndlessSands.network.packet.OpenArmGuardMenuC2SPacket;
 import net.MechGaming.EndlessSands.network.packet.OpenArmGuardMenuS2CPacket;
+import net.MechGaming.EndlessSands.network.packet.ZenioniteBeaconControlC2SPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -95,6 +96,15 @@ public final class ModMessages {
                 ArmGuardCommandC2SPacket::encode,
                 ArmGuardCommandC2SPacket::decode,
                 ArmGuardCommandC2SPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER)
+        );
+
+        CHANNEL.registerMessage(
+                packetId++,
+                ZenioniteBeaconControlC2SPacket.class,
+                ZenioniteBeaconControlC2SPacket::encode,
+                ZenioniteBeaconControlC2SPacket::decode,
+                ZenioniteBeaconControlC2SPacket::handle,
                 Optional.of(NetworkDirection.PLAY_TO_SERVER)
         );
     }

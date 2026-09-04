@@ -21,6 +21,9 @@ public final class ModMenuTypes {
     public static final RegistryObject<MenuType<ZenioniteBatteryMenu>> ZENIONITE_BATTERY =
             MENU_TYPES.register("zenionite_battery", () -> IForgeMenuType.create(ZenioniteBatteryMenu::new));
 
+    public static final RegistryObject<MenuType<ZenioniteBeaconMenu>> ZENIONITE_BEACON =
+            MENU_TYPES.register("zenionite_beacon", () -> IForgeMenuType.create(ZenioniteBeaconMenu::new));
+
     private ModMenuTypes() {
     }
 

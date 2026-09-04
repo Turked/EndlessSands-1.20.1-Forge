@@ -30,14 +30,25 @@ public class ZenioniteChargerBlock extends BaseEntityBlock {
     public static final IntegerProperty LAVA = IntegerProperty.create("lava", 0, 8);
     public static final IntegerProperty POWER = IntegerProperty.create("power", 0, 8);
     public static final BooleanProperty POWER_DRAINING = BooleanProperty.create("power_draining");
+    private final boolean creative;
 
     public ZenioniteChargerBlock(Properties properties) {
+        this(properties, false);
+    }
+
+    public ZenioniteChargerBlock(Properties properties, boolean creative) {
         super(properties);
+        this.creative = creative;
+        int initialLevel = creative ? 8 : 0;
         registerDefaultState(stateDefinition.any()
-                .setValue(WATER, 0)
-                .setValue(LAVA, 0)
-                .setValue(POWER, 0)
+                .setValue(WATER, initialLevel)
+                .setValue(LAVA, initialLevel)
+                .setValue(POWER, initialLevel)
                 .setValue(POWER_DRAINING, false));
+    }
+
+    public boolean isCreative() {
+        return creative;
     }
 
     @Override

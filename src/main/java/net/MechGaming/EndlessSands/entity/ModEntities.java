@@ -2,6 +2,7 @@ package net.MechGaming.EndlessSands.entity;
 
 import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.entity.custom.OldworldGolemEntity;
+import net.MechGaming.EndlessSands.entity.custom.PharaohEntity;
 import net.MechGaming.EndlessSands.entity.custom.PocketSandProjectileEntity;
 import net.MechGaming.EndlessSands.entity.custom.RhinoEntity;
 import net.MechGaming.EndlessSands.entity.custom.VultureEntity;
@@ -34,6 +35,14 @@ public class ModEntities {
                     .clientTrackingRange(10)
                     .updateInterval(3)
                     .build("oldworld_golem"));
+
+    public static final RegistryObject<EntityType<PharaohEntity>> PHARAOH =
+            ENTITY_TYPES.register("pharaoh", () -> EntityType.Builder.of(
+                            PharaohEntity::new, MobCategory.MONSTER)
+                    .sized(3.6F, 12.0F)
+                    .clientTrackingRange(16)
+                    .updateInterval(3)
+                    .build("pharaoh"));
 
     public static void register(IEventBus eventBus){
         ENTITY_TYPES.register(eventBus);

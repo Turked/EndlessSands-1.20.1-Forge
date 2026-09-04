@@ -225,3 +225,25 @@ tasks.register('PushToModpack', Copy) {
     from(tasks.named('jar').flatMap { it.archiveFile })
     into(bareBonesModsDir)
 }
+
+// Laptop deployment. Keep the desktop's capital-P PushToModpack task above unchanged.
+def laptopBareBonesModsDir = file('C:/Users/mechg/curseforge/minecraft/Instances/BareBones/mods')
+
+tasks.register('pushToModpack', Copy) {
+    group = 'modding'
+    description = 'Builds the release mod jar and copies it into the laptop BareBones mods folder.'
+
+    dependsOn tasks.named('build'), tasks.named('reobfJar')
+
+    from(tasks.named('jar').flatMap { it.archiveFile })
+    into(laptopBareBonesModsDir)
+
+    doFirst {
+        if (!laptopBareBonesModsDir.isDirectory()) {
+            throw new GradleException("Laptop modpack folder does not exist: ${laptopBareBonesModsDir}")
+        }
+    }
+    doLast {
+        logger.lifecycle("Copied ${tasks.named('jar').get().archiveFileName.get()} to ${laptopBareBonesModsDir}")
+    }
+}

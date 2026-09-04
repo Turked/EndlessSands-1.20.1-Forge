@@ -1,5 +1,7 @@
 package net.MechGaming.EndlessSands.block;
 
+import net.MechGaming.EndlessSands.fluid.ModFluids;
+
 import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.block.custom.*;
 import net.MechGaming.EndlessSands.item.ModItems;
@@ -51,19 +53,35 @@ public class ModBlocks {
 
     public static final RegistryObject<ZenioniteChargerBlock> ZENIONITE_CHARGER =
             registerBlock("zenionite_charger",
-                    () -> new ZenioniteChargerBlock(BlockBehaviour.Properties.copy(ZENIONITE.get())));
+                    () -> new ZenioniteChargerBlock(zenioniteDeviceProperties()));
 
     public static final RegistryObject<ZenioniteBatteryBlock> ZENIONITE_BATTERY =
             registerBlock("zenionite_battery",
-                    () -> new ZenioniteBatteryBlock(BlockBehaviour.Properties.copy(ZENIONITE.get())));
+                    () -> new ZenioniteBatteryBlock(zenioniteDeviceProperties()));
 
-    public static final RegistryObject<EndPortalFrameBlock> ZENIONITE_PORTAL_FRAME =
+    public static final RegistryObject<ZenionitePortalFrameBlock> ZENIONITE_PORTAL_FRAME =
             registerBlock("zenionite_portal_frame",
-                    () -> new EndPortalFrameBlock(BlockBehaviour.Properties.copy(Blocks.END_PORTAL_FRAME)));
+                    () -> new ZenionitePortalFrameBlock(
+                            BlockBehaviour.Properties.copy(Blocks.END_PORTAL_FRAME)
+                                    .strength(-1.0F, 3_600_000.0F)
+                                    .noLootTable()
+                                    .pushReaction(PushReaction.BLOCK)));
 
-    public static final RegistryObject<BeaconBlock> ZENIONITE_BEACON =
+    public static final RegistryObject<ZenionitePortalBlock> ZENIONITE_PORTAL =
+            BLOCKS.register("zenionite_portal",
+                    () -> new ZenionitePortalBlock(
+                            BlockBehaviour.Properties.copy(Blocks.END_PORTAL).noLootTable()));
+
+    public static final RegistryObject<Block> PRISON_CONCRETE =
+            BLOCKS.register("prison_concrete",
+                    () -> new Block(BlockBehaviour.Properties.copy(Blocks.GRAY_CONCRETE)
+                            .strength(-1.0F, 3_600_000.0F)
+                            .noLootTable()
+                            .pushReaction(PushReaction.BLOCK)));
+
+    public static final RegistryObject<ZenioniteBeaconBlock> ZENIONITE_BEACON =
             registerBlock("zenionite_beacon",
-                    () -> new BeaconBlock(BlockBehaviour.Properties.copy(Blocks.BEACON)));
+                    () -> new ZenioniteBeaconBlock(BlockBehaviour.Properties.copy(Blocks.BEACON)));
 
     public static final RegistryObject<ZenioniteStairBlock> ZENIONITE_STAIRS =
             registerBlock("zenionite_stairs",
@@ -149,6 +167,26 @@ public class ModBlocks {
                     .sound(SoundType.WOOD)
                     .noCollission()
                     .noOcclusion()));
+
+    // Keep new registrations after the established blocks so existing numeric IDs remain stable.
+    public static final RegistryObject<ZenioniteChargerBlock> CREATIVE_ZENIONITE_CHARGER =
+            registerBlock("creative_zenionite_charger",
+                    () -> new ZenioniteChargerBlock(
+                            zenioniteDeviceProperties(), true));
+
+    private static BlockBehaviour.Properties zenioniteDeviceProperties() {
+        return BlockBehaviour.Properties.copy(ZENIONITE.get())
+                .strength(-1.0F, 3_600_000.0F)
+                .noLootTable()
+                .pushReaction(PushReaction.BLOCK);
+    }
+
+    public static final RegistryObject<LiquidBlock> ANCIENT_OCEAN_WATER =
+            BLOCKS.register("ancient_ocean_water", () -> new LiquidBlock(
+                    ModFluids.ANCIENT_OCEAN_WATER, BlockBehaviour.Properties.copy(Blocks.WATER).noLootTable()));
+    public static final RegistryObject<LiquidBlock> STAR_TOUCHED_LAVA =
+            BLOCKS.register("star_touched_lava", () -> new LiquidBlock(
+                    ModFluids.STAR_TOUCHED_LAVA, BlockBehaviour.Properties.copy(Blocks.LAVA).noLootTable()));
 
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block){

@@ -1,4 +1,8 @@
 {
+  "block.endlesssands.ancient_ocean_water": "Ancient Ocean Water",
+  "block.endlesssands.star_touched_lava": "Star Touched Lava",
+  "item.endlesssands.ancient_ocean_water_bucket": "Ancient Ocean Water Bucket",
+  "item.endlesssands.star_touched_lava_bucket": "Star Touched Lava Bucket",
   "item.endlesssands.cursed_pocket_sand": "Cursed Pocket Sand",
   "item.endlesssands.bitty_bone": "Fractured Bone",
   "item.endlesssands.itty_bitty_bone": "Brittle Bone",
@@ -43,12 +47,14 @@
   "item.endlesssands.vulture_advancement_icon": "Vulture",
   "entity.endlesssands.vulture": "Vulture",
   "entity.endlesssands.oldworld_golem": "Oldworld Golem",
+  "entity.endlesssands.pharaoh": "Pharaoh",
 
   "item.endlesssands.handful_of_scrambled_eggs":  "Handful of Scrambled Eggs",
   "item.endlesssands.boiled_vulture_egg": "Boiled Vulture Egg",
 
   "item.endlesssands.rotted_wood": "Rotted Wood",
   "item.endlesssands.crud_log": "Crud Log",
+  "item.endlesssands.admin_zenionite": "Admin Zenionite",
 
   "block.endlesssands.cursed_sand": "Cursed Sand",
   "block.endlesssands.suspicious_cursed_sand": "Suspicious Cursed Sand",
@@ -63,6 +69,7 @@
   "block.endlesssands.zenionite_beacon": "Zenionite Beacon",
   "block.endlesssands.zenionite_stairs": "Zenionite Stairs",
   "block.endlesssands.zenionite_charger": "Zenionite Charger",
+  "block.endlesssands.creative_zenionite_charger": "Creative Zenionite Charger",
   "block.endlesssands.zenionite_battery": "Zenionite Battery",
   "block.endlesssands.lined_stairs": "Lined Stairs",
   "block.endlesssands.cursed_bedrock": "Cursed Bedrock",
@@ -109,6 +116,13 @@
   "gui.endlesssands.zenionite_charger.water": "Water",
   "gui.endlesssands.zenionite_charger.power": "Power",
   "gui.endlesssands.zenionite_charger.lava": "Lava",
+  "gui.endlesssands.zenionite_beacon.power": "Power",
+  "gui.endlesssands.zenionite_beacon.on_off": "On/Off",
+  "gui.endlesssands.zenionite_beacon.on": "On",
+  "gui.endlesssands.zenionite_beacon.off": "Off",
+    "gui.endlesssands.zenionite_beacon.entomb": "Entomb",
+    "gui.endlesssands.zenionite_beacon.imprison": "Imprison",
+  "gui.endlesssands.zenionite_beacon.release": "Release",
   "gui.endlesssands.zenionite_battery.front": "Front",
   "gui.endlesssands.zenionite_battery.left": "Left",
   "gui.endlesssands.zenionite_battery.right": "Right",
@@ -116,6 +130,7 @@
 
   "effect.endlesssands.heatstroke": "Heatstroke",
   "effect.endlesssands.spf": "SPF",
+  "effect.endlesssands.chained": "Chained",
 
   "message.endlesssands.heatstroke.tier_i": "I'm not dressed for this desert",
   "message.endlesssands.heatstroke.tier_ii": "I need at least three pieces of desert gear",

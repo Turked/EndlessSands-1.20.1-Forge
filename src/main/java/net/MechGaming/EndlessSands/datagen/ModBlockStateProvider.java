@@ -8,6 +8,8 @@ import net.MechGaming.EndlessSands.block.custom.TwigBlock;
 import net.MechGaming.EndlessSands.block.custom.VultureNestBlock;
 import net.MechGaming.EndlessSands.block.custom.ZenioniteBatteryBlock;
 import net.MechGaming.EndlessSands.block.custom.ZenioniteChargerBlock;
+import net.MechGaming.EndlessSands.block.custom.ZenionitePortalFrameBlock;
+import net.MechGaming.EndlessSands.block.custom.ZenionitePortalBlock;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.*;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
@@ -36,7 +38,21 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithRandomYRotation(ModBlocks.CRYSTAL_ROCK);
         blockWithItem(ModBlocks.ZENIONITE, modLoc("block/zenionite_block"));
         zenioniteCharger();
+        creativeZenioniteCharger();
         zenioniteBattery();
+        zenionitePortalFrame();
+        zenionitePortal();
+        simpleBlock(ModBlocks.ZENIONITE_BEACON.get(),
+                models().getExistingFile(modLoc("block/zenionite_beacon")));
+        // Lined stairs replace this fallback model with the selected stair's appearance at runtime.
+        simpleBlock(ModBlocks.LINED_STAIRS.get(), models().stairs("lined_stairs",
+                modLoc("block/missing_texture"), modLoc("block/missing_texture"), modLoc("block/missing_texture")));
+        simpleBlock(ModBlocks.ANCIENT_OCEAN_WATER.get(), models().getBuilder("ancient_ocean_water")
+                .texture("particle", modLoc("block/ancient_ocean_water_still")));
+        simpleBlock(ModBlocks.STAR_TOUCHED_LAVA.get(), models().getBuilder("star_touched_lava")
+                .texture("particle", modLoc("block/star_touched_lava_still")));
+        simpleBlock(ModBlocks.PRISON_CONCRETE.get(), models().cubeAll(
+                "prison_concrete", mcLoc("block/gray_concrete")));
         blockWithRandomYRotation(ModBlocks.CURSED_BEDROCK);
         cursedSandLayer();
 
@@ -114,6 +130,124 @@ public class ModBlockStateProvider extends BlockStateProvider {
         }
 
         simpleBlockItem(block, base);
+    }
+
+    private void zenionitePortalFrame() {
+        Block block = ModBlocks.ZENIONITE_PORTAL_FRAME.get();
+        BlockModelBuilder bedrockInsert = models()
+                .getBuilder("zenionite_portal_frame_bedrock")
+                .texture("particle", mcLoc("block/bedrock"))
+                .texture("bedrock", mcLoc("block/bedrock"));
+        bedrockInsert.element()
+                .from(5.0F, 13.0F, 5.0F)
+                .to(11.0F, 16.0F, 11.0F)
+                .allFaces((direction, face) -> face.texture("#bedrock"));
+
+        var multipart = getMultipartBuilder(block);
+        for (boolean powered : new boolean[]{false, true}) {
+            multipart.part()
+                    .modelFile(models().getExistingFile(modLoc("block/"
+                            + ModPortalFrameModelProvider.bodyName(powered))))
+                    .addModel()
+                    .condition(ZenionitePortalFrameBlock.POWERED, powered)
+                    .end();
+            for (Direction side : Direction.Plane.HORIZONTAL) {
+                int rotationY = switch (side) {
+                    case EAST -> 90;
+                    case SOUTH -> 180;
+                    case WEST -> 270;
+                    default -> 0;
+                };
+                for (ZenionitePortalFrameBlock.Port port : ZenionitePortalFrameBlock.Port.values()) {
+                    multipart.part()
+                            .modelFile(models().getExistingFile(modLoc("block/"
+                                    + ModPortalFrameModelProvider.portName(port, powered))))
+                            .rotationY(rotationY).addModel()
+                            .condition(ZenionitePortalFrameBlock.POWERED, powered)
+                            .condition(ZenionitePortalFrameBlock.portProperty(side), port).end();
+                }
+            }
+        }
+        multipart.part()
+                .modelFile(bedrockInsert)
+                .addModel()
+                .condition(ZenionitePortalFrameBlock.BEDROCK, true)
+                .end();
+    }
+
+    private void zenionitePortal() {
+        Block block = ModBlocks.ZENIONITE_PORTAL.get();
+        ModelFile prisonRealm = zenionitePortalModel(
+                "zenionite_portal_prison_realm", "zenionite_portal_prison_realm");
+        ModelFile endlessSands = zenionitePortalModel(
+                "zenionite_portal_endless_sands", "zenionite_portal_empty");
+
+        getVariantBuilder(block).forAllStates(state -> ConfiguredModel.builder()
+                .modelFile(state.getValue(ZenionitePortalBlock.PHARAOH_IMPRISONED)
+                        ? endlessSands : prisonRealm)
+                .build());
+    }
+
+    private ModelFile zenionitePortalModel(String modelName, String textureName) {
+        BlockModelBuilder model = models().getBuilder(modelName)
+                .texture("particle", modLoc("block/" + textureName))
+                .texture("portal", modLoc("block/" + textureName))
+                .renderType("translucent")
+                .ao(false);
+
+        var surface = model.element()
+                .from(0.0F, 11.99F, 0.0F)
+                .to(16.0F, 12.01F, 16.0F)
+                .shade(false);
+        surface.face(Direction.UP).texture("#portal").rotation(FaceRotation.CLOCKWISE_90);
+        surface.face(Direction.DOWN).texture("#portal").rotation(FaceRotation.CLOCKWISE_90);
+        return model;
+    }
+
+    private void creativeZenioniteCharger() {
+        Block block = ModBlocks.CREATIVE_ZENIONITE_CHARGER.get();
+        BlockModelBuilder model = models().getBuilder("creative_zenionite_charger")
+                .parent(models().getExistingFile(mcLoc("block/block")))
+                .texture("particle", modLoc("block/zenionite_charger_side_empty"))
+                .texture("side", modLoc("block/zenionite_charger_side_empty"))
+                .texture("bottom", modLoc("block/zenionite_charger_bottom"))
+                .texture("top", modLoc("block/zenionite_charger_top"))
+                .texture("water", modLoc("block/zenionite_charger_side_water_iso"))
+                .texture("lava", modLoc("block/zenionite_charger_side_lava_iso"))
+                .texture("power", modLoc("block/zenionite_charger_side_power_iso"))
+                .renderType("cutout");
+
+        var base = model.element()
+                .from(0.0F, 0.0F, 0.0F)
+                .to(16.0F, 16.0F, 16.0F);
+        base.face(Direction.DOWN).texture("#bottom").cullface(Direction.DOWN);
+        base.face(Direction.UP).texture("#top").cullface(Direction.UP);
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            base.face(direction).texture("#side").cullface(direction);
+        }
+
+        creativeZenioniteChargerOverlay(model, "water", 0.001F);
+        creativeZenioniteChargerOverlay(model, "lava", 0.002F);
+        creativeZenioniteChargerOverlay(model, "power", 0.003F);
+
+        getMultipartBuilder(block).part().modelFile(model).addModel().end();
+        simpleBlockItem(block, model);
+    }
+
+    private void creativeZenioniteChargerOverlay(
+            BlockModelBuilder model,
+            String texture,
+            float expansion
+    ) {
+        var overlay = model.element()
+                .from(-expansion, 0.0F, -expansion)
+                .to(16.0F + expansion, 16.0F, 16.0F + expansion);
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            overlay.face(direction)
+                    .uvs(0.0F, 0.0F, 16.0F, 16.0F)
+                    .texture("#" + texture)
+                    .cullface(direction);
+        }
     }
 
     private ModelFile zenioniteChargerBarModel(String bar, int level) {

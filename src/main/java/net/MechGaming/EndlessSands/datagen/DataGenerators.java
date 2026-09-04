@@ -34,12 +34,16 @@ public class DataGenerators {
                 new ModStructureTagGenerator(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(event.includeServer(),
                 new ModEntityTypeTagGenerator(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(),
+                new ModFluidTagGenerator(packOutput, lookupProvider, existingFileHelper));
 
         generator.addProvider(event.includeServer(), new ModRecipeProvider(packOutput));
         generator.addProvider(event.includeServer(), ModLootTableProvider.create(packOutput));
         generator.addProvider(event.includeServer(),
                 new ModAdvancementProvider(packOutput, lookupProvider, existingFileHelper));
 
+        generator.addProvider(event.includeClient(), new ModVultureNestModelProvider(packOutput, existingFileHelper));
+        generator.addProvider(event.includeClient(), new ModPortalFrameModelProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeClient(), new ModBlockStateProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeClient(), new ModItemModelProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeClient(), new ModSoundDefinitionsProvider(packOutput, existingFileHelper));

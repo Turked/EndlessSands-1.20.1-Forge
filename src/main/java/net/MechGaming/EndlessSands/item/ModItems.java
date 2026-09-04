@@ -3,6 +3,7 @@ package net.MechGaming.EndlessSands.item;
 import net.MechGaming.EndlessSands.EndlessSands;
 import net.MechGaming.EndlessSands.block.custom.BrittlePotBlock;
 import net.MechGaming.EndlessSands.item.custom.*;
+import net.MechGaming.EndlessSands.fluid.ModFluids;
 import net.minecraft.world.item.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
@@ -20,6 +21,13 @@ public class ModItems {
 
     public static final RegistryObject<Item> ELDER_EYE = OPTIONAL_ITEMS.register("elder_eye",
             () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> ANCIENT_OCEAN_WATER_BUCKET = ITEMS.register(
+            "ancient_ocean_water_bucket", () -> new AncientOceanWaterBucketItem(
+                    new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+    public static final RegistryObject<Item> STAR_TOUCHED_LAVA_BUCKET = ITEMS.register(
+            "star_touched_lava_bucket", () -> new BucketItem(ModFluids.STAR_TOUCHED_LAVA,
+                    new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
 
     public static final RegistryObject<Item> CURSED_POCKET_SAND = ITEMS.register("cursed_pocket_sand",
             () -> new CursedPocketSandItem(new Item.Properties()));
@@ -129,6 +137,10 @@ public class ModItems {
             () -> new DragoniteArmorItem(ModArmorMaterials.DRAGONITE, ArmorItem.Type.LEGGINGS, new Item.Properties()));
     public static final RegistryObject<Item> DRAGONITE_BOOTS = ITEMS.register("dragonite_boots",
             () -> new DragoniteArmorItem(ModArmorMaterials.DRAGONITE, ArmorItem.Type.BOOTS, new Item.Properties()));
+
+    // Keep new registrations after established items so existing numeric IDs remain stable.
+    public static final RegistryObject<Item> ADMIN_ZENIONITE = ITEMS.register("admin_zenionite",
+            () -> new AdminZenioniteItem(new Item.Properties().stacksTo(1)));
 
 
 

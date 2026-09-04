@@ -24,4 +24,9 @@ public class ModModelLayers {
             ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "oldworld_golem_layer"),
             "main"
     );
+
+    public static final ModelLayerLocation PHARAOH_LAYER = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "pharaoh_layer"),
+            "main"
+    );
 }

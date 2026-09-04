@@ -5,6 +5,7 @@ import net.MechGaming.EndlessSands.entity.ModEntities;
 import net.MechGaming.EndlessSands.entity.client.ModModelLayers;
 import net.MechGaming.EndlessSands.entity.client.RhinoModel;
 import net.MechGaming.EndlessSands.entity.custom.OldworldGolemEntity;
+import net.MechGaming.EndlessSands.entity.custom.PharaohEntity;
 import net.MechGaming.EndlessSands.entity.custom.RhinoEntity;
 import net.MechGaming.EndlessSands.entity.custom.VultureEntity;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -23,6 +24,7 @@ public class ModEventBusEvents {
         event.put(ModEntities.RHINO.get(), RhinoEntity.createAttributes().build());
         event.put(ModEntities.VULTURE.get(), VultureEntity.createAttributes().build());
         event.put(ModEntities.OLDWORLD_GOLEM.get(), OldworldGolemEntity.createAttributes().build());
+        event.put(ModEntities.PHARAOH.get(), PharaohEntity.createAttributes().build());
     }
 
     @SubscribeEvent

@@ -6,6 +6,7 @@ import net.MechGaming.EndlessSands.block.entity.ModBlockEntities;
 import net.MechGaming.EndlessSands.config.EndlessSandsConfig;
 import net.MechGaming.EndlessSands.effect.ModEffects;
 import net.MechGaming.EndlessSands.entity.ModEntities;
+import net.MechGaming.EndlessSands.fluid.ModFluids;
 import net.MechGaming.EndlessSands.gamerule.ModGameRules;
 import net.MechGaming.EndlessSands.inventory.ModMenuTypes;
 import net.MechGaming.EndlessSands.item.ModCreativeModeTabs;
@@ -55,6 +56,7 @@ public class EndlessSands
 
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
+        ModFluids.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModRecipeSerializers.register(modEventBus);
         ModMenuTypes.register(modEventBus);
@@ -88,6 +90,7 @@ public class EndlessSands
     {
         event.enqueueWork(() -> {
             ModMessages.register();
+            ModFluids.commonSetup();
 
             BlockEntityTypeAccessor brushableType = (BlockEntityTypeAccessor) (Object)
                     BlockEntityType.BRUSHABLE_BLOCK;
@@ -95,11 +98,6 @@ public class EndlessSands
             validBlocks.add(ModBlocks.SUSPICIOUS_CURSED_SAND.get());
             brushableType.endlessSands$setValidBlocks(Set.copyOf(validBlocks));
 
-            BlockEntityTypeAccessor beaconType = (BlockEntityTypeAccessor) (Object)
-                    BlockEntityType.BEACON;
-            Set<Block> beaconBlocks = new HashSet<>(beaconType.endlessSands$getValidBlocks());
-            beaconBlocks.add(ModBlocks.ZENIONITE_BEACON.get());
-            beaconType.endlessSands$setValidBlocks(Set.copyOf(beaconBlocks));
         });
     }
     // https://www.youtube.com/watch?v=o6Xbp2dTEGA Left off at 13:30

@@ -65,6 +65,7 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                         ModBlocks.ZENIONITE_BEACON.get(),
                         ModBlocks.ZENIONITE_STAIRS.get(),
                         ModBlocks.ZENIONITE_CHARGER.get(),
+                        ModBlocks.CREATIVE_ZENIONITE_CHARGER.get(),
                         ModBlocks.ZENIONITE_BATTERY.get(),
                         ModBlocks.LINED_STAIRS.get()
                 );

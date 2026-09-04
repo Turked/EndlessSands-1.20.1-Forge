@@ -11,5 +11,7 @@ public class ModBiomes {
             ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "endless_desert"));
     public static final ResourceKey<Biome> OLDWORLD_GROWTH = ResourceKey.create(Registries.BIOME,
             ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "oldworld_growth"));
+    public static final ResourceKey<Biome> PRISON_REALM = ResourceKey.create(Registries.BIOME,
+            ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "prison_realm"));
 
 }

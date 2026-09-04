@@ -52,6 +52,7 @@ public class ZenioniteBatteryBlockEntity extends BlockEntity implements MenuProv
     private static final String NEXT_OUTPUT_TAG = "NextOutput";
     private static final String SYNCED_SIDE_CAPACITY_TAG = "SyncedSideCapacity";
     private static final String TRANSFER_COOLDOWN_TAG = "TransferCooldown";
+    private static final String PHARAOH_GATE_TAG = "PharaohGate";
 
     private static final Direction[] HORIZONTAL_DIRECTIONS = {
             Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST
@@ -108,6 +109,7 @@ public class ZenioniteBatteryBlockEntity extends BlockEntity implements MenuProv
     };
 
     private int transferCooldownTicks;
+    private boolean pharaohGate;
     private boolean loading;
 
     public ZenioniteBatteryBlockEntity(BlockPos pos, BlockState state) {
@@ -121,6 +123,11 @@ public class ZenioniteBatteryBlockEntity extends BlockEntity implements MenuProv
             ZenioniteBatteryBlockEntity battery
     ) {
         battery.clampEnergyToCapacity();
+        if (battery.pharaohGate) {
+            battery.drainPharaohGateEnergy();
+            battery.refreshHorizontalConnections();
+            return;
+        }
         battery.tickTransferCooldown();
         battery.refreshHorizontalConnections();
         battery.pushEnergy(level, pos);
@@ -143,6 +150,33 @@ public class ZenioniteBatteryBlockEntity extends BlockEntity implements MenuProv
             total += amount;
         }
         return (int) Math.min(total, getEnergyCapacity());
+    }
+
+    public void fillEnergyToCapacity() {
+        if (pharaohGate) {
+            return;
+        }
+        int sideCapacity = getSideCapacity();
+        Arrays.fill(sideEnergy, sideCapacity);
+        for (int side = 0; side < SIDE_COUNT; side++) {
+            fillOrder[side] = side;
+        }
+        fillOrderSize = SIDE_COUNT;
+        restartTransferCooldown();
+        onStorageChanged();
+    }
+
+    public boolean isPharaohGate() {
+        return pharaohGate;
+    }
+
+    public void beginPharaohGateDrain() {
+        if (pharaohGate) {
+            return;
+        }
+        pharaohGate = true;
+        transferCooldownTicks = 0;
+        onStorageChanged();
     }
 
     public int getSideEnergy(Direction direction) {
@@ -256,6 +290,9 @@ public class ZenioniteBatteryBlockEntity extends BlockEntity implements MenuProv
     }
 
     private int receiveEnergyInternal(int maxReceive, boolean simulate) {
+        if (pharaohGate) {
+            return 0;
+        }
         boolean wasEmpty = getEnergyStored() == 0;
         int received = Math.min(Math.max(0, maxReceive),
                 Math.max(0, getEnergyCapacity() - getEnergyStored()));
@@ -291,6 +328,9 @@ public class ZenioniteBatteryBlockEntity extends BlockEntity implements MenuProv
     }
 
     private int extractEnergyInternal(int maxExtract, boolean simulate) {
+        if (pharaohGate) {
+            return 0;
+        }
         int extracted = Math.min(Math.max(0, maxExtract), getOutputAllowance());
         if (simulate || extracted <= 0) {
             return extracted;
@@ -319,6 +359,13 @@ public class ZenioniteBatteryBlockEntity extends BlockEntity implements MenuProv
             }
         }
         return original - remaining;
+    }
+
+    private void drainPharaohGateEnergy() {
+        int drained = drainSides(Math.max(1, EndlessSandsConfig.getRfMultiplier()));
+        if (drained > 0) {
+            onStorageChanged();
+        }
     }
 
     private int currentFillSide(int sideCapacity) {
@@ -503,6 +550,7 @@ public class ZenioniteBatteryBlockEntity extends BlockEntity implements MenuProv
         tag.putString(SAVED_FACING_TAG, currentFacing().getName());
         tag.putInt(NEXT_OUTPUT_TAG, nextOutputIndex);
         tag.putInt(TRANSFER_COOLDOWN_TAG, transferCooldownTicks);
+        tag.putBoolean(PHARAOH_GATE_TAG, pharaohGate);
     }
 
     @Override
@@ -556,6 +604,7 @@ public class ZenioniteBatteryBlockEntity extends BlockEntity implements MenuProv
                     ? Math.max(0, Math.min(tag.getInt(TRANSFER_COOLDOWN_TAG),
                     EndlessSandsConfig.getRfTransferIntervalTicks()))
                     : defaultCooldown;
+            pharaohGate = tag.getBoolean(PHARAOH_GATE_TAG);
         } finally {
             loading = false;
         }
@@ -714,7 +763,7 @@ public class ZenioniteBatteryBlockEntity extends BlockEntity implements MenuProv
 
         @Override
         public boolean canReceive() {
-            return true;
+            return !pharaohGate;
         }
     }
 
@@ -741,7 +790,7 @@ public class ZenioniteBatteryBlockEntity extends BlockEntity implements MenuProv
 
         @Override
         public boolean canExtract() {
-            return true;
+            return !pharaohGate;
         }
 
         @Override

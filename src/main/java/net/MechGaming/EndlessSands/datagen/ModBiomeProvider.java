@@ -26,7 +26,10 @@ import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.FlatLevelSource;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
+import net.minecraft.world.level.levelgen.flat.FlatLayerInfo;
+import net.minecraft.world.level.levelgen.flat.FlatLevelGeneratorSettings;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
@@ -49,6 +52,7 @@ public class ModBiomeProvider {
     private static void bootstrapBiomes(BootstapContext<Biome> context){
         context.register(ModBiomes.ENDLESS_DESERT, endlessDesert(context));
         context.register(ModBiomes.OLDWORLD_GROWTH, oldworldGrowth(context));
+        context.register(ModBiomes.PRISON_REALM, prisonRealm(context));
     }
 
     private static void bootstrapDimensionTypes(BootstapContext<DimensionType> context){
@@ -69,6 +73,23 @@ public class ModBiomeProvider {
                 0.0F,
                 new DimensionType.MonsterSettings(false, false, UniformInt.of(0, 7), 0)
         ));
+        context.register(ModDimensions.PRISON_REALM_TYPE, new DimensionType(
+                OptionalLong.of(18_000L),
+                false,
+                false,
+                false,
+                false,
+                1.0D,
+                false,
+                false,
+                0,
+                256,
+                256,
+                BlockTags.INFINIBURN_END,
+                ModDimensions.PRISON_REALM_EFFECTS,
+                1.0F,
+                new DimensionType.MonsterSettings(false, false, UniformInt.of(0, 0), 0)
+        ));
     }
 
     private static void bootstrapLevelStems(BootstapContext<LevelStem> context){
@@ -80,6 +101,17 @@ public class ModBiomeProvider {
         context.register(ModDimensions.ENDLESS_SANDS_LEVEL_STEM, new LevelStem(
                 dimensionTypes.getOrThrow(ModDimensions.ENDLESS_SANDS_TYPE),
                 new EndlessSandsChunkGenerator(endlessDesert)
+        ));
+
+        Holder<Biome> prisonRealm = biomes.getOrThrow(ModBiomes.PRISON_REALM);
+        FlatLevelGeneratorSettings prisonSettings = new FlatLevelGeneratorSettings(
+                Optional.of(HolderSet.direct()), prisonRealm, java.util.List.of());
+        prisonSettings.getLayersInfo().add(new FlatLayerInfo(
+                1, ModBlocks.PRISON_CONCRETE.get()));
+        prisonSettings.updateLayers();
+        context.register(ModDimensions.PRISON_REALM_LEVEL_STEM, new LevelStem(
+                dimensionTypes.getOrThrow(ModDimensions.PRISON_REALM_TYPE),
+                new FlatLevelSource(prisonSettings)
         ));
     }
 
@@ -170,6 +202,26 @@ public class ModBiomeProvider {
                         .build())
                 .mobSpawnSettings(new MobSpawnSettings.Builder().build())
                 .generationSettings(new BiomeGenerationSettings.Builder(placedFeatures, carvers).build())
+                .build();
+    }
+
+    private static Biome prisonRealm(BootstapContext<Biome> context) {
+        HolderGetter<PlacedFeature> placedFeatures = context.lookup(Registries.PLACED_FEATURE);
+        HolderGetter<ConfiguredWorldCarver<?>> carvers = context.lookup(Registries.CONFIGURED_CARVER);
+
+        return new Biome.BiomeBuilder()
+                .hasPrecipitation(false)
+                .temperature(0.5F)
+                .downfall(0.0F)
+                .specialEffects(new BiomeSpecialEffects.Builder()
+                        .skyColor(0)
+                        .fogColor(0)
+                        .waterColor(0)
+                        .waterFogColor(0)
+                        .build())
+                .mobSpawnSettings(new MobSpawnSettings.Builder().build())
+                .generationSettings(new BiomeGenerationSettings.Builder(
+                        placedFeatures, carvers).build())
                 .build();
     }
 }

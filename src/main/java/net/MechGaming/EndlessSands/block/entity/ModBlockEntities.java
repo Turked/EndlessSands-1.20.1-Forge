@@ -23,17 +23,28 @@ public class ModBlockEntities {
     public static final RegistryObject<BlockEntityType<ZenioniteChargerBlockEntity>> ZENIONITE_CHARGER =
             BLOCK_ENTITIES.register("zenionite_charger", () ->
                     BlockEntityType.Builder.of(ZenioniteChargerBlockEntity::new,
-                            ModBlocks.ZENIONITE_CHARGER.get()).build(null));
+                            ModBlocks.ZENIONITE_CHARGER.get(),
+                            ModBlocks.CREATIVE_ZENIONITE_CHARGER.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<ZenioniteBatteryBlockEntity>> ZENIONITE_BATTERY =
             BLOCK_ENTITIES.register("zenionite_battery", () ->
                     BlockEntityType.Builder.of(ZenioniteBatteryBlockEntity::new,
                             ModBlocks.ZENIONITE_BATTERY.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<ZenionitePortalFrameBlockEntity>>
+            ZENIONITE_PORTAL_FRAME = BLOCK_ENTITIES.register("zenionite_portal_frame", () ->
+            BlockEntityType.Builder.of(ZenionitePortalFrameBlockEntity::new,
+                    ModBlocks.ZENIONITE_PORTAL_FRAME.get()).build(null));
+
     public static final RegistryObject<BlockEntityType<ZenioniteStairBlockEntity>> ZENIONITE_STAIRS =
             BLOCK_ENTITIES.register("zenionite_stairs", () ->
                     BlockEntityType.Builder.of(ZenioniteStairBlockEntity::new,
                             ModBlocks.ZENIONITE_STAIRS.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<ZenioniteBeaconBlockEntity>> ZENIONITE_BEACON =
+            BLOCK_ENTITIES.register("zenionite_beacon", () ->
+                    BlockEntityType.Builder.of(ZenioniteBeaconBlockEntity::new,
+                            ModBlocks.ZENIONITE_BEACON.get()).build(null));
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);

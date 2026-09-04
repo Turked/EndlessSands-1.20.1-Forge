@@ -5,8 +5,12 @@
   "refmap": "endlesssands.refmap.json",
   "plugin": "net.MechGaming.EndlessSands.mixin.EndlessSandsMixinPlugin",
   "mixins": [
+    "AncientWaterloggingMixin",
     "BlockEntityTypeAccessor",
     "FlowingFluidAccessor",
+    "FluidConversionItemMixin",
+    "AncientOceanWaterEntityMixin",
+    "StarTouchedLavaEntityMixin",
     "InventoryMenuMixin",
     "InventoryMixin",
     "LinedStairFlowingFluidMixin",

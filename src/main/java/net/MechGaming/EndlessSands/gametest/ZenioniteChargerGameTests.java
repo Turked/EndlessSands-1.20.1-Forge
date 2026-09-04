@@ -70,6 +70,9 @@ public final class ZenioniteChargerGameTests {
                 "The default RF transfer interval was not half a second");
         helper.assertTrue(ZenioniteChargerBlockEntity.TANK_CAPACITY == 8_000,
                 "A charger fluid tank did not hold eight buckets");
+        charger.fillEnergyToCapacity();
+        helper.assertTrue(charger.getEnergyStored() == charger.getEnergyCapacity(),
+                "The admin fill path did not maximize charger RF");
         helper.succeed();
     }
 
@@ -364,6 +367,53 @@ public final class ZenioniteChargerGameTests {
                         original.getAutomationItemHandler().getStackInSlot(
                                 ZenioniteChargerBlockEntity.WATER_SLOT)),
                 "Automation inventory did not survive an NBT round trip");
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty", batch = "creativeZenioniteCharger")
+    public static void creativeChargerStaysFullAfterInfiniteExtraction(GameTestHelper helper) {
+        BlockPos pos = new BlockPos(1, 1, 1);
+        ZenioniteChargerBlock block = ModBlocks.CREATIVE_ZENIONITE_CHARGER.get();
+        BlockState state = block.defaultBlockState();
+        helper.assertTrue(state.getValue(ZenioniteChargerBlock.WATER) == 8
+                        && state.getValue(ZenioniteChargerBlock.LAVA) == 8
+                        && state.getValue(ZenioniteChargerBlock.POWER) == 8,
+                "The Creative Zenionite Charger did not place with every gauge full");
+        helper.assertTrue(!state.getValue(ZenioniteChargerBlock.POWER_DRAINING),
+                "The creative charger incorrectly placed with a draining texture");
+        helper.assertTrue(ModBlockEntities.ZENIONITE_CHARGER.get().isValid(state),
+                "The charger block entity type did not accept the creative charger");
+
+        helper.setBlock(pos, state);
+        ZenioniteChargerBlockEntity charger = charger(helper, pos);
+        IFluidHandler fluids = fluidInput(charger, Direction.NORTH);
+        IEnergyStorage input = energy(charger, Direction.DOWN);
+        IEnergyStorage output = energy(charger, Direction.UP);
+        int capacity = charger.getEnergyCapacity();
+
+        helper.assertTrue(charger.getWaterAmount() == ZenioniteChargerBlockEntity.TANK_CAPACITY
+                        && charger.getLavaAmount() == ZenioniteChargerBlockEntity.TANK_CAPACITY
+                        && charger.getEnergyStored() == capacity,
+                "The creative charger did not expose full fluid and RF storage");
+        helper.assertTrue(input.receiveEnergy(capacity, false) == 0,
+                "The already-full creative charger accepted RF input");
+        helper.assertTrue(output.extractEnergy(1, false) == 1,
+                "The creative charger did not provide its normal timed RF output");
+        helper.assertTrue(charger.getEnergyStored() == capacity,
+                "Extracting RF reduced the creative charger's stored power");
+
+        FluidStack lava = fluids.drain(new FluidStack(Fluids.LAVA, 1_250),
+                IFluidHandler.FluidAction.EXECUTE);
+        FluidStack water = fluids.drain(new FluidStack(Fluids.WATER, 750),
+                IFluidHandler.FluidAction.EXECUTE);
+        helper.assertTrue(lava.getFluid() == Fluids.LAVA && lava.getAmount() == 1_250
+                        && water.getFluid() == Fluids.WATER && water.getAmount() == 750,
+                "The creative charger did not provide infinite water and lava");
+        helper.assertTrue(charger.getWaterAmount() == ZenioniteChargerBlockEntity.TANK_CAPACITY
+                        && charger.getLavaAmount() == ZenioniteChargerBlockEntity.TANK_CAPACITY,
+                "Extracting fluid reduced the creative charger's displayed storage");
+        helper.assertTrue(helper.getBlockState(pos).equals(state),
+                "Creative extraction changed the charger's permanently-full block texture");
         helper.succeed();
     }
 

@@ -62,6 +62,9 @@ public final class ZenioniteBatteryGameTests {
         helper.assertTrue(ZenioniteBatteryBlockEntity.combineWords(
                         packetLowWord, packetHighWord) == largeGuiValue,
                 "Battery GUI synchronization did not preserve RF values above a signed short");
+        battery.fillEnergyToCapacity();
+        helper.assertTrue(battery.getEnergyStored() == battery.getEnergyCapacity(),
+                "The admin fill path did not maximize battery RF");
 
         IEnergyStorage bottom = energy(battery, Direction.DOWN);
         helper.assertTrue(bottom.canReceive() && !bottom.canExtract(),

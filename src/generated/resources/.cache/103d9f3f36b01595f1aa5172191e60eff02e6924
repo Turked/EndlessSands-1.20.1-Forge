@@ -1,8 +1,11 @@
-// 1.20.1	2026-08-13T20:56:49.4998299	Registries
+// 1.20.1	2026-09-02T15:13:59.5540027	Registries
 a4dda94896a1efc445e919abe88e95272bf0cf6a data/endlesssands/dimension/endless_sands.json
+81df9988c9b39630581d7fe533b6e8c170169ea3 data/endlesssands/dimension/prison_realm.json
 c9b908d0e85db69e0ce572e92f12ee2369fb998d data/endlesssands/dimension_type/endless_sands.json
+367e062206358180bd4e9066d75c2e9101fd2e64 data/endlesssands/dimension_type/prison_realm.json
 cd705a50352edf369e08c747eb845fc59a317e8b data/endlesssands/worldgen/biome/endless_desert.json
 c9f2eecdf1fee8d3ddf5df0768a73f08eb1a75b1 data/endlesssands/worldgen/biome/oldworld_growth.json
+9c1ad1eec1e21a40d30395af117b462013398d24 data/endlesssands/worldgen/biome/prison_realm.json
 c6795a08897feeee9c882ce6fd856a98fcc1a744 data/endlesssands/worldgen/structure/crud_tree.json
 7c1630658eb55c0b742fde48761f63362dff7e56 data/endlesssands/worldgen/structure/floating_island.json
 c8fb18d269a28ced065fefeda38c48ea30d5a823 data/endlesssands/worldgen/structure/remains_of_a_village.json

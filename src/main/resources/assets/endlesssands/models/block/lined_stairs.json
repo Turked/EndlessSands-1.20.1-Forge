@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "bottom": "endlesssands:block/missing_texture",
-    "side": "endlesssands:block/missing_texture",
-    "top": "endlesssands:block/missing_texture"
-  }
-}

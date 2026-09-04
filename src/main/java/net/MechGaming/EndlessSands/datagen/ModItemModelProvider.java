@@ -46,6 +46,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.CURSED_POCKET_SAND);
         simpleItem(ModItems.BRITTLE_BONE_MEAL);
         simpleItem(ModItems.DRAGONITE);
+        withExistingParent(ModItems.ADMIN_ZENIONITE.getId().getPath(),
+                modLoc("block/zenionite"));
 
         simpleItem(ModItems.BOILED_VULTURE_EGG);
         simpleItem(ModItems.HANDFUL_OF_SCRAMBLED_EGGS);
@@ -53,6 +55,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.LIQUID_LINING);
         simpleItem(ModItems.RAW_VULTURE_MEAT);
         withExistingParent("vulture_nest", modLoc("block/vulture_nest_full"));
+        withExistingParent(ModBlocks.ZENIONITE_BEACON.getId().getPath(), modLoc("block/zenionite_beacon"));
+        withExistingParent(ModBlocks.ZENIONITE_PORTAL_FRAME.getId().getPath(), modLoc("block/zenionite_portal_frame"));
+        simpleItem(ModBlocks.LINED_STAIRS_ITEM);
 
         simpleItem(ModItems.VULTURE_EGG);
         withExistingParent("creative_arm_guard", modLoc("item/arm_guard"));
@@ -60,6 +65,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.ITTY_BITTY_BONE);
         simpleItem(ModItems.OLDWORLD_POPPY);
         simpleItem(ModItems.ELDER_EYE);
+        simpleItem(ModItems.ANCIENT_OCEAN_WATER_BUCKET);
+        simpleItem(ModItems.STAR_TOUCHED_LAVA_BUCKET);
         simpleItem(ModItems.ROTTED_WOOD);
         advancementIcon(ModItems.CANT_BEAT_THE_HEAT_ADVANCEMENT_ICON, "cant_beat_the_heat");
         advancementIcon(ModItems.SCORCHED_EARTH_ADVANCEMENT_ICON, "scorched_earth");

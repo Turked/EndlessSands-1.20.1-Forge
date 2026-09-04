@@ -33,6 +33,15 @@ public final class ModEffects {
                     )
             );
 
+    public static final RegistryObject<MobEffect> CHAINED =
+            EFFECTS.register(
+                    "chained",
+                    () -> new SimpleEffect(
+                            MobEffectCategory.HARMFUL,
+                            0x6E1A91
+                    )
+            );
+
     private ModEffects() {}
 
     public static void register(IEventBus eventBus) {

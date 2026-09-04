@@ -30,10 +30,12 @@ public class ModEntityLootTables extends EntityLootSubProvider {
                         .setRolls(ConstantValue.exactly(1.0F))
                         .add(LootItem.lootTableItem(ModItems.RAW_VULTURE_MEAT.get()))));
         add(ModEntities.OLDWORLD_GOLEM.get(), LootTable.lootTable());
+        add(ModEntities.PHARAOH.get(), LootTable.lootTable());
     }
 
     @Override
     protected Stream<EntityType<?>> getKnownEntityTypes() {
-        return Stream.of(ModEntities.VULTURE.get(), ModEntities.OLDWORLD_GOLEM.get());
+        return Stream.of(ModEntities.VULTURE.get(), ModEntities.OLDWORLD_GOLEM.get(),
+                ModEntities.PHARAOH.get());
     }
 }
