@@ -52,8 +52,10 @@ public final class ZenioniteChargerGameTests {
                 "The charger did not start with an empty power gauge");
         helper.assertTrue(!state.getValue(ZenioniteChargerBlock.POWER_DRAINING),
                 "The charger incorrectly started in upward-draining display mode");
-        helper.assertTrue(block.getStateDefinition().getPossibleStates().size() == 1_458,
-                "The gauges and power-flow direction did not produce 1,458 combined states");
+        helper.assertTrue(!state.getValue(ZenioniteChargerBlock.PHARAOH_GATE),
+                "The charger incorrectly started with ritual textures enabled");
+        helper.assertTrue(block.getStateDefinition().getPossibleStates().size() == 2_916,
+                "The gauges, power-flow direction, and ritual texture mode did not produce 2,916 combined states");
         helper.assertTrue(ModBlockEntities.ZENIONITE_CHARGER.isPresent(),
                 "The charger block entity type was not registered");
         helper.assertTrue(ModMenuTypes.ZENIONITE_CHARGER.isPresent(),

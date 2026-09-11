@@ -17,6 +17,7 @@ import net.MechGaming.EndlessSands.entity.custom.PharaohEntity;
 import net.MechGaming.EndlessSands.inventory.ModMenuTypes;
 import net.MechGaming.EndlessSands.inventory.ZenioniteBeaconMenu;
 import net.MechGaming.EndlessSands.item.ModItems;
+import net.MechGaming.EndlessSands.fluid.ModFluids;
 import net.MechGaming.EndlessSands.worldgen.dimension.ModDimensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -265,7 +266,7 @@ public final class ZenioniteBeaconGameTests {
 
     @GameTest(template = "empty", timeoutTicks = 400,
             batch = "zenionitePharaohGate")
-    public static void imprisoningPharaohPermanentlyConsumesAndLocksGate(GameTestHelper helper) {
+    public static void imprisoningPharaohConvertsGateToMysticalFuel(GameTestHelper helper) {
         helper.assertTrue(ModEntities.PHARAOH.isPresent(),
                 "The Pharaoh entity type was not registered");
         helper.assertTrue(ModEntities.PHARAOH.get().getDimensions().width
@@ -333,6 +334,29 @@ public final class ZenioniteBeaconGameTests {
                         && !source.canStartImprisonment()
                         && !partner.canStartImprisonment(),
                 "A completed Pharaoh gate still allowed another imprisonment");
+        tickBeacon(helper, sourcePos, source, 1);
+        tickBeacon(helper, partnerPos, partner, 1);
+        helper.assertTrue(source.isPharaohGateLinkActive()
+                        && partner.isPharaohGateLinkActive(),
+                "The completed Pharaoh gate did not activate both permanent beacon links");
+        helper.assertTrue(helper.getBlockState(sourcePos)
+                        .getValue(ZenioniteBeaconBlock.BEAM_ACTIVE)
+                        && helper.getBlockState(partnerPos)
+                        .getValue(ZenioniteBeaconBlock.BEAM_ACTIVE),
+                "The completed Pharaoh gate links were not rendered as active chains");
+        helper.assertTrue(Math.abs(source.getBeamTarget().x
+                        - (helper.absolutePos(partnerPos).getX() + 0.5D)) < 0.000001D
+                        && Math.abs(source.getBeamTarget().y
+                        - helper.absolutePos(partnerPos).getY()) < 0.000001D
+                        && Math.abs(source.getBeamTarget().z
+                        - (helper.absolutePos(partnerPos).getZ() + 0.5D)) < 0.000001D
+                        && Math.abs(partner.getBeamTarget().x
+                        - (helper.absolutePos(sourcePos).getX() + 0.5D)) < 0.000001D
+                        && Math.abs(partner.getBeamTarget().y
+                        - helper.absolutePos(sourcePos).getY()) < 0.000001D
+                        && Math.abs(partner.getBeamTarget().z
+                        - (helper.absolutePos(sourcePos).getZ() + 0.5D)) < 0.000001D,
+                "The completed Pharaoh gate chains did not target each other horizontally");
 
         ZenionitePortalFrameBlockEntity westFrame = frame(
                 helper, center.relative(Direction.WEST, 2));
@@ -350,29 +374,28 @@ public final class ZenioniteBeaconGameTests {
                         && fueledCharger.getLavaAmount() == 0
                         && fluidInput.fill(new FluidStack(Fluids.WATER, 1_000),
                         IFluidHandler.FluidAction.EXECUTE) == 0,
-                "A completed gate charger retained or accepted fluid");
-
-        int multiplier = Math.max(1, EndlessSandsConfig.getRfMultiplier());
-        int frameEnergy = westFrame.getEnergyStored();
-        ZenionitePortalFrameBlockEntity.serverTick(helper.getLevel(),
-                helper.absolutePos(center.relative(Direction.WEST, 2)),
-                helper.getBlockState(center.relative(Direction.WEST, 2)), westFrame);
-        helper.assertTrue(westFrame.getEnergyStored() == Math.max(0, frameEnergy - multiplier),
-                "A completed portal frame did not rapidly drain one scaled RF per tick");
-        int batteryEnergy = northBattery.getEnergyStored();
-        ZenioniteBatteryBlockEntity.serverTick(helper.getLevel(),
-                helper.absolutePos(portal.northBattery()),
-                helper.getBlockState(portal.northBattery()), northBattery);
-        helper.assertTrue(northBattery.getEnergyStored()
-                        == Math.max(0, batteryEnergy - multiplier),
-                "A completed gate battery did not rapidly drain one scaled RF per tick");
-        int chargerEnergy = fueledCharger.getEnergyStored();
-        ZenioniteChargerBlockEntity.serverTick(helper.getLevel(),
-                helper.absolutePos(chargerPositions[0]),
-                helper.getBlockState(chargerPositions[0]), fueledCharger);
-        helper.assertTrue(fueledCharger.getEnergyStored()
-                        == Math.max(0, chargerEnergy - multiplier),
-                "A completed gate charger did not rapidly drain one scaled RF per tick");
+                "A completed gate charger retained fluid or accepted ordinary water");
+        helper.assertTrue(fluidInput.fill(new FluidStack(ModFluids.ANCIENT_OCEAN_WATER.get(), 1_000),
+                        IFluidHandler.FluidAction.EXECUTE) == 1_000
+                        && fluidInput.fill(new FluidStack(ModFluids.STAR_TOUCHED_LAVA.get(), 1_000),
+                        IFluidHandler.FluidAction.EXECUTE) == 1_000,
+                "A completed gate charger rejected its Ancient Ocean Water or Star Touched Lava");
+        for (int tick = 0; tick < ZenioniteChargerBlockEntity.PRODUCTION_TICKS; tick++) {
+            ZenioniteChargerBlockEntity.serverTick(helper.getLevel(),
+                    helper.absolutePos(chargerPositions[0]),
+                    helper.getBlockState(chargerPositions[0]), fueledCharger);
+        }
+        helper.assertTrue(fueledCharger.getEnergyStored() == 1
+                        && fueledCharger.getWaterAmount() == 0
+                        && fueledCharger.getLavaAmount() == 0
+                        && helper.getBlockState(chargerPositions[0])
+                        .getValue(net.MechGaming.EndlessSands.block.custom.ZenioniteChargerBlock.PHARAOH_GATE),
+                "Mystical post-Pharaoh fuel did not produce the normal one RF cycle or texture state");
+        westFrame.fillEnergyToCapacity();
+        northBattery.fillEnergyToCapacity();
+        helper.assertTrue(westFrame.getEnergyStored() == westFrame.getEnergyCapacity()
+                        && northBattery.getEnergyStored() == northBattery.getEnergyCapacity(),
+                "The converted frame circuit could not accept RF after the old charge was purged");
 
         ServerLevel prisonRealm = helper.getLevel().getServer()
                 .getLevel(ModDimensions.PRISON_REALM_LEVEL);

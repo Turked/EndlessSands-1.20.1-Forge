@@ -5,6 +5,7 @@ import net.MechGaming.EndlessSands.block.ModBlocks;
 import net.MechGaming.EndlessSands.block.custom.LinedStairBlock;
 import net.MechGaming.EndlessSands.block.entity.LinedStairBlockEntity;
 import net.MechGaming.EndlessSands.item.ModItems;
+import net.MechGaming.EndlessSands.fluid.ModFluids;
 import net.MechGaming.EndlessSands.util.LinedStairData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -33,6 +34,34 @@ import net.minecraftforge.registries.ForgeRegistries;
 @PrefixGameTestTemplate(false)
 public final class LinedStairGameTests {
     private LinedStairGameTests() {
+    }
+
+    @GameTest(template = "empty")
+    public static void mysticalFluidsKeepIdentityAndBuckets(GameTestHelper helper) {
+        LinedStairBlock block = ModBlocks.LINED_STAIRS.get();
+        BlockPos relativePos = new BlockPos(1, 1, 1);
+        BlockPos absolutePos = helper.absolutePos(relativePos);
+        helper.setBlock(relativePos, block.defaultBlockState());
+        helper.assertTrue(block.placeLiquid(helper.getLevel(), absolutePos,
+                        helper.getBlockState(relativePos),
+                        ModFluids.ANCIENT_OCEAN_WATER.get().getSource(false)),
+                "Ancient Ocean Water could not enter a lined stair");
+        BlockState ancient = helper.getBlockState(relativePos);
+        helper.assertTrue(ancient.getFluidState().getType()
+                        .isSame(ModFluids.ANCIENT_OCEAN_WATER.get())
+                        && block.pickupBlock(helper.getLevel(), absolutePos, ancient)
+                        .is(ModItems.ANCIENT_OCEAN_WATER_BUCKET.get()),
+                "A lined stair converted Ancient Ocean Water into vanilla water");
+
+        BlockState star = LinedStairBlock.withFluidState(block.defaultBlockState(),
+                ModFluids.STAR_TOUCHED_LAVA.get().getSource(false));
+        helper.setBlock(relativePos, star);
+        helper.assertTrue(helper.getBlockState(relativePos).getFluidState().getType()
+                        .isSame(ModFluids.STAR_TOUCHED_LAVA.get())
+                        && block.pickupBlock(helper.getLevel(), absolutePos, star)
+                        .is(ModItems.STAR_TOUCHED_LAVA_BUCKET.get()),
+                "A lined stair converted Star Touched Lava into vanilla lava");
+        helper.succeed();
     }
 
     @GameTest(template = "empty")
@@ -430,7 +459,7 @@ public final class LinedStairGameTests {
     @GameTest(template = "empty")
     public static void identityAndRegistrationStayLocal(GameTestHelper helper) {
         helper.assertTrue(
-                ModBlocks.LINED_STAIRS.get().getStateDefinition().getPossibleStates().size() == 1600,
+                ModBlocks.LINED_STAIRS.get().getStateDefinition().getPossibleStates().size() == 6400,
                 "Universal lined stair state count changed unexpectedly"
         );
         helper.assertTrue(

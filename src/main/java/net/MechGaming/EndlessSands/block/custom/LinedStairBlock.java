@@ -1,6 +1,7 @@
 package net.MechGaming.EndlessSands.block.custom;
 
 import net.MechGaming.EndlessSands.block.entity.LinedStairBlockEntity;
+import net.MechGaming.EndlessSands.fluid.ModFluids;
 import net.MechGaming.EndlessSands.util.LinedStairData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,7 +13,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -43,6 +43,10 @@ import java.util.Optional;
 public class LinedStairBlock extends StairBlock implements EntityBlock {
     public static final BooleanProperty LAVA_LOGGED =
             BooleanProperty.create("endlesssands_lava_logged");
+    public static final BooleanProperty ANCIENT_OCEAN_LOGGED =
+            BooleanProperty.create("endlesssands_ancient_ocean_logged");
+    public static final BooleanProperty STAR_TOUCHED_LOGGED =
+            BooleanProperty.create("endlesssands_star_touched_logged");
     public static final IntegerProperty EXACT_FLUID_LEVEL =
             IntegerProperty.create("endlesssands_water_level", 0, 9);
     /**
@@ -56,18 +60,21 @@ public class LinedStairBlock extends StairBlock implements EntityBlock {
     public LinedStairBlock(BlockBehaviour.Properties properties) {
         super(
                 () -> Blocks.SANDSTONE_STAIRS.defaultBlockState(),
-                properties.lightLevel(state -> state.hasProperty(LAVA_LOGGED) && state.getValue(LAVA_LOGGED) ? 15 : 0)
+                properties.lightLevel(state -> state.hasProperty(LAVA_LOGGED)
+                        && (state.getValue(LAVA_LOGGED) || state.getValue(STAR_TOUCHED_LOGGED)) ? 15 : 0)
         );
         registerDefaultState(defaultBlockState()
                 .setValue(WATERLOGGED, false)
                 .setValue(LAVA_LOGGED, false)
+                .setValue(ANCIENT_OCEAN_LOGGED, false)
+                .setValue(STAR_TOUCHED_LOGGED, false)
                 .setValue(EXACT_FLUID_LEVEL, 0));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(LAVA_LOGGED, EXACT_FLUID_LEVEL);
+        builder.add(LAVA_LOGGED, ANCIENT_OCEAN_LOGGED, STAR_TOUCHED_LOGGED, EXACT_FLUID_LEVEL);
     }
 
     @Nullable
@@ -81,12 +88,18 @@ public class LinedStairBlock extends StairBlock implements EntityBlock {
     public FluidState getFluidState(BlockState state) {
         boolean lavaLogged = state.getValue(LAVA_LOGGED);
         boolean waterlogged = state.getValue(WATERLOGGED);
-        if (!lavaLogged && !waterlogged) {
+        boolean ancientLogged = state.getValue(ANCIENT_OCEAN_LOGGED);
+        boolean starTouchedLogged = state.getValue(STAR_TOUCHED_LOGGED);
+        if (!lavaLogged && !waterlogged && !ancientLogged && !starTouchedLogged) {
             return Fluids.EMPTY.defaultFluidState();
         }
 
-        FlowingFluid source = lavaLogged ? Fluids.LAVA : Fluids.WATER;
-        FlowingFluid flowing = lavaLogged ? Fluids.FLOWING_LAVA : Fluids.FLOWING_WATER;
+        FlowingFluid source = ancientLogged ? ModFluids.ANCIENT_OCEAN_WATER.get()
+                : starTouchedLogged ? ModFluids.STAR_TOUCHED_LAVA.get()
+                : lavaLogged ? Fluids.LAVA : Fluids.WATER;
+        FlowingFluid flowing = ancientLogged ? ModFluids.FLOWING_ANCIENT_OCEAN_WATER.get()
+                : starTouchedLogged ? ModFluids.FLOWING_STAR_TOUCHED_LAVA.get()
+                : lavaLogged ? Fluids.FLOWING_LAVA : Fluids.FLOWING_WATER;
         int encodedLevel = state.getValue(EXACT_FLUID_LEVEL);
         if (encodedLevel == 9) {
             return source.getSource(false);
@@ -98,12 +111,17 @@ public class LinedStairBlock extends StairBlock implements EntityBlock {
     }
 
     public static BlockState withFluidState(BlockState state, FluidState fluidState) {
-        boolean water = fluidState.is(FluidTags.WATER);
-        boolean lava = fluidState.is(FluidTags.LAVA);
-        if (!water && !lava) {
+        Fluid type = fluidState.getType();
+        boolean ancient = isAncientOcean(type);
+        boolean starTouched = isStarTouched(type);
+        boolean water = !ancient && fluidState.is(FluidTags.WATER);
+        boolean lava = !starTouched && fluidState.is(FluidTags.LAVA);
+        if (!water && !lava && !ancient && !starTouched) {
             return state
                     .setValue(WATERLOGGED, false)
                     .setValue(LAVA_LOGGED, false)
+                    .setValue(ANCIENT_OCEAN_LOGGED, false)
+                    .setValue(STAR_TOUCHED_LOGGED, false)
                     .setValue(EXACT_FLUID_LEVEL, 0);
         }
 
@@ -118,6 +136,8 @@ public class LinedStairBlock extends StairBlock implements EntityBlock {
         return state
                 .setValue(WATERLOGGED, water)
                 .setValue(LAVA_LOGGED, lava)
+                .setValue(ANCIENT_OCEAN_LOGGED, ancient)
+                .setValue(STAR_TOUCHED_LOGGED, starTouched)
                 .setValue(EXACT_FLUID_LEVEL, encodedLevel);
     }
 
@@ -162,7 +182,7 @@ public class LinedStairBlock extends StairBlock implements EntityBlock {
         }
 
         level.setBlock(pos, withFluidState(state, Fluids.EMPTY.defaultFluidState()), 3);
-        return new ItemStack(storedFluid.is(FluidTags.LAVA) ? Items.LAVA_BUCKET : Items.WATER_BUCKET);
+        return new ItemStack(storedFluid.getType().getBucket());
     }
 
     @Override
@@ -270,8 +290,17 @@ public class LinedStairBlock extends StairBlock implements EntityBlock {
     }
 
     private static boolean sameFluidFamily(FluidState state, Fluid fluid) {
-        return state.is(FluidTags.WATER) && fluid.is(FluidTags.WATER)
-                || state.is(FluidTags.LAVA) && fluid.is(FluidTags.LAVA);
+        return state.getType().isSame(fluid);
+    }
+
+    private static boolean isAncientOcean(Fluid fluid) {
+        return fluid == ModFluids.ANCIENT_OCEAN_WATER.get()
+                || fluid == ModFluids.FLOWING_ANCIENT_OCEAN_WATER.get();
+    }
+
+    private static boolean isStarTouched(Fluid fluid) {
+        return fluid == ModFluids.STAR_TOUCHED_LAVA.get()
+                || fluid == ModFluids.FLOWING_STAR_TOUCHED_LAVA.get();
     }
 
     private static int fluidStrength(FluidState state) {

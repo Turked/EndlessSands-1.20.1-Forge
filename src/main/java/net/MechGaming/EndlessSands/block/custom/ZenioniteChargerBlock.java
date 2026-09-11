@@ -3,6 +3,7 @@ package net.MechGaming.EndlessSands.block.custom;
 import net.MechGaming.EndlessSands.block.entity.ModBlockEntities;
 import net.MechGaming.EndlessSands.block.entity.ZenioniteChargerBlockEntity;
 import net.MechGaming.EndlessSands.util.ExpandedInventoryHelper;
+import net.MechGaming.EndlessSands.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -30,6 +31,7 @@ public class ZenioniteChargerBlock extends BaseEntityBlock {
     public static final IntegerProperty LAVA = IntegerProperty.create("lava", 0, 8);
     public static final IntegerProperty POWER = IntegerProperty.create("power", 0, 8);
     public static final BooleanProperty POWER_DRAINING = BooleanProperty.create("power_draining");
+    public static final BooleanProperty PHARAOH_GATE = BooleanProperty.create("pharaoh_gate");
     private final boolean creative;
 
     public ZenioniteChargerBlock(Properties properties) {
@@ -44,7 +46,8 @@ public class ZenioniteChargerBlock extends BaseEntityBlock {
                 .setValue(WATER, initialLevel)
                 .setValue(LAVA, initialLevel)
                 .setValue(POWER, initialLevel)
-                .setValue(POWER_DRAINING, false));
+                .setValue(POWER_DRAINING, false)
+                .setValue(PHARAOH_GATE, false));
     }
 
     public boolean isCreative() {
@@ -53,7 +56,7 @@ public class ZenioniteChargerBlock extends BaseEntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(WATER, LAVA, POWER, POWER_DRAINING);
+        builder.add(WATER, LAVA, POWER, POWER_DRAINING, PHARAOH_GATE);
     }
 
     @Override
@@ -89,7 +92,7 @@ public class ZenioniteChargerBlock extends BaseEntityBlock {
             BlockHitResult hit
     ) {
         ItemStack held = player.getItemInHand(hand);
-        boolean filledBucket = held.is(Items.WATER_BUCKET) || held.is(Items.LAVA_BUCKET);
+        boolean filledBucket = isSupportedBucket(held);
         if (filledBucket) {
             if (level.isClientSide) {
                 return InteractionResult.SUCCESS;
@@ -104,7 +107,7 @@ public class ZenioniteChargerBlock extends BaseEntityBlock {
 
         if (hand == InteractionHand.MAIN_HAND) {
             ItemStack offhand = player.getItemInHand(InteractionHand.OFF_HAND);
-            if (offhand.is(Items.WATER_BUCKET) || offhand.is(Items.LAVA_BUCKET)) {
+            if (isSupportedBucket(offhand)) {
                 return InteractionResult.PASS;
             }
         }
@@ -119,6 +122,12 @@ public class ZenioniteChargerBlock extends BaseEntityBlock {
             });
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    private static boolean isSupportedBucket(ItemStack stack) {
+        return stack.is(Items.WATER_BUCKET) || stack.is(Items.LAVA_BUCKET)
+                || stack.is(ModItems.ANCIENT_OCEAN_WATER_BUCKET.get())
+                || stack.is(ModItems.STAR_TOUCHED_LAVA_BUCKET.get());
     }
 
     @Override

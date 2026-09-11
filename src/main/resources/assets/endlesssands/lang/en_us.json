@@ -112,6 +112,9 @@
   "screen.endlesssands.buried.escape": "Escape",
   "screen.endlesssands.buried.leave": "Leave Game",
   "screen.endlesssands.buried.dont_ask": "Don't ask again",
+  "screen.endlesssands.sacrifice.title": "Are you sure, this action can not be undone",
+  "screen.endlesssands.sacrifice.place": "Place the Sacrifice",
+  "screen.endlesssands.sacrifice.walk_away": "Walk away",
 
   "gui.endlesssands.zenionite_charger.water": "Water",
   "gui.endlesssands.zenionite_charger.power": "Power",

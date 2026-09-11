@@ -1,6 +1,8 @@
 package net.MechGaming.EndlessSands.fluid;
 
 import net.MechGaming.EndlessSands.EndlessSands;
+import net.minecraft.client.Camera;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -15,6 +17,7 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 import java.util.function.Consumer;
 
@@ -60,6 +63,12 @@ public final class CustomFluidType extends FluidType {
             @Override public ResourceLocation getFlowingTexture() { return flowing; }
             // The supplied palette is already colored; applying biome tint would change it.
             @Override public int getTintColor() { return 0xFFFFFFFF; }
+
+            @Override
+            public Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level,
+                                          int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
+                return lava ? new Vector3f(0.055F, 0.095F, 0.22F) : fluidFogColor;
+            }
         });
     }
 }

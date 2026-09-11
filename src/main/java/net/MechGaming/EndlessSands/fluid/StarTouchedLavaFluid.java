@@ -2,7 +2,11 @@ package net.MechGaming.EndlessSands.fluid;
 
 import net.MechGaming.EndlessSands.block.ModBlocks;
 import net.MechGaming.EndlessSands.item.ModItems;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -18,6 +22,20 @@ public abstract class StarTouchedLavaFluid extends LavaFluid {
     @Override public Item getBucket() { return ModItems.STAR_TOUCHED_LAVA_BUCKET.get(); }
     @Override public FluidType getFluidType() { return ModFluids.STAR_TOUCHED_LAVA_TYPE.get(); }
     @Override public boolean isSame(Fluid other) { return other instanceof StarTouchedLavaFluid; }
+
+    @Override
+    public void animateTick(Level level, BlockPos pos, FluidState state, RandomSource random) {
+        super.animateTick(level, pos, state, random);
+        if (random.nextInt(100) != 0 || !level.getBlockState(pos.above()).isAir()) {
+            return;
+        }
+
+        // Sparse starlight rises from the actual surface, including shallow flowing lava.
+        level.addParticle(ParticleTypes.END_ROD,
+                pos.getX() + random.nextDouble(), pos.getY() + state.getHeight(level, pos) + 0.02D,
+                pos.getZ() + random.nextDouble(),
+                (random.nextDouble() - 0.5D) * 0.01D, 0.025D, (random.nextDouble() - 0.5D) * 0.01D);
+    }
 
     @Override
     public BlockState createLegacyBlock(FluidState state) {

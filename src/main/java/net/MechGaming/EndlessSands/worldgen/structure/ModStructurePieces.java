@@ -25,6 +25,11 @@ public class ModStructurePieces {
                     () -> (context, tag) -> new RemainsOfVillageStructure.Piece(
                             context.structureTemplateManager(), tag));
 
+    public static final RegistryObject<StructurePieceType> BATTLEGROUND_RUINS =
+            STRUCTURE_PIECES.register("battleground_ruins",
+                    () -> (context, tag) -> new BattlegroundRuinsStructure.Piece(
+                            context.structureTemplateManager(), tag));
+
     public static void register(IEventBus eventBus){
         STRUCTURE_PIECES.register(eventBus);
     }

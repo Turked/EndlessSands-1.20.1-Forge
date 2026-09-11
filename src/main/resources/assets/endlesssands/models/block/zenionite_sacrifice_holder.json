@@ -1,0 +1,31 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "zenionite": "endlesssands:block/zenionite"
+  },
+  "elements": [
+    {
+      "from": [4, 0, 4],
+      "to": [12, 2, 12],
+      "faces": {
+        "down": { "texture": "#zenionite" },
+        "up": { "texture": "#zenionite" },
+        "north": { "texture": "#zenionite" },
+        "south": { "texture": "#zenionite" },
+        "west": { "texture": "#zenionite" },
+        "east": { "texture": "#zenionite" }
+      }
+    },
+    {
+      "from": [7, 2, 7],
+      "to": [9, 16, 9],
+      "faces": {
+        "north": { "texture": "#zenionite" },
+        "south": { "texture": "#zenionite" },
+        "west": { "texture": "#zenionite" },
+        "east": { "texture": "#zenionite" }
+      }
+    }
+  ]
+}

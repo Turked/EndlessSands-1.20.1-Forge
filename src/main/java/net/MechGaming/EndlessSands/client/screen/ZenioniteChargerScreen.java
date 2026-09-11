@@ -26,6 +26,12 @@ public class ZenioniteChargerScreen extends AbstractContainerScreen<ZenioniteCha
     private static final ResourceLocation EMPTY_TEXTURE = blockTexture("zenionite_charger_side_empty");
     private static final ResourceLocation WATER_TEXTURE = guiTexture("water_bar");
     private static final ResourceLocation POWER_TEXTURE = blockTexture("zenionite_charger_side_power_iso");
+    private static final ResourceLocation ANCIENT_OCEAN_TEXTURE =
+            blockTexture("zenionite_charger_side_ancient_ocean_water_iso");
+    private static final ResourceLocation STAR_TOUCHED_TEXTURE =
+            blockTexture("zenionite_charger_side_star_touched_lava_iso");
+    private static final ResourceLocation RITUAL_POWER_TEXTURE =
+            blockTexture("zenionite_charger_side_power_mk2_iso");
     private static final ResourceLocation LAVA_TEXTURE = guiTexture("lava_bar");
 
     private static final Component WATER_LABEL =
@@ -69,11 +75,15 @@ public class ZenioniteChargerScreen extends AbstractContainerScreen<ZenioniteCha
         }
 
         int barY = top + 38;
-        drawBar(graphics, left + waterBarX(), barY, 0, 5, WATER_TEXTURE,
+        boolean ritual = this.menu.isPharaohGate();
+        drawBar(graphics, left + waterBarX(), barY, 0, 5,
+                ritual ? ANCIENT_OCEAN_TEXTURE : WATER_TEXTURE,
                 this.menu.getWaterLevel(), true, false);
-        drawBar(graphics, left + powerBarX(), barY, 5, 6, POWER_TEXTURE,
+        drawBar(graphics, left + powerBarX(), barY, 5, 6,
+                ritual ? RITUAL_POWER_TEXTURE : POWER_TEXTURE,
                 this.menu.getPowerLevel(), false, this.menu.isPowerDraining());
-        drawBar(graphics, left + lavaBarX(), barY, 11, 5, LAVA_TEXTURE,
+        drawBar(graphics, left + lavaBarX(), barY, 11, 5,
+                ritual ? STAR_TOUCHED_TEXTURE : LAVA_TEXTURE,
                 this.menu.getLavaLevel(), true, false);
     }
 

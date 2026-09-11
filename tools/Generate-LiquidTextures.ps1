@@ -3,7 +3,8 @@ param(
     [Parameter(Mandatory = $true)][string]$MinecraftClientJar
 )
 
-# Exact palette translation, not image synthesis. Run again to rebuild the six texture assets.
+# Rebuild both liquids: exact supplied palette translation for Ancient Ocean Water,
+# followed by the authored Star Touched Lava animation (which replaces its old mapping).
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
 Add-Type -AssemblyName System.IO.Compression.FileSystem
@@ -55,11 +56,89 @@ function Brightness([Drawing.Color]$Color) {
     return 0.2126 * $Color.R + 0.7152 * $Color.G + 0.0722 * $Color.B
 }
 
+function Mix-Color([Drawing.Color]$A, [Drawing.Color]$B, [double]$Amount) {
+    return [Drawing.Color]::FromArgb(
+        [Math]::Round($A.A + ($B.A - $A.A) * $Amount),
+        [Math]::Round($A.R + ($B.R - $A.R) * $Amount),
+        [Math]::Round($A.G + ($B.G - $A.G) * $Amount),
+        [Math]::Round($A.B + ($B.B - $A.B) * $Amount))
+}
+
+function Sample-WrappedFrame($Image, [int]$Frame, [int]$Size, [double]$X, [double]$Y) {
+    $X -= [Math]::Floor($X / $Size) * $Size
+    $Y -= [Math]::Floor($Y / $Size) * $Size
+    if ($X -ge $Size -or $X -lt 0) { $X = 0.0 }
+    if ($Y -ge $Size -or $Y -lt 0) { $Y = 0.0 }
+    $ix = [int][Math]::Floor($X)
+    $iy = [int][Math]::Floor($Y)
+    if ($ix -ge $Size) { $ix = 0 }
+    if ($iy -ge $Size) { $iy = 0 }
+    $nextX = ($ix + 1) % $Size
+    $nextY = ($iy + 1) % $Size
+    $frameY = $Frame * $Size
+    $top = Mix-Color ($Image.GetPixel($ix, $frameY + $iy)) `
+        ($Image.GetPixel($nextX, $frameY + $iy)) ($X - $ix)
+    $bottom = Mix-Color ($Image.GetPixel($ix, $frameY + $nextY)) `
+        ($Image.GetPixel($nextX, $frameY + $nextY)) ($X - $ix)
+    return Mix-Color $top $bottom ($Y - $iy)
+}
+
+function New-MysticalAncientFlow([string]$StillPath, [string]$FlowPath) {
+    $still = [Drawing.Bitmap]::new($StillPath)
+    $mappedFlow = [Drawing.Bitmap]::new($FlowPath)
+    $result = [Drawing.Bitmap]::new(32, 1024, [Drawing.Imaging.PixelFormat]::Format32bppArgb)
+    $temporaryPath = "$FlowPath.mystical.png"
+    try {
+        if ($still.Width -ne 16 -or $still.Height -ne 512 -or $mappedFlow.Width -ne 32 -or $mappedFlow.Height -ne 1024) {
+            throw 'Ancient Ocean Water must contain 32 still and flow frames at vanilla dimensions.'
+        }
+        $tau = [Math]::PI * 2
+        for ($frame = 0; $frame -lt 32; $frame++) {
+            $phase = $frame / 32.0
+            for ($y = 0; $y -lt 32; $y++) {
+                for ($x = 0; $x -lt 32; $x++) {
+                    $u = $x % 16
+                    $v = $y % 16
+                    $sx = $u + 0.9 * [Math]::Sin($tau * ($v / 16.0 + $phase))
+                    $sy = $v - $phase * 16.0 + 0.5 * [Math]::Sin($tau * ($u / 16.0 - $phase))
+                    $mystical = Sample-WrappedFrame $still $frame 16 $sx $sy
+                    # A small contribution from the translated vanilla flow softens
+                    # the waves without erasing the still texture's luminous identity.
+                    $softFlow = $mappedFlow.GetPixel($x, $frame * 32 + $y)
+                    $result.SetPixel($x, $frame * 32 + $y,
+                        (Mix-Color $mystical $softFlow 0.18))
+                }
+            }
+            $frameY = $frame * 32
+            foreach ($edge in 0..2) {
+                $weight = @(0.5, 0.2, 0.05)[$edge]
+                for ($y = 0; $y -lt 32; $y++) {
+                    $left = $result.GetPixel($edge, $frameY + $y)
+                    $right = $result.GetPixel(31 - $edge, $frameY + $y)
+                    $result.SetPixel($edge, $frameY + $y, (Mix-Color $left $right $weight))
+                    $result.SetPixel(31 - $edge, $frameY + $y, (Mix-Color $right $left $weight))
+                }
+                for ($x = 0; $x -lt 32; $x++) {
+                    $top = $result.GetPixel($x, $frameY + $edge)
+                    $bottom = $result.GetPixel($x, $frameY + 31 - $edge)
+                    $result.SetPixel($x, $frameY + $edge, (Mix-Color $top $bottom $weight))
+                    $result.SetPixel($x, $frameY + 31 - $edge, (Mix-Color $bottom $top $weight))
+                }
+            }
+        }
+        $result.Save($temporaryPath, [Drawing.Imaging.ImageFormat]::Png)
+    } finally {
+        $result.Dispose()
+        $mappedFlow.Dispose()
+        $still.Dispose()
+    }
+    Move-Item -LiteralPath $temporaryPath -Destination $FlowPath -Force
+}
+
 $client = [IO.Compression.ZipFile]::OpenRead($MinecraftClientJar)
 try {
     foreach ($liquid in @(
-        @{ Name = 'ancient_ocean_water'; Vanilla = 'water'; Flow = 'flowing_water'; Mapping = 'water_to_ancient_ocean_water'; FlowMapping = 'flowing_water_to_flowing_ancient_ocean_water' },
-        @{ Name = 'star_touched_lava'; Vanilla = 'lava'; Flow = 'flowing_lava'; Mapping = 'lava_to_star_touched_lava'; FlowMapping = 'flowing_lava_to_flowing_star_touched_lava' }
+        @{ Name = 'ancient_ocean_water'; Vanilla = 'water'; Flow = 'flowing_water'; Mapping = 'water_to_ancient_ocean_water'; FlowMapping = 'flowing_water_to_flowing_ancient_ocean_water' }
     )) {
         $palette = Read-Palette $liquid.Name
         $stillMapping = Read-Mapping $liquid.Mapping $palette
@@ -122,6 +201,11 @@ try {
             } finally { $archive.Dispose() }
         }
 
+        New-MysticalAncientFlow `
+            (Join-Path $outputDirectory "block/$($liquid.Name)_still.png") `
+            (Join-Path $outputDirectory "block/$($liquid.Name)_flow.png")
+        Write-Output "$($liquid.Name)_flow: rebuilt from the mystical still animation with seamless softened motion"
+
         $bucket = Read-ZipBitmap $client "assets/minecraft/textures/item/$($liquid.Vanilla)_bucket.png"
         $originalBucket = [Drawing.Bitmap]::new($bucket)
         try {
@@ -174,3 +258,5 @@ try {
         } finally { $originalBucket.Dispose(); $bucket.Dispose() }
     }
 } finally { $client.Dispose() }
+
+& (Join-Path $PSScriptRoot 'Generate-StarTouchedLavaTextures.ps1') -MinecraftClientJar $MinecraftClientJar

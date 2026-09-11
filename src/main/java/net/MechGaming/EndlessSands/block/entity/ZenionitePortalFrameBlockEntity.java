@@ -46,6 +46,7 @@ public class ZenionitePortalFrameBlockEntity extends BlockEntity {
     private static final String TRANSFER_COOLDOWN_TAG = "TransferCooldown";
     private static final String LOSS_COOLDOWN_TAG = "LossCooldown";
     private static final String PHARAOH_GATE_TAG = "PharaohGate";
+    private static final String SACRIFICE_COMPLETE_TAG = "SacrificeComplete";
 
     private final Map<Direction, IEnergyStorage> sidedEnergyHandlers =
             new EnumMap<>(Direction.class);
@@ -59,6 +60,7 @@ public class ZenionitePortalFrameBlockEntity extends BlockEntity {
     private int transferCooldownTicks;
     private int lossCooldownTicks;
     private boolean pharaohGate;
+    private boolean sacrificeComplete;
     private boolean loading;
     @Nullable
     private PortalLayout cachedLayout;
@@ -86,11 +88,6 @@ public class ZenionitePortalFrameBlockEntity extends BlockEntity {
             }
         }
         frame.clampEnergyToCapacity();
-        if (frame.pharaohGate) {
-            frame.drainPharaohGateEnergy();
-            frame.updatePoweredState();
-            return;
-        }
         if (frame.energyStored <= 0) {
             frame.clearCooldowns();
             frame.updatePoweredState();
@@ -127,9 +124,6 @@ public class ZenionitePortalFrameBlockEntity extends BlockEntity {
     }
 
     public void fillEnergyToCapacity() {
-        if (pharaohGate) {
-            return;
-        }
         energyStored = getEnergyCapacity();
         restartTransferCooldown();
         restartLossCooldown();
@@ -146,6 +140,10 @@ public class ZenionitePortalFrameBlockEntity extends BlockEntity {
 
     public boolean isPharaohGate() {
         return pharaohGate;
+    }
+
+    public boolean isSacrificeComplete() {
+        return sacrificeComplete;
     }
 
     public static boolean isValidCircuit(Level level, BlockPos origin) {
@@ -212,6 +210,31 @@ public class ZenionitePortalFrameBlockEntity extends BlockEntity {
         return true;
     }
 
+    public static boolean canAcceptDragonEgg(Level level, BlockPos holderPosition) {
+        PortalLayout layout = findPortalLayoutAtCenter(level, holderPosition.below());
+        return layout != null && layout.isPharaohGate(level)
+                && !layout.isSacrificeComplete(level)
+                && layout.isReadyToOpen(level) && layout.hasOpenPortal(level)
+                && holderPosition.equals(layout.center().above());
+    }
+
+    public static boolean isSacrificeComplete(Level level, BlockPos portalCenter) {
+        PortalLayout layout = findPortalLayoutAtCenter(level, portalCenter);
+        return layout != null && layout.isSacrificeComplete(level);
+    }
+
+    public static void completeDragonEggSacrifice(Level level, BlockPos portalCenter) {
+        PortalLayout layout = findPortalLayoutAtCenter(level, portalCenter);
+        if (layout == null || !layout.isPharaohGate(level)) return;
+        for (BlockPos framePosition : layout.frames.keySet()) {
+            if (level.getBlockEntity(framePosition) instanceof ZenionitePortalFrameBlockEntity frame) {
+                frame.sacrificeComplete = true;
+                frame.setChanged();
+            }
+        }
+        level.removeBlock(layout.center.above(), false);
+    }
+
     public static boolean isPharaohGateForBattery(Level level, BlockPos batteryPosition) {
         if (!level.getBlockState(batteryPosition).is(ModBlocks.ZENIONITE_BATTERY.get())) {
             return false;
@@ -224,6 +247,32 @@ public class ZenionitePortalFrameBlockEntity extends BlockEntity {
             }
         }
         return false;
+    }
+
+    @Nullable
+    public static PortalConnection getPharaohGateForBattery(
+            Level level,
+            BlockPos batteryPosition
+    ) {
+        if (!level.getBlockState(batteryPosition).is(ModBlocks.ZENIONITE_BATTERY.get())) {
+            return null;
+        }
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            PortalLayout layout = findPortalLayout(level, batteryPosition.relative(direction));
+            if (layout == null || !layout.containsBattery(batteryPosition)
+                    || !layout.isPharaohGate(level)) {
+                continue;
+            }
+            BlockPos oppositeBattery = layout.oppositeBattery(batteryPosition);
+            if (oppositeBattery != null) {
+                return new PortalConnection(
+                        layout.center(),
+                        batteryPosition.immutable(),
+                        oppositeBattery
+                );
+            }
+        }
+        return null;
     }
 
     public static void setPortalTransferActive(Level level, BlockPos portalCenter, boolean transferActive) {
@@ -338,9 +387,6 @@ public class ZenionitePortalFrameBlockEntity extends BlockEntity {
     }
 
     private int receiveEnergyInternal(int maxReceive, boolean simulate, @Nullable Direction side) {
-        if (pharaohGate) {
-            return 0;
-        }
         int received = Math.min(
                 Math.max(0, maxReceive),
                 Math.max(0, getEnergyCapacity() - energyStored)
@@ -366,9 +412,6 @@ public class ZenionitePortalFrameBlockEntity extends BlockEntity {
     }
 
     private int receiveRoutedEnergy(int maxReceive, boolean simulate, Direction side) {
-        if (pharaohGate) {
-            return 0;
-        }
         int received = Math.min(
                 Math.max(0, maxReceive),
                 Math.max(0, getEnergyCapacity() - energyStored)
@@ -533,6 +576,7 @@ public class ZenionitePortalFrameBlockEntity extends BlockEntity {
             return;
         }
         pharaohGate = true;
+        energyStored = 0;
         transferCooldownTicks = 0;
         lossCooldownTicks = 0;
         setChanged();
@@ -540,16 +584,6 @@ public class ZenionitePortalFrameBlockEntity extends BlockEntity {
             BlockState state = getBlockState();
             level.sendBlockUpdated(worldPosition, state, state, Block.UPDATE_CLIENTS);
         }
-    }
-
-    private void drainPharaohGateEnergy() {
-        if (energyStored <= 0) {
-            clearCooldowns();
-            return;
-        }
-        energyStored = Math.max(0,
-                energyStored - Math.max(1, EndlessSandsConfig.getRfMultiplier()));
-        onStorageChanged();
     }
 
     private void clampEnergyToCapacity() {
@@ -620,6 +654,7 @@ public class ZenionitePortalFrameBlockEntity extends BlockEntity {
         tag.putInt(TRANSFER_COOLDOWN_TAG, transferCooldownTicks);
         tag.putInt(LOSS_COOLDOWN_TAG, lossCooldownTicks);
         tag.putBoolean(PHARAOH_GATE_TAG, pharaohGate);
+        tag.putBoolean(SACRIFICE_COMPLETE_TAG, sacrificeComplete);
     }
 
     @Override
@@ -637,6 +672,7 @@ public class ZenionitePortalFrameBlockEntity extends BlockEntity {
                     ? Math.max(0, Math.min(tag.getInt(LOSS_COOLDOWN_TAG), lossInterval))
                     : energyStored > 0 ? lossInterval : 0;
             pharaohGate = tag.getBoolean(PHARAOH_GATE_TAG);
+            sacrificeComplete = tag.getBoolean(SACRIFICE_COMPLETE_TAG);
         } finally {
             loading = false;
         }
@@ -731,7 +767,7 @@ public class ZenionitePortalFrameBlockEntity extends BlockEntity {
 
         @Override
         public boolean canReceive() {
-            return !pharaohGate;
+            return true;
         }
     }
 
@@ -870,6 +906,17 @@ public class ZenionitePortalFrameBlockEntity extends BlockEntity {
             return false;
         }
 
+        private boolean isSacrificeComplete(Level level) {
+            for (BlockPos framePosition : frames.keySet()) {
+                if (level.getBlockEntity(framePosition)
+                        instanceof ZenionitePortalFrameBlockEntity frame
+                        && frame.isSacrificeComplete()) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private void completeWithPharaoh(Level level) {
             for (BlockPos framePosition : frames.keySet()) {
                 if (level.getBlockEntity(framePosition)
@@ -945,6 +992,11 @@ public class ZenionitePortalFrameBlockEntity extends BlockEntity {
                             Block.UPDATE_ALL);
                 }
             });
+            BlockPos holder = center.above();
+            if (completed && !isSacrificeComplete(level) && level.getBlockState(holder).isAir()) {
+                level.setBlock(holder, ModBlocks.ZENIONITE_SACRIFICE_HOLDER.get()
+                        .defaultBlockState(), Block.UPDATE_ALL);
+            }
         }
 
         private void closePortal(Level level) {
@@ -954,6 +1006,13 @@ public class ZenionitePortalFrameBlockEntity extends BlockEntity {
                             .defaultBlockState(), Block.UPDATE_ALL);
                 }
             });
+            BlockPos holder = center.above();
+            BlockState holderState = level.getBlockState(holder);
+            if (holderState.is(ModBlocks.ZENIONITE_SACRIFICE_HOLDER.get())
+                    && !holderState.getValue(
+                    net.MechGaming.EndlessSands.block.custom.ZenioniteSacrificeHolderBlock.OCCUPIED)) {
+                level.removeBlock(holder, false);
+            }
         }
 
         private void forEachPortalPosition(java.util.function.Consumer<BlockPos> action) {

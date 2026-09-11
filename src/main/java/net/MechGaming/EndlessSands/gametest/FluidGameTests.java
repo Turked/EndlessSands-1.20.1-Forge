@@ -39,6 +39,7 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
+import net.minecraftforge.registries.ForgeRegistries;
 
 @GameTestHolder(EndlessSands.MOD_ID)
 @PrefixGameTestTemplate(false)
@@ -129,7 +130,8 @@ public final class FluidGameTests {
         for (Item bucket : new Item[]{ModItems.ANCIENT_OCEAN_WATER_BUCKET.get(), ModItems.STAR_TOUCHED_LAVA_BUCKET.get()}) {
             place(helper, pos, Blocks.AIR.defaultBlockState());
             ItemStack stack = new ItemStack(bucket);
-            helper.assertTrue(FluidUtil.getFluidContained(stack).isPresent(), "Bucket lacks fluid capability");
+            helper.assertTrue(FluidUtil.getFluidContained(stack).isPresent(),
+                    ForgeRegistries.ITEMS.getKey(bucket) + " lacks fluid capability");
             helper.assertTrue(((BucketItem) bucket).emptyContents(null, helper.getLevel(), helper.absolutePos(pos), null, stack),
                     "Bucket failed to place its fluid");
             BlockState state = helper.getBlockState(pos);

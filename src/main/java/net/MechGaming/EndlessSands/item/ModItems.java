@@ -27,7 +27,18 @@ public class ModItems {
                     new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
     public static final RegistryObject<Item> STAR_TOUCHED_LAVA_BUCKET = ITEMS.register(
             "star_touched_lava_bucket", () -> new BucketItem(ModFluids.STAR_TOUCHED_LAVA,
-                    new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+                    new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)) {
+                @Override
+                public boolean isFoil(ItemStack stack) {
+                    return true;
+                }
+
+                @Override
+                public net.minecraftforge.common.capabilities.ICapabilityProvider initCapabilities(
+                        ItemStack stack, net.minecraft.nbt.CompoundTag tag) {
+                    return new net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper(stack);
+                }
+            });
 
     public static final RegistryObject<Item> CURSED_POCKET_SAND = ITEMS.register("cursed_pocket_sand",
             () -> new CursedPocketSandItem(new Item.Properties()));

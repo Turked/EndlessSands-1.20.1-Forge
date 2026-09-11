@@ -40,6 +40,10 @@ public class ModStructures {
                 }
             });
 
+    public static final RegistryObject<StructureType<BattlegroundRuinsStructure>> BATTLEGROUND_RUINS_TYPE =
+            STRUCTURE_TYPES.register("battleground_ruins", () ->
+                    () -> BattlegroundRuinsStructure.CODEC);
+
     public static final ResourceKey<Structure> CRUD_TREE = ResourceKey.create(
             Registries.STRUCTURE,
             ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "crud_tree")
@@ -68,6 +72,11 @@ public class ModStructures {
     public static final ResourceKey<StructureSet> REMAINS_OF_A_VILLAGE_SET = ResourceKey.create(
             Registries.STRUCTURE_SET,
             ResourceLocation.fromNamespaceAndPath(EndlessSands.MOD_ID, "remains_of_a_village")
+    );
+
+    public static final ResourceKey<Structure> BATTLEGROUND_RUINS = ResourceKey.create(
+            Registries.STRUCTURE,
+            ResourceLocation.fromNamespaceAndPath("endless_sands", "battleground_ruins")
     );
 
     public static void register(IEventBus eventBus){

@@ -9,6 +9,8 @@ import net.MechGaming.EndlessSands.network.packet.ArmGuardCommandC2SPacket;
 import net.MechGaming.EndlessSands.network.packet.OpenArmGuardMenuC2SPacket;
 import net.MechGaming.EndlessSands.network.packet.OpenArmGuardMenuS2CPacket;
 import net.MechGaming.EndlessSands.network.packet.ZenioniteBeaconControlC2SPacket;
+import net.MechGaming.EndlessSands.network.packet.OpenDragonEggSacrificeS2CPacket;
+import net.MechGaming.EndlessSands.network.packet.ConfirmDragonEggSacrificeC2SPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -105,6 +107,24 @@ public final class ModMessages {
                 ZenioniteBeaconControlC2SPacket::encode,
                 ZenioniteBeaconControlC2SPacket::decode,
                 ZenioniteBeaconControlC2SPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER)
+        );
+
+        CHANNEL.registerMessage(
+                packetId++,
+                OpenDragonEggSacrificeS2CPacket.class,
+                OpenDragonEggSacrificeS2CPacket::encode,
+                OpenDragonEggSacrificeS2CPacket::decode,
+                OpenDragonEggSacrificeS2CPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT)
+        );
+
+        CHANNEL.registerMessage(
+                packetId++,
+                ConfirmDragonEggSacrificeC2SPacket.class,
+                ConfirmDragonEggSacrificeC2SPacket::encode,
+                ConfirmDragonEggSacrificeC2SPacket::decode,
+                ConfirmDragonEggSacrificeC2SPacket::handle,
                 Optional.of(NetworkDirection.PLAY_TO_SERVER)
         );
     }

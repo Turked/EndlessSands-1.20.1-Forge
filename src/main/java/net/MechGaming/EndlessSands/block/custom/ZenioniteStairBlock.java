@@ -5,6 +5,8 @@ import net.MechGaming.EndlessSands.block.entity.ModBlockEntities;
 import net.MechGaming.EndlessSands.block.entity.ZenioniteStairBlockEntity;
 import net.MechGaming.EndlessSands.block.entity.ZenioniteStairBlockEntity.FlowContext;
 import net.MechGaming.EndlessSands.block.entity.ZenioniteStairBlockEntity.Lane;
+import net.MechGaming.EndlessSands.fluid.ModFluids;
+import net.MechGaming.EndlessSands.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -148,7 +150,7 @@ public class ZenioniteStairBlock extends StairBlock implements EntityBlock {
             FluidState fluid = stair.getFluid(lane);
             if (fluid.isSource()) {
                 stair.setFluid(lane, Fluids.EMPTY.defaultFluidState());
-                return new ItemStack(fluid.is(FluidTags.LAVA) ? Items.LAVA_BUCKET : Items.WATER_BUCKET);
+                return new ItemStack(fluid.getType().getBucket());
             }
         }
         return ItemStack.EMPTY;
@@ -177,7 +179,11 @@ public class ZenioniteStairBlock extends StairBlock implements EntityBlock {
         Lane lane = laneFromHit(state, pos, hit);
         FluidState incoming = held.is(Items.WATER_BUCKET)
                 ? Fluids.WATER.getSource(false)
-                : held.is(Items.LAVA_BUCKET) ? Fluids.LAVA.getSource(false) : null;
+                : held.is(Items.LAVA_BUCKET) ? Fluids.LAVA.getSource(false)
+                : held.is(ModItems.ANCIENT_OCEAN_WATER_BUCKET.get())
+                ? ModFluids.ANCIENT_OCEAN_WATER.get().getSource(false)
+                : held.is(ModItems.STAR_TOUCHED_LAVA_BUCKET.get())
+                ? ModFluids.STAR_TOUCHED_LAVA.get().getSource(false) : null;
         if (incoming != null) {
             if (!(level.getBlockEntity(pos) instanceof ZenioniteStairBlockEntity stair)
                     || !stair.canAccept(lane, incoming.getType())) {
@@ -220,8 +226,7 @@ public class ZenioniteStairBlock extends StairBlock implements EntityBlock {
                 return InteractionResult.FAIL;
             }
             if (!level.isClientSide) {
-                ItemStack filled = new ItemStack(stored.is(FluidTags.LAVA)
-                        ? Items.LAVA_BUCKET : Items.WATER_BUCKET);
+                ItemStack filled = new ItemStack(stored.getType().getBucket());
                 stair.setFluid(lane, Fluids.EMPTY.defaultFluidState());
                 player.awardStat(Stats.ITEM_USED.get(Items.BUCKET));
                 level.playSound(player, pos,

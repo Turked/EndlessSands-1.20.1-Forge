@@ -1,6 +1,7 @@
 package net.MechGaming.EndlessSands.block.entity;
 
 import net.MechGaming.EndlessSands.block.custom.ZenioniteBeaconBlock;
+import net.MechGaming.EndlessSands.event.DragonEggSacrificeEvents;
 import net.MechGaming.EndlessSands.config.EndlessSandsConfig;
 import net.MechGaming.EndlessSands.effect.ModEffects;
 import net.MechGaming.EndlessSands.entity.custom.PharaohEntity;
@@ -74,6 +75,7 @@ public class ZenioniteBeaconBlockEntity extends BlockEntity implements MenuProvi
     private static final String BEAM_TARGET_Y_TAG = "BeamTargetY";
     private static final String BEAM_TARGET_Z_TAG = "BeamTargetZ";
     private static final String IMPRISONMENT_DRAIN_TICKS_TAG = "ImprisonmentDrainTicks";
+    private static final String PHARAOH_GATE_LINK_TAG = "PharaohGateLink";
 
     private static final double CHAIN_HALF_WIDTH = 5.0D / 16.0D;
     private static final double IMPRISONMENT_MOVE_SPEED = 0.12D;
@@ -146,6 +148,7 @@ public class ZenioniteBeaconBlockEntity extends BlockEntity implements MenuProvi
     private double beamTargetY;
     private double beamTargetZ;
     private int imprisonmentDrainTicks;
+    private boolean pharaohGateLink;
     private boolean beamPathClear = true;
     private boolean checkingVerticalBeamClear = true;
     private int lastBeamCheckY = Integer.MIN_VALUE;
@@ -157,8 +160,13 @@ public class ZenioniteBeaconBlockEntity extends BlockEntity implements MenuProvi
     public static void serverTick(Level level, BlockPos pos, BlockState state,
                                   ZenioniteBeaconBlockEntity beacon) {
         beacon.clampEnergyToCapacity();
+        boolean completedGateLink = beacon.updatePharaohGateLink();
         beacon.updateBeamPathClear();
         beacon.syncRenderState();
+
+        if (completedGateLink) {
+            return;
+        }
 
         if (beacon.linkedSourceBeaconPos != null) {
             if (!beacon.hasValidLinkedSource()) {
@@ -233,7 +241,11 @@ public class ZenioniteBeaconBlockEntity extends BlockEntity implements MenuProvi
     }
 
     public boolean isBeamActive() {
-        return enabled && isPowered() && beamPathClear;
+        return (pharaohGateLink || enabled && isPowered()) && beamPathClear;
+    }
+
+    public boolean isPharaohGateLinkActive() {
+        return pharaohGateLink;
     }
 
     public boolean hasTrappedEntity() {
@@ -419,6 +431,7 @@ public class ZenioniteBeaconBlockEntity extends BlockEntity implements MenuProvi
             tag.putDouble(BEAM_TARGET_Z_TAG, beamTargetZ);
         }
         tag.putInt(IMPRISONMENT_DRAIN_TICKS_TAG, imprisonmentDrainTicks);
+        tag.putBoolean(PHARAOH_GATE_LINK_TAG, pharaohGateLink);
     }
 
     @Override
@@ -454,6 +467,7 @@ public class ZenioniteBeaconBlockEntity extends BlockEntity implements MenuProvi
         beamTargetZ = tag.getDouble(BEAM_TARGET_Z_TAG);
         imprisonmentDrainTicks = Math.max(0, Math.min(IMPRISONMENT_DRAIN_DURATION_TICKS,
                 tag.getInt(IMPRISONMENT_DRAIN_TICKS_TAG)));
+        pharaohGateLink = tag.getBoolean(PHARAOH_GATE_LINK_TAG);
     }
 
     @Override
@@ -815,8 +829,67 @@ public class ZenioniteBeaconBlockEntity extends BlockEntity implements MenuProvi
         beamTargetZ = 0.0D;
     }
 
+    private boolean updatePharaohGateLink() {
+        if (level == null || level.isClientSide
+                || imprisonmentPhase != ImprisonmentPhase.NONE
+                || trappedEntityUuid != null || linkedSourceBeaconPos != null) {
+            setPharaohGateLink(false, null);
+            return false;
+        }
+
+        ZenionitePortalFrameBlockEntity.PortalConnection connection =
+                ZenionitePortalFrameBlockEntity.getPharaohGateForBattery(
+                        level, worldPosition.below());
+        if (connection == null) {
+            setPharaohGateLink(false, null);
+            return false;
+        }
+
+        if (level instanceof net.minecraft.server.level.ServerLevel serverLevel
+                && (DragonEggSacrificeEvents.isInProgress(serverLevel, connection.center())
+                || ZenionitePortalFrameBlockEntity.isSacrificeComplete(level, connection.center()))) {
+            setPharaohGateLink(false, null);
+            return false;
+        }
+
+        BlockPos oppositeBeaconPos = connection.oppositeBattery().above();
+        if (!(level.getBlockEntity(oppositeBeaconPos)
+                instanceof ZenioniteBeaconBlockEntity oppositeBeacon)) {
+            setPharaohGateLink(false, null);
+            return false;
+        }
+
+        Vec3 target = new Vec3(
+                oppositeBeacon.worldPosition.getX() + 0.5D,
+                oppositeBeacon.worldPosition.getY(),
+                oppositeBeacon.worldPosition.getZ() + 0.5D);
+        setPharaohGateLink(true, target);
+        return true;
+    }
+
+    private void setPharaohGateLink(boolean active, @Nullable Vec3 target) {
+        boolean wasActive = pharaohGateLink;
+        boolean changed = wasActive != active;
+        pharaohGateLink = active;
+        if (active && target != null) {
+            changed |= !hasCustomBeamTarget
+                    || Math.abs(beamTargetX - target.x) > 0.000001D
+                    || Math.abs(beamTargetY - target.y) > 0.000001D
+                    || Math.abs(beamTargetZ - target.z) > 0.000001D;
+            setCustomBeamTarget(target);
+        } else if (wasActive) {
+            clearCustomBeamTarget();
+        }
+        if (changed) notifyClients();
+    }
+
     private void updateBeamPathClear() {
         if (level == null || level.isClientSide) return;
+        if (pharaohGateLink) {
+            beamPathClear = true;
+            resetVerticalBeamCheck();
+            return;
+        }
         if (!enabled || !isPowered()) {
             beamPathClear = true;
             resetVerticalBeamCheck();
@@ -861,12 +934,15 @@ public class ZenioniteBeaconBlockEntity extends BlockEntity implements MenuProvi
                 worldPosition.getX() + 0.5D,
                 worldPosition.getY() + 1.0D,
                 worldPosition.getZ() + 0.5D);
+        BlockPos targetPosition = BlockPos.containing(target);
         return BlockGetter.traverseBlocks(
                 start,
                 target,
                 level,
                 (checkedLevel, checkPos) -> {
-                    if (checkPos.equals(worldPosition)) return null;
+                    if (checkPos.equals(worldPosition) || checkPos.equals(targetPosition)) {
+                        return null;
+                    }
                     return blocksBeaconBeam(checkedLevel.getBlockState(checkPos), checkPos)
                             ? Boolean.FALSE : null;
                 },

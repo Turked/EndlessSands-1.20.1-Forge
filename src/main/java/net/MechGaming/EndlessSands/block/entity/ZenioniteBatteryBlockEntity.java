@@ -123,11 +123,6 @@ public class ZenioniteBatteryBlockEntity extends BlockEntity implements MenuProv
             ZenioniteBatteryBlockEntity battery
     ) {
         battery.clampEnergyToCapacity();
-        if (battery.pharaohGate) {
-            battery.drainPharaohGateEnergy();
-            battery.refreshHorizontalConnections();
-            return;
-        }
         battery.tickTransferCooldown();
         battery.refreshHorizontalConnections();
         battery.pushEnergy(level, pos);
@@ -153,9 +148,6 @@ public class ZenioniteBatteryBlockEntity extends BlockEntity implements MenuProv
     }
 
     public void fillEnergyToCapacity() {
-        if (pharaohGate) {
-            return;
-        }
         int sideCapacity = getSideCapacity();
         Arrays.fill(sideEnergy, sideCapacity);
         for (int side = 0; side < SIDE_COUNT; side++) {
@@ -175,6 +167,9 @@ public class ZenioniteBatteryBlockEntity extends BlockEntity implements MenuProv
             return;
         }
         pharaohGate = true;
+        Arrays.fill(sideEnergy, 0);
+        Arrays.fill(fillOrder, -1);
+        fillOrderSize = 0;
         transferCooldownTicks = 0;
         onStorageChanged();
     }
@@ -290,9 +285,6 @@ public class ZenioniteBatteryBlockEntity extends BlockEntity implements MenuProv
     }
 
     private int receiveEnergyInternal(int maxReceive, boolean simulate) {
-        if (pharaohGate) {
-            return 0;
-        }
         boolean wasEmpty = getEnergyStored() == 0;
         int received = Math.min(Math.max(0, maxReceive),
                 Math.max(0, getEnergyCapacity() - getEnergyStored()));
@@ -328,9 +320,6 @@ public class ZenioniteBatteryBlockEntity extends BlockEntity implements MenuProv
     }
 
     private int extractEnergyInternal(int maxExtract, boolean simulate) {
-        if (pharaohGate) {
-            return 0;
-        }
         int extracted = Math.min(Math.max(0, maxExtract), getOutputAllowance());
         if (simulate || extracted <= 0) {
             return extracted;
@@ -359,13 +348,6 @@ public class ZenioniteBatteryBlockEntity extends BlockEntity implements MenuProv
             }
         }
         return original - remaining;
-    }
-
-    private void drainPharaohGateEnergy() {
-        int drained = drainSides(Math.max(1, EndlessSandsConfig.getRfMultiplier()));
-        if (drained > 0) {
-            onStorageChanged();
-        }
     }
 
     private int currentFillSide(int sideCapacity) {
@@ -763,7 +745,7 @@ public class ZenioniteBatteryBlockEntity extends BlockEntity implements MenuProv
 
         @Override
         public boolean canReceive() {
-            return !pharaohGate;
+            return true;
         }
     }
 
@@ -790,7 +772,7 @@ public class ZenioniteBatteryBlockEntity extends BlockEntity implements MenuProv
 
         @Override
         public boolean canExtract() {
-            return !pharaohGate;
+            return true;
         }
 
         @Override

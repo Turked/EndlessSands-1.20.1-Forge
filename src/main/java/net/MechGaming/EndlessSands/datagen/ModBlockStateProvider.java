@@ -109,23 +109,57 @@ public class ModBlockStateProvider extends BlockStateProvider {
                     .modelFile(zenioniteChargerBarModel("water", level))
                     .addModel()
                     .condition(ZenioniteChargerBlock.WATER, level)
+                    .condition(ZenioniteChargerBlock.PHARAOH_GATE, false)
                     .end();
             multipart.part()
                     .modelFile(zenioniteChargerBarModel("lava", level))
                     .addModel()
                     .condition(ZenioniteChargerBlock.LAVA, level)
+                    .condition(ZenioniteChargerBlock.PHARAOH_GATE, false)
                     .end();
             multipart.part()
                     .modelFile(zenioniteChargerBarModel("power", level, false))
                     .addModel()
                     .condition(ZenioniteChargerBlock.POWER, level)
                     .condition(ZenioniteChargerBlock.POWER_DRAINING, false)
+                    .condition(ZenioniteChargerBlock.PHARAOH_GATE, false)
                     .end();
             multipart.part()
                     .modelFile(zenioniteChargerBarModel("power", level, true))
                     .addModel()
                     .condition(ZenioniteChargerBlock.POWER, level)
                     .condition(ZenioniteChargerBlock.POWER_DRAINING, true)
+                    .condition(ZenioniteChargerBlock.PHARAOH_GATE, false)
+                    .end();
+            multipart.part()
+                    .modelFile(zenioniteChargerBarModel(
+                            "ritual_water", "ancient_ocean_water", level, false))
+                    .addModel()
+                    .condition(ZenioniteChargerBlock.WATER, level)
+                    .condition(ZenioniteChargerBlock.PHARAOH_GATE, true)
+                    .end();
+            multipart.part()
+                    .modelFile(zenioniteChargerBarModel(
+                            "ritual_lava", "star_touched_lava", level, false))
+                    .addModel()
+                    .condition(ZenioniteChargerBlock.LAVA, level)
+                    .condition(ZenioniteChargerBlock.PHARAOH_GATE, true)
+                    .end();
+            multipart.part()
+                    .modelFile(zenioniteChargerBarModel(
+                            "ritual_power", "power_mk2", level, false))
+                    .addModel()
+                    .condition(ZenioniteChargerBlock.POWER, level)
+                    .condition(ZenioniteChargerBlock.POWER_DRAINING, false)
+                    .condition(ZenioniteChargerBlock.PHARAOH_GATE, true)
+                    .end();
+            multipart.part()
+                    .modelFile(zenioniteChargerBarModel(
+                            "ritual_power", "power_mk2", level, true))
+                    .addModel()
+                    .condition(ZenioniteChargerBlock.POWER, level)
+                    .condition(ZenioniteChargerBlock.POWER_DRAINING, true)
+                    .condition(ZenioniteChargerBlock.PHARAOH_GATE, true)
                     .end();
         }
 
@@ -255,6 +289,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
     }
 
     private ModelFile zenioniteChargerBarModel(String bar, int level, boolean topAnchored) {
+        return zenioniteChargerBarModel(bar, bar, level, topAnchored);
+    }
+
+    private ModelFile zenioniteChargerBarModel(
+            String modelBar, String textureBar, int level, boolean topAnchored) {
         float height = level * 2.0F;
         float fromY = topAnchored ? 16.0F - height : 0.0F;
         float toY = topAnchored ? 16.0F : height;
@@ -262,9 +301,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
         float textureBottom = topAnchored ? height : 16.0F;
         String modelSuffix = topAnchored ? "_draining" : "";
         BlockModelBuilder model = models().getBuilder(
-                        "zenionite_charger_" + bar + modelSuffix + "_" + level)
+                        "zenionite_charger_" + modelBar + modelSuffix + "_" + level)
                 .texture("particle", modLoc("block/zenionite_charger_side_empty"))
-                .texture("bar", modLoc("block/zenionite_charger_side_" + bar + "_iso"))
+                .texture("bar", modLoc("block/zenionite_charger_side_" + textureBar + "_iso"))
                 .renderType("cutout");
 
         var overlay = model.element()

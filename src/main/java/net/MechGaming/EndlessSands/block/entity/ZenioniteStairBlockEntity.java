@@ -286,9 +286,20 @@ public class ZenioniteStairBlockEntity extends BlockEntity {
         return count;
     }
 
+    public int countLoggedHalves(Fluid fluid) {
+        int count = 0;
+        for (Lane lane : Lane.values()) {
+            FluidState state = getFluid(lane);
+            if (!state.isEmpty() && state.getType().isSame(fluid)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     public boolean hasLava() {
-        return getFluid(Lane.LEFT).getType().isSame(Fluids.LAVA)
-                || getFluid(Lane.RIGHT).getType().isSame(Fluids.LAVA);
+        return getFluid(Lane.LEFT).is(net.minecraft.tags.FluidTags.LAVA)
+                || getFluid(Lane.RIGHT).is(net.minecraft.tags.FluidTags.LAVA);
     }
 
     @Nullable
@@ -405,19 +416,36 @@ public class ZenioniteStairBlockEntity extends BlockEntity {
         } else {
             exactLevel = Mth.clamp(state.getAmount(), 1, 8);
         }
-        int familyOffset = state.getType().isSame(Fluids.LAVA) ? 11 : 1;
+        int familyOffset;
+        if (state.getType().isSame(net.MechGaming.EndlessSands.fluid.ModFluids.ANCIENT_OCEAN_WATER.get())) {
+            familyOffset = 21;
+        } else if (state.getType().isSame(net.MechGaming.EndlessSands.fluid.ModFluids.STAR_TOUCHED_LAVA.get())) {
+            familyOffset = 31;
+        } else {
+            familyOffset = state.getType().isSame(Fluids.LAVA) ? 11 : 1;
+        }
         return familyOffset + exactLevel;
     }
 
     private static FluidState decode(int encoded) {
-        if (encoded <= 0 || encoded > 20) {
+        if (encoded <= 0 || encoded > 40) {
             return Fluids.EMPTY.defaultFluidState();
         }
 
-        boolean lava = encoded >= 11;
-        int exactLevel = lava ? encoded - 11 : encoded - 1;
-        FlowingFluid source = lava ? Fluids.LAVA : Fluids.WATER;
-        FlowingFluid flowing = lava ? Fluids.FLOWING_LAVA : Fluids.FLOWING_WATER;
+        int family = (encoded - 1) / 10;
+        int exactLevel = encoded - (family * 10 + 1);
+        FlowingFluid source = switch (family) {
+            case 1 -> Fluids.LAVA;
+            case 2 -> net.MechGaming.EndlessSands.fluid.ModFluids.ANCIENT_OCEAN_WATER.get();
+            case 3 -> net.MechGaming.EndlessSands.fluid.ModFluids.STAR_TOUCHED_LAVA.get();
+            default -> Fluids.WATER;
+        };
+        FlowingFluid flowing = switch (family) {
+            case 1 -> Fluids.FLOWING_LAVA;
+            case 2 -> net.MechGaming.EndlessSands.fluid.ModFluids.FLOWING_ANCIENT_OCEAN_WATER.get();
+            case 3 -> net.MechGaming.EndlessSands.fluid.ModFluids.FLOWING_STAR_TOUCHED_LAVA.get();
+            default -> Fluids.FLOWING_WATER;
+        };
         if (exactLevel == 9) {
             return source.getSource(false);
         }

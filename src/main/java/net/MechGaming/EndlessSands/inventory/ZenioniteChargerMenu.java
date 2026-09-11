@@ -3,6 +3,7 @@ package net.MechGaming.EndlessSands.inventory;
 import net.MechGaming.EndlessSands.block.custom.ZenioniteChargerBlock;
 import net.MechGaming.EndlessSands.block.entity.ZenioniteChargerBlockEntity;
 import net.MechGaming.EndlessSands.util.ExpandedInventoryHelper;
+import net.MechGaming.EndlessSands.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
@@ -29,7 +30,8 @@ public class ZenioniteChargerMenu extends AbstractContainerMenu {
     public static final int WATER_DATA = 0;
     public static final int LAVA_DATA = 1;
     public static final int POWER_DATA = 2;
-    public static final int DATA_COUNT = 3;
+    public static final int PHARAOH_GATE_DATA = 3;
+    public static final int DATA_COUNT = 4;
 
     private static final int WATER_SLOT = 0;
     private static final int LAVA_SLOT = 1;
@@ -75,8 +77,8 @@ public class ZenioniteChargerMenu extends AbstractContainerMenu {
         IItemHandler itemHandler = charger != null ? charger.getItemHandler() : new ItemStackHandler(2);
         int width = screenWidth(expanded);
 
-        this.addSlot(new ChargerInputSlot(itemHandler, WATER_SLOT, 18, 53, Items.WATER_BUCKET));
-        this.addSlot(new ChargerInputSlot(itemHandler, LAVA_SLOT, width - 34, 53, Items.LAVA_BUCKET));
+        this.addSlot(new ChargerInputSlot(itemHandler, WATER_SLOT, 18, 53, this, true));
+        this.addSlot(new ChargerInputSlot(itemHandler, LAVA_SLOT, width - 34, 53, this, false));
 
         int columns = expanded ? EXPANDED_COLUMNS : VANILLA_COLUMNS;
         int inventoryStart = expanded ? ExpandedInventoryHelper.EXPANDED_HOTBAR_SIZE
@@ -196,6 +198,11 @@ public class ZenioniteChargerMenu extends AbstractContainerMenu {
         return this.expanded;
     }
 
+    public boolean isPharaohGate() {
+        return this.charger != null ? this.charger.isPharaohGate()
+                : this.data.get(PHARAOH_GATE_DATA) != 0;
+    }
+
     public BlockPos getChargerPos() {
         return this.chargerPos;
     }
@@ -223,13 +230,15 @@ public class ZenioniteChargerMenu extends AbstractContainerMenu {
         return slotId == WATER_SLOT || slotId == LAVA_SLOT;
     }
 
-    private static boolean isBucketForSlot(int slotId, ItemStack stack) {
-        return slotId == WATER_SLOT && stack.is(Items.WATER_BUCKET)
-                || slotId == LAVA_SLOT && stack.is(Items.LAVA_BUCKET);
+    private boolean isBucketForSlot(int slotId, ItemStack stack) {
+        return slotId == WATER_SLOT && stack.is(isPharaohGate()
+                ? ModItems.ANCIENT_OCEAN_WATER_BUCKET.get() : Items.WATER_BUCKET)
+                || slotId == LAVA_SLOT && stack.is(isPharaohGate()
+                ? ModItems.STAR_TOUCHED_LAVA_BUCKET.get() : Items.LAVA_BUCKET);
     }
 
-    private static boolean isFilledBucket(ItemStack stack) {
-        return stack.is(Items.WATER_BUCKET) || stack.is(Items.LAVA_BUCKET);
+    private boolean isFilledBucket(ItemStack stack) {
+        return isBucketForSlot(WATER_SLOT, stack) || isBucketForSlot(LAVA_SLOT, stack);
     }
 
     private static ClientPayload readClientPayload(Inventory inventory, FriendlyByteBuf buffer) {
@@ -246,17 +255,22 @@ public class ZenioniteChargerMenu extends AbstractContainerMenu {
     }
 
     private static final class ChargerInputSlot extends SlotItemHandler {
-        private final net.minecraft.world.item.Item acceptedBucket;
+        private final ZenioniteChargerMenu menu;
+        private final boolean water;
 
         private ChargerInputSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition,
-                                 net.minecraft.world.item.Item acceptedBucket) {
+                                 ZenioniteChargerMenu menu, boolean water) {
             super(itemHandler, index, xPosition, yPosition);
-            this.acceptedBucket = acceptedBucket;
+            this.menu = menu;
+            this.water = water;
         }
 
         @Override
         public boolean mayPlace(ItemStack stack) {
-            return stack.is(this.acceptedBucket);
+            return stack.is(this.menu.isPharaohGate()
+                    ? this.water ? ModItems.ANCIENT_OCEAN_WATER_BUCKET.get()
+                    : ModItems.STAR_TOUCHED_LAVA_BUCKET.get()
+                    : this.water ? Items.WATER_BUCKET : Items.LAVA_BUCKET);
         }
 
         @Override

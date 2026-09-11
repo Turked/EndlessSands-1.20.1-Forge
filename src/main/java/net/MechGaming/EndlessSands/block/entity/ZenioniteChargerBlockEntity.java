@@ -5,6 +5,8 @@ import net.MechGaming.EndlessSands.block.custom.ZenioniteChargerBlock;
 import net.MechGaming.EndlessSands.block.custom.ZenioniteStairBlock;
 import net.MechGaming.EndlessSands.config.EndlessSandsConfig;
 import net.MechGaming.EndlessSands.inventory.ZenioniteChargerMenu;
+import net.MechGaming.EndlessSands.fluid.ModFluids;
+import net.MechGaming.EndlessSands.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -52,7 +54,8 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
     public static final int DATA_WATER = 0;
     public static final int DATA_LAVA = 1;
     public static final int DATA_POWER = 2;
-    public static final int DATA_COUNT = 3;
+    public static final int DATA_PHARAOH_GATE = 3;
+    public static final int DATA_COUNT = 4;
 
     private static final String WATER_TANK_TAG = "WaterTank";
     private static final String LAVA_TANK_TAG = "LavaTank";
@@ -69,7 +72,7 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
     private final FluidTank waterTank = new FluidTank(TANK_CAPACITY) {
         @Override
         public boolean isFluidValid(FluidStack stack) {
-            return stack.getFluid() == Fluids.WATER;
+            return stack.getFluid() == requiredWaterFluid();
         }
 
         @Override
@@ -81,7 +84,7 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
     private final FluidTank lavaTank = new FluidTank(TANK_CAPACITY) {
         @Override
         public boolean isFluidValid(FluidStack stack) {
-            return stack.getFluid() == Fluids.LAVA;
+            return stack.getFluid() == requiredLavaFluid();
         }
 
         @Override
@@ -93,9 +96,9 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
     private final ItemStackHandler automationItems = new ItemStackHandler(2) {
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            return !isCreativeSource() && !pharaohGate
-                    && (slot == WATER_SLOT && stack.is(Items.WATER_BUCKET)
-                    || slot == LAVA_SLOT && stack.is(Items.LAVA_BUCKET));
+            return !isCreativeSource()
+                    && (slot == WATER_SLOT && stack.is(requiredWaterBucket())
+                    || slot == LAVA_SLOT && stack.is(requiredLavaBucket()));
         }
 
         @Override
@@ -129,6 +132,7 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
                 case DATA_WATER -> clientView ? syncedWaterLevel : getWaterLevel();
                 case DATA_LAVA -> clientView ? syncedLavaLevel : getLavaLevel();
                 case DATA_POWER -> clientView ? syncedPowerLevel : getPowerLevel();
+                case DATA_PHARAOH_GATE -> pharaohGate ? 1 : 0;
                 default -> 0;
             };
         }
@@ -140,6 +144,7 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
                 case DATA_WATER -> syncedWaterLevel = stage;
                 case DATA_LAVA -> syncedLavaLevel = stage;
                 case DATA_POWER -> syncedPowerLevel = stage;
+                case DATA_PHARAOH_GATE -> pharaohGate = value != 0;
                 default -> {
                 }
             }
@@ -178,11 +183,6 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
             BlockState state,
             ZenioniteChargerBlockEntity charger
     ) {
-        if (charger.pharaohGate) {
-            charger.drainPharaohGateEnergy();
-            charger.updateBlockState();
-            return;
-        }
         if (charger.isCreativeSource()) {
             charger.tickTransferCooldown();
             charger.pushEnergyUpward(level, pos);
@@ -198,8 +198,8 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
     }
 
     private void processAutomationBuckets() {
-        processAutomationBucket(WATER_SLOT, Items.WATER_BUCKET, Fluids.WATER, waterTank);
-        processAutomationBucket(LAVA_SLOT, Items.LAVA_BUCKET, Fluids.LAVA, lavaTank);
+        processAutomationBucket(WATER_SLOT, requiredWaterBucket(), requiredWaterFluid(), waterTank);
+        processAutomationBucket(LAVA_SLOT, requiredLavaBucket(), requiredLavaFluid(), lavaTank);
     }
 
     private void processAutomationBucket(int slot, net.minecraft.world.item.Item filledBucket,
@@ -218,14 +218,16 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
     private void collectNearbyFluids(Level level, BlockPos pos) {
         NearbyFluidInputs inputs = nearbyFluidInputs(level, pos);
 
-        waterCollectionProgress = advanceCollection(waterTank, Fluids.WATER,
+        Fluid requiredWater = requiredWaterFluid();
+        Fluid requiredLava = requiredLavaFluid();
+        waterCollectionProgress = advanceCollection(waterTank, requiredWater,
                 waterCollectionProgress, inputs.waterEnvironmentalRate());
-        lavaCollectionProgress = advanceCollection(lavaTank, Fluids.LAVA,
+        lavaCollectionProgress = advanceCollection(lavaTank, requiredLava,
                 lavaCollectionProgress, inputs.lavaEnvironmentalRate());
         waterStairCollectionProgress = advanceZenioniteStairCollection(
-                waterTank, Fluids.WATER, waterStairCollectionProgress, inputs.waterStairHalves());
+                waterTank, requiredWater, waterStairCollectionProgress, inputs.waterStairHalves());
         lavaStairCollectionProgress = advanceZenioniteStairCollection(
-                lavaTank, Fluids.LAVA, lavaStairCollectionProgress, inputs.lavaStairHalves());
+                lavaTank, requiredLava, lavaStairCollectionProgress, inputs.lavaStairHalves());
     }
 
     private int advanceCollection(FluidTank tank, Fluid fluid, int progress, int rate) {
@@ -275,7 +277,7 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
         return nextProgress;
     }
 
-    private static NearbyFluidInputs nearbyFluidInputs(Level level, BlockPos pos) {
+    private NearbyFluidInputs nearbyFluidInputs(Level level, BlockPos pos) {
         boolean waterSource = false;
         boolean lavaSource = false;
         boolean waterFlowing = false;
@@ -287,16 +289,16 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
             BlockState neighborState = level.getBlockState(neighborPos);
             if (neighborState.getBlock() instanceof ZenioniteStairBlock
                     && level.getBlockEntity(neighborPos) instanceof ZenioniteStairBlockEntity stair) {
-                waterStairHalves += stair.countLoggedHalves(FluidTags.WATER);
-                lavaStairHalves += stair.countLoggedHalves(FluidTags.LAVA);
+                waterStairHalves += stair.countLoggedHalves(requiredWaterFluid());
+                lavaStairHalves += stair.countLoggedHalves(requiredLavaFluid());
                 continue;
             }
 
             FluidState fluidState = neighborState.getFluidState();
-            if (fluidState.is(FluidTags.WATER)) {
+            if (fluidState.getType().isSame(requiredWaterFluid())) {
                 waterSource |= fluidState.isSource();
                 waterFlowing |= !fluidState.isSource();
-            } else if (fluidState.is(FluidTags.LAVA)) {
+            } else if (fluidState.getType().isSame(requiredLavaFluid())) {
                 lavaSource |= fluidState.isSource();
                 lavaFlowing |= !fluidState.isSource();
             }
@@ -381,7 +383,7 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
     }
 
     public boolean canAcceptManualBucket(ItemStack stack) {
-        if (isCreativeSource() || pharaohGate) {
+        if (isCreativeSource()) {
             return false;
         }
         FluidTank tank = tankForBucket(stack);
@@ -392,7 +394,7 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
     }
 
     public boolean tryManualBucket(Player player, ItemStack stack) {
-        if (isCreativeSource() || pharaohGate) {
+        if (isCreativeSource()) {
             return false;
         }
         FluidTank tank = tankForBucket(stack);
@@ -417,10 +419,10 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
 
     @Nullable
     private FluidTank tankForBucket(ItemStack stack) {
-        if (stack.is(Items.WATER_BUCKET)) {
+        if (stack.is(requiredWaterBucket())) {
             return waterTank;
         }
-        if (stack.is(Items.LAVA_BUCKET)) {
+        if (stack.is(requiredLavaBucket())) {
             return lavaTank;
         }
         return null;
@@ -428,11 +430,11 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
 
     @Nullable
     private Fluid fluidForBucket(ItemStack stack) {
-        if (stack.is(Items.WATER_BUCKET)) {
-            return Fluids.WATER;
+        if (stack.is(requiredWaterBucket())) {
+            return requiredWaterFluid();
         }
-        if (stack.is(Items.LAVA_BUCKET)) {
-            return Fluids.LAVA;
+        if (stack.is(requiredLavaBucket())) {
+            return requiredLavaFluid();
         }
         return null;
     }
@@ -480,14 +482,12 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
         waterStairCollectionProgress = 0;
         lavaStairCollectionProgress = 0;
         transferCooldownTicks = 0;
-        powerDraining = energyStored > 0;
+        energyStored = 0;
+        powerDraining = false;
         onStorageChanged();
     }
 
     public void fillEnergyToCapacity() {
-        if (pharaohGate) {
-            return;
-        }
         if (isCreativeSource()) {
             setChanged();
             return;
@@ -666,11 +666,12 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
         super.load(tag);
         loading = true;
         try {
-            loadAndClampTank(waterTank, tag.getCompound(WATER_TANK_TAG), Fluids.WATER);
-            loadAndClampTank(lavaTank, tag.getCompound(LAVA_TANK_TAG), Fluids.LAVA);
+            pharaohGate = tag.getBoolean(PHARAOH_GATE_TAG);
+            loadAndClampTank(waterTank, tag.getCompound(WATER_TANK_TAG), requiredWaterFluid());
+            loadAndClampTank(lavaTank, tag.getCompound(LAVA_TANK_TAG), requiredLavaFluid());
             automationItems.deserializeNBT(tag.getCompound(INVENTORY_TAG));
-            clampAutomationSlot(WATER_SLOT, Items.WATER_BUCKET);
-            clampAutomationSlot(LAVA_SLOT, Items.LAVA_BUCKET);
+            clampAutomationSlot(WATER_SLOT, requiredWaterBucket());
+            clampAutomationSlot(LAVA_SLOT, requiredLavaBucket());
             energyStored = Math.max(0, Math.min(tag.getInt(ENERGY_TAG), getEnergyCapacity()));
             productionProgress = clampProgress(tag.getInt(PRODUCTION_PROGRESS_TAG), PRODUCTION_TICKS);
             waterCollectionProgress = clampProgress(
@@ -687,7 +688,6 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
                     ? Math.max(0, Math.min(tag.getInt(TRANSFER_COOLDOWN_TAG),
                     EndlessSandsConfig.getRfTransferIntervalTicks()))
                     : defaultCooldown;
-            pharaohGate = tag.getBoolean(PHARAOH_GATE_TAG);
         } finally {
             loading = false;
         }
@@ -715,7 +715,8 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
                 .setValue(ZenioniteChargerBlock.WATER, getWaterLevel())
                 .setValue(ZenioniteChargerBlock.LAVA, getLavaLevel())
                 .setValue(ZenioniteChargerBlock.POWER, getPowerLevel())
-                .setValue(ZenioniteChargerBlock.POWER_DRAINING, powerDraining);
+                .setValue(ZenioniteChargerBlock.POWER_DRAINING, powerDraining)
+                .setValue(ZenioniteChargerBlock.PHARAOH_GATE, pharaohGate);
         if (updated != current) {
             level.setBlock(worldPosition, updated, Block.UPDATE_CLIENTS);
         }
@@ -731,7 +732,7 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
     }
 
     private int getOutputAllowance() {
-        if (pharaohGate || level == null || level.isClientSide || transferCooldownTicks > 0) {
+        if (level == null || level.isClientSide || transferCooldownTicks > 0) {
             return 0;
         }
         return Math.min(getEnergyStored(), OUTPUT_PER_TRANSFER);
@@ -752,18 +753,20 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
         }
     }
 
-    private void drainPharaohGateEnergy() {
-        if (energyStored <= 0) {
-            if (powerDraining) {
-                powerDraining = false;
-                onStorageChanged();
-            }
-            return;
-        }
-        energyStored = Math.max(0,
-                energyStored - Math.max(1, EndlessSandsConfig.getRfMultiplier()));
-        powerDraining = energyStored > 0;
-        onStorageChanged();
+    private Fluid requiredWaterFluid() {
+        return pharaohGate ? ModFluids.ANCIENT_OCEAN_WATER.get() : Fluids.WATER;
+    }
+
+    private Fluid requiredLavaFluid() {
+        return pharaohGate ? ModFluids.STAR_TOUCHED_LAVA.get() : Fluids.LAVA;
+    }
+
+    private net.minecraft.world.item.Item requiredWaterBucket() {
+        return pharaohGate ? ModItems.ANCIENT_OCEAN_WATER_BUCKET.get() : Items.WATER_BUCKET;
+    }
+
+    private net.minecraft.world.item.Item requiredLavaBucket() {
+        return pharaohGate ? ModItems.STAR_TOUCHED_LAVA_BUCKET.get() : Items.LAVA_BUCKET;
     }
 
     private static int displayLevel(int amount, int unitsPerStage) {
@@ -825,19 +828,19 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
 
         @Override
         public boolean isFluidValid(int tank, @NotNull FluidStack stack) {
-            return !pharaohGate && (tank == WATER_SLOT && waterTank.isFluidValid(stack)
-                    || tank == LAVA_SLOT && lavaTank.isFluidValid(stack));
+            return tank == WATER_SLOT && waterTank.isFluidValid(stack)
+                    || tank == LAVA_SLOT && lavaTank.isFluidValid(stack);
         }
 
         @Override
         public int fill(FluidStack resource, FluidAction action) {
-            if (resource.isEmpty() || isCreativeSource() || pharaohGate) {
+            if (resource.isEmpty() || isCreativeSource()) {
                 return 0;
             }
-            if (resource.getFluid() == Fluids.WATER) {
+            if (resource.getFluid() == requiredWaterFluid()) {
                 return waterTank.fill(resource, action);
             }
-            if (resource.getFluid() == Fluids.LAVA) {
+            if (resource.getFluid() == requiredLavaFluid()) {
                 return lavaTank.fill(resource, action);
             }
             return 0;
@@ -985,9 +988,6 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
 
         @Override
         public int extractEnergy(int maxExtract, boolean simulate) {
-            if (pharaohGate) {
-                return 0;
-            }
             int extracted = Math.min(Math.max(0, maxExtract), getOutputAllowance());
             if (!simulate && extracted > 0) {
                 if (!isCreativeSource()) {
@@ -1016,7 +1016,7 @@ public class ZenioniteChargerBlockEntity extends BlockEntity implements MenuProv
 
         @Override
         public boolean canExtract() {
-            return !pharaohGate;
+            return true;
         }
 
         @Override

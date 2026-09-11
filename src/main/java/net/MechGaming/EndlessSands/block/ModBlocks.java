@@ -174,6 +174,15 @@ public class ModBlocks {
                     () -> new ZenioniteChargerBlock(
                             zenioniteDeviceProperties(), true));
 
+    public static final RegistryObject<Block> ZENIONITE_SACRIFICE_HOLDER =
+            registerBlockWithoutItem("zenionite_sacrifice_holder",
+                    () -> new ZenioniteSacrificeHolderBlock(
+                            BlockBehaviour.Properties.copy(ZENIONITE.get())
+                                    .strength(-1.0F, 3_600_000.0F)
+                                    .noLootTable()
+                                    .noOcclusion()
+                                    .pushReaction(PushReaction.BLOCK)));
+
     private static BlockBehaviour.Properties zenioniteDeviceProperties() {
         return BlockBehaviour.Properties.copy(ZENIONITE.get())
                 .strength(-1.0F, 3_600_000.0F)

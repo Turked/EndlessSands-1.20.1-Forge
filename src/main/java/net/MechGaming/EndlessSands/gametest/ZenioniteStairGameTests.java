@@ -8,6 +8,7 @@ import net.MechGaming.EndlessSands.block.entity.ZenioniteStairBlockEntity;
 import net.MechGaming.EndlessSands.block.entity.ZenioniteStairBlockEntity.FlowContext;
 import net.MechGaming.EndlessSands.block.entity.ZenioniteStairBlockEntity.Lane;
 import net.MechGaming.EndlessSands.item.ModItems;
+import net.MechGaming.EndlessSands.fluid.ModFluids;
 import net.MechGaming.EndlessSands.util.LinedStairData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -37,6 +38,25 @@ import net.minecraftforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public final class ZenioniteStairGameTests {
     private ZenioniteStairGameTests() {
+    }
+
+    @GameTest(template = "empty")
+    public static void mysticalFluidsRemainIndependent(GameTestHelper helper) {
+        BlockPos pos = new BlockPos(1, 1, 1);
+        helper.setBlock(pos, ModBlocks.ZENIONITE_STAIRS.get().defaultBlockState());
+        ZenioniteStairBlockEntity stair = stair(helper, pos);
+        stair.setFluid(Lane.LEFT, ModFluids.ANCIENT_OCEAN_WATER.get().getSource(false));
+        stair.setFluid(Lane.RIGHT, ModFluids.FLOWING_STAR_TOUCHED_LAVA.get()
+                .getFlowing(5, false));
+        helper.assertTrue(stair.getFluid(Lane.LEFT).getType()
+                        .isSame(ModFluids.ANCIENT_OCEAN_WATER.get())
+                        && stair.getFluid(Lane.RIGHT).getType()
+                        .isSame(ModFluids.STAR_TOUCHED_LAVA.get())
+                        && stair.getFluid(Lane.RIGHT).getAmount() == 5,
+                "Zenionite stair lanes lost a mystical fluid's exact identity");
+        helper.assertTrue(helper.getBlockState(pos).getValue(ZenioniteStairBlock.HAS_LAVA),
+                "Star Touched Lava did not light its Zenionite stair lane");
+        helper.succeed();
     }
 
     @GameTest(template = "empty")

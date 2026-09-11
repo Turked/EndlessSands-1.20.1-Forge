@@ -1,6 +1,8 @@
 package net.MechGaming.EndlessSands.mixin;
 
 import net.MechGaming.EndlessSands.fluid.AncientOceanWaterFluid;
+import net.MechGaming.EndlessSands.block.custom.LinedStairBlock;
+import net.MechGaming.EndlessSands.block.custom.ZenioniteStairBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -24,7 +26,10 @@ public abstract class AncientWaterloggingMixin {
     private boolean endlessSands$allowAncientWater(LiquidBlockContainer container, BlockGetter level,
                                                   BlockPos pos, BlockState state, Fluid fluid) {
         return container.canPlaceLiquid(level, pos, state,
-                container instanceof SimpleWaterloggedBlock && fluid instanceof AncientOceanWaterFluid
+                container instanceof SimpleWaterloggedBlock
+                        && !(container instanceof LinedStairBlock)
+                        && !(container instanceof ZenioniteStairBlock)
+                        && fluid instanceof AncientOceanWaterFluid
                         ? Fluids.WATER : fluid);
     }
 
@@ -33,7 +38,10 @@ public abstract class AncientWaterloggingMixin {
     private boolean endlessSands$waterloggedState(LiquidBlockContainer container, LevelAccessor level,
                                                 BlockPos pos, BlockState block, FluidState state) {
         return container.placeLiquid(level, pos, block,
-                container instanceof SimpleWaterloggedBlock && state.getType() instanceof AncientOceanWaterFluid
+                container instanceof SimpleWaterloggedBlock
+                        && !(container instanceof LinedStairBlock)
+                        && !(container instanceof ZenioniteStairBlock)
+                        && state.getType() instanceof AncientOceanWaterFluid
                         ? Fluids.WATER.defaultFluidState() : state);
     }
 }

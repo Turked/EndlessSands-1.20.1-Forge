@@ -503,7 +503,7 @@ public final class ZenionitePortalFrameGameTests {
     }
 
     @GameTest(template = "empty", batch = "zenionitePortalFrames")
-    public static void largeGateRetainsPharaohCompletionAndChargerShutdown(GameTestHelper helper) {
+    public static void largeGateRetainsPharaohCompletionAndCanReopen(GameTestHelper helper) {
         BlockPos center = new BlockPos(4, 2, 4);
         PortalFixture portal = placeLargePortal(helper, center, Rotation.NONE);
         BlockPos chargerPos = portal.batteries().get(0).below();
@@ -516,11 +516,11 @@ public final class ZenionitePortalFrameGameTests {
         for (BlockPos pos : portal.frames()) {
             helper.assertTrue(frame(helper, pos).isPharaohGate()
                             && !helper.getBlockState(pos).getValue(ZenionitePortalFrameBlock.BEDROCK),
-                    "A large-gate frame did not consume Bedrock and enter final shutdown");
+                    "A large-gate frame did not consume Bedrock and enter ritual mode");
         }
         for (BlockPos pos : new BlockPos[]{chargerPos, corner}) {
             ZenioniteChargerBlockEntity charger = (ZenioniteChargerBlockEntity) helper.getBlockEntity(pos);
-            helper.assertTrue(charger.isPharaohGate(), "A gate charger was not shut down");
+            helper.assertTrue(charger.isPharaohGate(), "A gate charger did not enter ritual mode");
         }
         for (Direction side : Direction.Plane.HORIZONTAL) {
             helper.assertTrue(helper.getBlockState(center.relative(side, 2))
@@ -529,6 +529,20 @@ public final class ZenionitePortalFrameGameTests {
         helper.assertTrue(ZenionitePortalFrameBlockEntity.getActivePortalForBattery(
                 helper.getLevel(), helper.absolutePos(portal.batteries().get(0))) == null,
                 "A completed gate still allowed beacon imprisonment");
+        for (BlockPos pos : portal.frames()) {
+            frame(helper, pos).fillEnergyToCapacity();
+        }
+        ZenionitePortalFrameBlockEntity.updatePortalState(helper.getLevel(),
+                helper.absolutePos(portal.frames().get(0)));
+        helper.assertTrue(helper.getBlockState(center).is(ModBlocks.ZENIONITE_PORTAL.get())
+                        && helper.getBlockState(center)
+                        .getValue(ZenionitePortalBlock.PHARAOH_IMPRISONED),
+                "Mystical RF did not reopen the completed portal with its Endless Sands texture state");
+        helper.assertTrue(helper.getBlockState(center.above())
+                        .is(ModBlocks.ZENIONITE_SACRIFICE_HOLDER.get())
+                        && ZenionitePortalFrameBlockEntity.canAcceptDragonEgg(
+                        helper.getLevel(), helper.absolutePos(center.above())),
+                "The reopened gate did not create its centered Dragon Egg sacrifice holder");
         helper.succeed();
     }
 

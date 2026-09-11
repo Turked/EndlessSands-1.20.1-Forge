@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "occupied=false": { "model": "endlesssands:block/zenionite_sacrifice_holder" },
+    "occupied=true": { "model": "minecraft:block/dragon_egg" }
+  }
+}
